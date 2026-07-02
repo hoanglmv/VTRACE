@@ -1,0 +1,27 @@
+[project]
+name = "vtrace"
+version = "0.1.0"
+description = "VAI NVS 3D Gaussian Splatting"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "plyfile",
+    "tqdm",
+    "ipykernel",
+    "torch",
+    "torchvision",
+    "diff-gaussian-rasterization",
+    "simple-knn"
+]
+
+[tool.uv.sources]
+diff-gaussian-rasterization = { path = "./gaussian-splatting/submodules/diff-gaussian-rasterization" }
+simple-knn = { path = "./gaussian-splatting/submodules/simple-knn" }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv.extra-build-dependencies]
+diff-gaussian-rasterization = ["torch"]
+simple-knn = ["torch"]

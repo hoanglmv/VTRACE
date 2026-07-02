@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# OS
+.DS_Store
+
+# Data & Models
+VAI_NVS_DATA/
+output/
+submission/
+submission.zip
+
+# Sub-repositories
+gaussian-splatting/
+
+# IDEs
+.vscode/
+.idea/
