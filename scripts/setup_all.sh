@@ -64,6 +64,13 @@ download_and_extract() {
         python3 -m zipfile -e VAI_NVS_DATA.zip .
     fi
     rm -f VAI_NVS_DATA.zip
+    
+    # Wrap phase1 in VAI_NVS_DATA if extracted directly
+    if [ -d "phase1" ]; then
+        mkdir -p VAI_NVS_DATA
+        mv phase1 VAI_NVS_DATA/
+    fi
+    rm -rf __MACOSX
 }
 
 if [ -d "VAI_NVS_DATA" ]; then

@@ -20,4 +20,12 @@ fi
 
 rm -f VAI_NVS_DATA.zip
 
+# Wrap phase1 in VAI_NVS_DATA if extracted directly
+if [ -d "phase1" ]; then
+    mkdir -p VAI_NVS_DATA
+    mv phase1 VAI_NVS_DATA/
+fi
+
+rm -rf __MACOSX
+
 echo "Data setup complete! Dữ liệu đã được giải nén vào thư mục VAI_NVS_DATA."
