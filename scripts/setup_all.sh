@@ -52,19 +52,30 @@ uv pip install -p .venv --no-build-isolation ./src/vtrace/gaussian-splatting/sub
 # 5. Download data
 echo ""
 echo ">>> [4/4] Tải dữ liệu VAI_NVS_DATA từ Google Drive..."
-FOLDER_URL="https://drive.google.com/drive/folders/1TQc6_FNnSnqbwv_EYeusg5zbkf-4lXJF"
+FILE_ID="12vOrYdBT_0yrvV48pf--yXaSzXD5QONV"
+
+download_and_extract() {
+    echo "Đang tải VAI_NVS_DATA.zip từ Google Drive..."
+    uvx gdown --id "${FILE_ID}" -O VAI_NVS_DATA.zip
+    echo "Đang giải nén VAI_NVS_DATA.zip..."
+    if command -v unzip &> /dev/null; then
+        unzip -q VAI_NVS_DATA.zip
+    else
+        python3 -m zipfile -e VAI_NVS_DATA.zip .
+    fi
+    rm -f VAI_NVS_DATA.zip
+}
 
 if [ -d "VAI_NVS_DATA" ]; then
     echo "Thư mục VAI_NVS_DATA đã tồn tại. Bạn có muốn tải lại không? (y/n, mặc định là n): "
     read -r RE_DOWNLOAD
     if [ "$RE_DOWNLOAD" = "y" ] || [ "$RE_DOWNLOAD" = "Y" ]; then
-        uvx gdown --folder "${FOLDER_URL}"
+        download_and_extract
     else
         echo "Bỏ qua bước tải dữ liệu."
     fi
 else
-    echo "Đang tải thư mục dữ liệu VAI_NVS_DATA (sử dụng uvx gdown)..."
-    uvx gdown --folder "${FOLDER_URL}"
+    download_and_extract
 fi
 
 echo ""

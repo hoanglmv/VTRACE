@@ -6,12 +6,18 @@ echo "Setting up data from Google Drive..."
 # Ensure we are in the project root
 cd "$(dirname "$0")/.."
 
-# The Google Drive folder ID
-FOLDER_URL="https://drive.google.com/drive/folders/1TQc6_FNnSnqbwv_EYeusg5zbkf-4lXJF"
+FILE_ID="12vOrYdBT_0yrvV48pf--yXaSzXD5QONV"
 
-echo "Downloading data from Google Drive using gdown..."
-# Use uvx to temporarily install and run gdown
-# This will download the folder 'VAI_NVS_DATA' directly into the project root
-uvx gdown --folder "${FOLDER_URL}"
+echo "Downloading VAI_NVS_DATA.zip from Google Drive using gdown..."
+uvx gdown --id "${FILE_ID}" -O VAI_NVS_DATA.zip
 
-echo "Data setup complete! Dữ liệu đã được tải vào thư mục VAI_NVS_DATA."
+echo "Extracting VAI_NVS_DATA.zip..."
+if command -v unzip &> /dev/null; then
+    unzip -q VAI_NVS_DATA.zip
+else
+    python3 -m zipfile -e VAI_NVS_DATA.zip .
+fi
+
+rm -f VAI_NVS_DATA.zip
+
+echo "Data setup complete! Dữ liệu đã được giải nén vào thư mục VAI_NVS_DATA."
