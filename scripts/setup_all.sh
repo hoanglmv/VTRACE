@@ -56,7 +56,7 @@ FILE_ID="12vOrYdBT_0yrvV48pf--yXaSzXD5QONV"
 
 download_and_extract() {
     echo "Đang tải VAI_NVS_DATA.zip từ Google Drive..."
-    uvx gdown --id "${FILE_ID}" -O VAI_NVS_DATA.zip
+    uvx gdown "${FILE_ID}" -O VAI_NVS_DATA.zip
     echo "Đang giải nén VAI_NVS_DATA.zip..."
     if command -v unzip &> /dev/null; then
         unzip -q VAI_NVS_DATA.zip

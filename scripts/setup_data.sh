@@ -9,7 +9,7 @@ cd "$(dirname "$0")/.."
 FILE_ID="12vOrYdBT_0yrvV48pf--yXaSzXD5QONV"
 
 echo "Downloading VAI_NVS_DATA.zip from Google Drive using gdown..."
-uvx gdown --id "${FILE_ID}" -O VAI_NVS_DATA.zip
+uvx gdown "${FILE_ID}" -O VAI_NVS_DATA.zip
 
 echo "Extracting VAI_NVS_DATA.zip..."
 if command -v unzip &> /dev/null; then
