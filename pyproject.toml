@@ -8,10 +8,24 @@ dependencies = [
     "plyfile",
     "tqdm",
     "ipykernel",
-    "torch",
-    "torchvision",
+    "torch==2.3.1",
+    "torchvision==0.18.1",
     "pyyaml>=6.0.3",
+    "opencv-python",
+    "joblib",
+    "numpy<2",
+    "setuptools<70",
+    "wheel",
 ]
+
+[[tool.uv.index]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu121"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch" }
+torchvision = { index = "pytorch" }
 
 [build-system]
 requires = ["hatchling"]

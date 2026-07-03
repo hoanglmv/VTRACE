@@ -2,6 +2,7 @@ import os
 import argparse
 import logging
 import sys
+import yaml
 
 # Ensure src module is in path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -15,15 +16,58 @@ logger = logging.getLogger(__name__)
 
 def main():
     parser = argparse.ArgumentParser(description="VTRACE 3DGS Pipeline")
-    parser.add_argument("--data-dir", type=str, required=True, help="Path to VAI_NVS_DATA directory (e.g., ./VAI_NVS_DATA/phase1/public_set)")
-    parser.add_argument("--output-dir", type=str, default="./output", help="Output directory for trained models and renders")
-    parser.add_argument("--iterations", type=int, default=30000, help="Number of training iterations")
-    parser.add_argument("--resolution", type=int, default=1, help="Resolution scaling factor")
-    parser.add_argument("--skip-training", action="store_true", help="Skip training and only render")
+    parser.add_argument("--config", type=str, default=None, help="Path to YAML configuration file")
+    parser.add_argument("--data-dir", type=str, default=None, help="Path to VAI_NVS_DATA directory")
+    parser.add_argument("--output-dir", type=str, default=None, help="Output directory")
+    parser.add_argument("--iterations", type=int, default=None, help="Number of training iterations")
+    parser.add_argument("--resolution", type=int, default=None, help="Resolution scaling factor")
+    parser.add_argument("--data-device", type=str, default=None, choices=["cuda", "cpu"], help="Device to store data (cuda or cpu)")
+    parser.add_argument("--sh-degree", type=int, default=None, help="Spherical Harmonics degree")
+    parser.add_argument("--render-format", type=str, default=None, choices=["png", "jpg", "jpeg"], help="Output format for rendered images (png, jpg, jpeg)")
+    parser.add_argument("--skip-training", action="store_true", default=None, help="Skip training and only render")
     args = parser.parse_args()
 
-    data_dir = os.path.abspath(args.data_dir)
-    out_dir = os.path.abspath(args.output_dir)
+    # Default configuration values
+    config_data = {
+        "pipeline": {
+            "data_dir": "./VAI_NVS_DATA/phase1/public_set",
+            "output_dir": "./output",
+        },
+        "training": {
+            "iterations": 30000,
+            "resolution": 1,
+            "data_device": "cpu",
+            "sh_degree": 2,
+        },
+        "render": {
+            "skip_training": False,
+            "format": "png"
+        }
+    }
+
+    # Load YAML if provided
+    if args.config:
+        logger.info(f"Loading configuration from {args.config}")
+        with open(args.config, "r") as f:
+            yaml_data = yaml.safe_load(f)
+            if yaml_data:
+                if "pipeline" in yaml_data and yaml_data["pipeline"]:
+                    config_data["pipeline"].update(yaml_data["pipeline"])
+                if "training" in yaml_data and yaml_data["training"]:
+                    config_data["training"].update(yaml_data["training"])
+                if "render" in yaml_data and yaml_data["render"]:
+                    config_data["render"].update(yaml_data["render"])
+
+    # Merge configuration with command-line overrides
+    data_dir = os.path.abspath(args.data_dir if args.data_dir is not None else config_data["pipeline"]["data_dir"])
+    out_dir = os.path.abspath(args.output_dir if args.output_dir is not None else config_data["pipeline"]["output_dir"])
+    iterations = args.iterations if args.iterations is not None else config_data["training"]["iterations"]
+    resolution = args.resolution if args.resolution is not None else config_data["training"]["resolution"]
+    data_device = args.data_device if args.data_device is not None else config_data["training"].get("data_device", "cpu")
+    sh_degree = args.sh_degree if args.sh_degree is not None else config_data["training"].get("sh_degree", 2)
+    skip_training = args.skip_training if args.skip_training is not None else config_data["render"]["skip_training"]
+    render_format = args.render_format if args.render_format is not None else config_data["render"].get("format", "png")
+
     models_dir = os.path.join(out_dir, "models")
     submission_dir = os.path.join(out_dir, "submission")
     
@@ -44,12 +88,19 @@ def main():
             
         scene_model_dir = os.path.join(models_dir, scene)
         
-        if not args.skip_training:
+        if not skip_training:
             logger.info(f"--- Training {scene} ---")
-            train_scene(scene_dir, scene_model_dir, iterations=args.iterations, resolution=args.resolution)
+            train_scene(
+                scene_dir, 
+                scene_model_dir, 
+                iterations=iterations, 
+                resolution=resolution,
+                data_device=data_device,
+                sh_degree=sh_degree
+            )
         
         logger.info(f"--- Rendering {scene} ---")
-        render_scene(scene, scene_dir, scene_model_dir, submission_dir)
+        render_scene(scene, scene_dir, scene_model_dir, submission_dir, render_format=render_format)
         
     logger.info("--- Creating Submission Archive ---")
     create_submission_zip(submission_dir, os.path.join(out_dir, "submission.zip"))

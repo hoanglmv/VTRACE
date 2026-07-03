@@ -24,6 +24,7 @@ class PipelineParams:
         self.compute_cov3D_python = False
         self.convert_SHs_python = False
         self.debug = False
+        self.antialiasing = False
 
 def qvec2rotmat(qvec):
     return np.array([
@@ -37,14 +38,15 @@ def qvec2rotmat(qvec):
          2 * qvec[2] * qvec[3] + 2 * qvec[0] * qvec[1],
          1 - 2 * qvec[1]**2 - 2 * qvec[2]**2]])
 
-def render_scene(scene_name, scene_dir, model_path, output_dir):
+def render_scene(scene_name, scene_dir, model_path, output_dir, render_format="png"):
     test_csv = os.path.join(scene_dir, "test", "test_poses.csv")
     if not os.path.exists(test_csv):
         logger.warning(f"No test_poses.csv found for {scene_name}")
         return
 
-    # Load model
-    gaussians = GaussianModel(sh_degree=3)
+    # Determine SH degree from PLY file dynamically
+    import math
+    from plyfile import PlyData
     
     iter_dir = os.path.join(model_path, "point_cloud")
     if not os.path.exists(iter_dir):
@@ -58,6 +60,17 @@ def render_scene(scene_name, scene_dir, model_path, output_dir):
         
     latest_iter = iterations[-1]
     ply_path = os.path.join(iter_dir, f"iteration_{latest_iter}", "point_cloud.ply")
+    
+    try:
+        plydata = PlyData.read(ply_path)
+        extra_f_names = [p.name for p in plydata.elements[0].properties if p.name.startswith("f_rest_")]
+        detected_sh_degree = int(math.sqrt(len(extra_f_names) // 3 + 1)) - 1
+        logger.info(f"Detected SH degree {detected_sh_degree} from PLY file {ply_path}")
+    except Exception as e:
+        logger.error(f"Error reading PLY header: {e}")
+        detected_sh_degree = 3
+        
+    gaussians = GaussianModel(sh_degree=detected_sh_degree)
     gaussians.load_ply(ply_path)
     
     background = torch.tensor([0, 0, 0], dtype=torch.float32, device="cuda")
@@ -66,6 +79,15 @@ def render_scene(scene_name, scene_dir, model_path, output_dir):
     out_scene_dir = os.path.join(output_dir, scene_name)
     os.makedirs(out_scene_dir, exist_ok=True)
     
+    # Determine extension and format
+    fmt = render_format.strip(".").lower()
+    if fmt == "jpg":
+        fmt = "jpeg"
+    ext = "." + fmt
+    if ext not in [".png", ".jpeg"]:
+        ext = ".png"
+        fmt = "png"
+        
     with open(test_csv, "r") as f:
         reader = csv.DictReader(f)
         
@@ -87,14 +109,16 @@ def render_scene(scene_name, scene_dir, model_path, output_dir):
             FovY = focal2fov(fy, height)
             FovX = focal2fov(fx, width)
             
-            # Dummy tensor for image since we only render
-            dummy_image = torch.zeros((3, height, width))
+            # Dummy PIL Image since Camera constructor converts it to Torch
+            dummy_image = Image.new("RGB", (width, height))
             
-            cam = Camera(colmap_id=idx, 
+            cam = Camera(resolution=(width, height),
+                         colmap_id=idx, 
                          R=R, T=T, 
                          FoVx=FovX, FoVy=FovY, 
+                         depth_params=None,
                          image=dummy_image, 
-                         gt_alpha_mask=None, 
+                         invdepthmap=None,
                          image_name=img_name.split(".")[0], 
                          uid=idx,
                          data_device="cuda")
@@ -108,13 +132,15 @@ def render_scene(scene_name, scene_dir, model_path, output_dir):
             img_np = np.clip(img_np * 255, 0, 255).astype(np.uint8)
             img = Image.fromarray(img_np)
             
-            # The test pose CSV has image_name like '0001.png' or DJI_xxx.JPG, we just use it directly
-            # Make sure it's PNG if they want png
-            if img_name.lower().endswith(".jpg") or img_name.lower().endswith(".jpeg"):
-                img_name = img_name.rsplit(".", 1)[0] + ".png"
-                
-            out_path = os.path.join(out_scene_dir, img_name)
-            img.save(out_path)
+            # Use requested format/extension
+            base_img_name = os.path.splitext(img_name)[0]
+            out_img_name = base_img_name + ext
+            
+            out_path = os.path.join(out_scene_dir, out_img_name)
+            if fmt == "jpeg":
+                img.save(out_path, "JPEG", quality=90)
+            else:
+                img.save(out_path, "PNG")
 
 def create_submission_zip(output_dir, zip_name="submission.zip"):
     import shutil

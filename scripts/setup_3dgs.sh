@@ -15,10 +15,13 @@ else
     echo "gaussian-splatting repository already exists."
 fi
 
+echo "Syncing Python environment with uv (installing PyTorch, OpenCV, etc.)..."
+uv sync
+
 echo "Installing submodules using uv..."
-# Install plyfile and submodules
-uv pip install plyfile
-uv pip install ./src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization
-uv pip install ./src/vtrace/gaussian-splatting/submodules/simple-knn
+# Install submodules without build isolation so they use the installed PyTorch
+uv pip install --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization
+uv pip install --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/simple-knn
+uv pip install --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/fused-ssim
 
 echo "Setup completed successfully."

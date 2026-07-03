@@ -5,7 +5,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, gs_path="src/vtrace/gaussian-splatting"):
+def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_device="cpu", sh_degree=2, gs_path="src/vtrace/gaussian-splatting"):
     """
     Trains the 3DGS model for a given scene.
     scene_dir: path to the scene directory (e.g. VAI_NVS_DATA/phase1/public_set/HCM0181)
@@ -28,7 +28,10 @@ def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, gs_path="
         "-s", source_path,
         "-m", output_dir,
         "--iterations", str(iterations),
-        "-r", str(resolution) # resolution factor
+        "-r", str(resolution), # resolution factor
+        "--data_device", data_device,
+        "--sh_degree", str(sh_degree),
+        "--densify_grad_threshold", "0.0006"
     ]
     
     logger.info(f"Running training command for {scene_dir}...")

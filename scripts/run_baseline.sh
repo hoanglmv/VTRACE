@@ -8,23 +8,34 @@ echo "======================================"
 # Ensure we are in the project root
 cd "$(dirname "$0")/.."
 
-DATA_DIR="./VAI_NVS_DATA/phase1/public_set"
-OUTPUT_DIR="./output"
+# Check if command line argument is provided
+CHOICE=$1
 
-if [ ! -d "$DATA_DIR" ]; then
-    echo "Lỗi: Không tìm thấy thư mục dữ liệu $DATA_DIR"
-    echo "Hãy chắc chắn rằng bạn đã tải dữ liệu bằng ./scripts/setup_data.sh"
-    exit 1
+if [ -z "$CHOICE" ]; then
+    echo "Chọn tập dữ liệu muốn chạy:"
+    echo "1) Public Set (VAI_NVS_DATA/phase1/public_set)"
+    echo "2) Private Set (VAI_NVS_DATA/phase1/private_set1)"
+    read -p "Nhập lựa chọn của bạn (1 hoặc 2, mặc định là 1): " INPUT_CHOICE
+    if [ "$INPUT_CHOICE" = "2" ]; then
+        CHOICE="private"
+    else
+        CHOICE="public"
+    fi
 fi
 
-echo "Bắt đầu chạy huấn luyện đầy đủ (Full Baseline)..."
-echo "Số iterations: 30000"
+if [ "$CHOICE" = "private" ] || [ "$CHOICE" = "--private" ] || [ "$CHOICE" = "-p" ]; then
+    CONFIG_FILE="config/private_high.yaml"
+else
+    CONFIG_FILE="config/public_high.yaml"
+fi
 
-uv run python pipeline/run_pipeline.py \
-    --data-dir "$DATA_DIR" \
-    --output-dir "$OUTPUT_DIR" \
-    --iterations 30000 \
-    --resolution 1
+# Load output directory from YAML config for printing
+OUTPUT_DIR=$(grep 'output_dir:' "$CONFIG_FILE" | awk '{print $2}' | tr -d '"' | tr -d "'")
+
+echo "Sử dụng cấu hình từ: $CONFIG_FILE"
+echo "Bắt đầu chạy huấn luyện đầy đủ (Full Baseline)..."
+
+uv run python pipeline/run_pipeline.py --config "$CONFIG_FILE"
 
 echo "======================================"
 echo "Huấn luyện hoàn tất! Kết quả được nén tại: $OUTPUT_DIR/submission.zip"
