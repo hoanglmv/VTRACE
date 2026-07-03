@@ -1,1 +1,0 @@
-Namespace(sh_degree=2, source_path='/home/myvh07/VTRACE/VAI_NVS_DATA/phase1/public_set/HCM0181/train', model_path='/home/myvh07/VTRACE/output_public_fast/models/HCM0181', images='images', depths='', resolution=2, white_background=False, train_test_exp=False, data_device='cuda', eval=False)

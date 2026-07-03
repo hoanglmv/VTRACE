@@ -15,9 +15,9 @@ env/
 
 # Data & Models
 VAI_NVS_DATA/
-output/
-submission/
-submission.zip
+output*/
+submission*/
+submission*.zip
 
 # Sub-repositories
 gaussian-splatting/
