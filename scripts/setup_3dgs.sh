@@ -20,8 +20,8 @@ uv sync
 
 echo "Installing submodules using uv..."
 # Install submodules without build isolation so they use the installed PyTorch
-uv pip install --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization
-uv pip install --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/simple-knn
-uv pip install --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/fused-ssim
+uv pip install -p .venv --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization
+uv pip install -p .venv --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/simple-knn
+uv pip install -p .venv --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/fused-ssim
 
 echo "Setup completed successfully."

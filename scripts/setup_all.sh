@@ -35,9 +35,9 @@ fi
 # 4. Install CUDA submodules with uv
 echo ""
 echo ">>> [3/4] Biên dịch và cài đặt các CUDA submodules (diff-gaussian-rasterization, simple-knn, fused-ssim)..."
-uv pip install --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization
-uv pip install --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/simple-knn
-uv pip install --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/fused-ssim
+uv pip install -p .venv --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization
+uv pip install -p .venv --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/simple-knn
+uv pip install -p .venv --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/fused-ssim
 
 # 5. Download data
 echo ""
