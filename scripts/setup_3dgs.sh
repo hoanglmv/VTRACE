@@ -15,14 +15,16 @@ else
     echo "gaussian-splatting repository already exists."
 fi
 
-# Patch rasterizer_impl.h to add #include <cstdint> if missing (fixes build with newer compilers)
-PATCH_FILE="src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.h"
-if [ -f "$PATCH_FILE" ]; then
-    if ! grep -q "<cstdint>" "$PATCH_FILE"; then
-        echo "Patching rasterizer_impl.h with <cstdint>..."
-        # Insert #include <cstdint> after #include <vector>
-        sed -i '/#include <vector>/a #include <cstdint>' "$PATCH_FILE"
-    fi
+# Apply patches to the cloned repository
+echo "Applying custom patches to 3DGS repository..."
+if [ -f "src/vtrace/patches/dataset_readers.py" ]; then
+    cp src/vtrace/patches/dataset_readers.py src/vtrace/gaussian-splatting/scene/dataset_readers.py
+fi
+if [ -f "src/vtrace/patches/train.py" ]; then
+    cp src/vtrace/patches/train.py src/vtrace/gaussian-splatting/train.py
+fi
+if [ -f "src/vtrace/patches/rasterizer_impl.h" ]; then
+    cp src/vtrace/patches/rasterizer_impl.h src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.h
 fi
 
 echo "Syncing Python environment with uv (installing PyTorch, OpenCV, etc.)..."
