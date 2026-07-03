@@ -14,14 +14,22 @@ def clone_repo():
         print(f"Directory '{target_dir}' already exists. Skipping clone.")
 
 def install_dependencies():
-    print("Syncing environment with uv sync...")
-    try:
-        subprocess.run(["uv", "sync"], check=True)
-        print("Environment synced successfully.")
-    except Exception as e:
-        print(f"Error during uv sync: {e}")
+    print("Setting up virtual environment...")
+    
+    if not os.path.exists(".venv"):
+        subprocess.run(["uv", "venv", ".venv"], check=True)
+    
+    print("Installing core dependencies (including PyTorch)...")
+    subprocess.run(["uv", "pip", "install", "-e", "."], check=True)
+    
+    print("Installing simple-knn...")
+    subprocess.run(["uv", "pip", "install", "--no-build-isolation", "./gaussian-splatting/submodules/simple-knn"], check=True)
+    
+    print("Installing diff-gaussian-rasterization (this may take a few minutes to compile CUDA)...")
+    subprocess.run(["uv", "pip", "install", "--no-build-isolation", "./gaussian-splatting/submodules/diff-gaussian-rasterization"], check=True)
+    
+    print("Setup completed successfully!")
 
 if __name__ == "__main__":
     clone_repo()
     install_dependencies()
-    print("Setup complete.")
