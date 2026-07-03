@@ -9,7 +9,8 @@ dependencies = [
     "tqdm",
     "ipykernel",
     "torch",
-    "torchvision"
+    "torchvision",
+    "pyyaml>=6.0.3",
 ]
 
 [build-system]

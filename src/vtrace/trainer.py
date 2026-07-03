@@ -5,7 +5,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, gs_path="./gaussian-splatting"):
+def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, gs_path="src/vtrace/gaussian-splatting"):
     """
     Trains the 3DGS model for a given scene.
     scene_dir: path to the scene directory (e.g. VAI_NVS_DATA/phase1/public_set/HCM0181)
@@ -20,10 +20,7 @@ def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, gs_path="
     if not os.path.exists(source_path):
         raise FileNotFoundError(f"Source path {source_path} does not exist.")
         
-    python_exe = os.path.join(".venv", "bin", "python")
-    if not os.path.exists(python_exe):
-        logger.warning(f"{python_exe} not found. Falling back to system python.")
-        python_exe = sys.executable
+    python_exe = sys.executable
     
     # Standard 3DGS training command
     cmd = [
