@@ -32,6 +32,16 @@ else
     echo "Kho lưu trữ gaussian-splatting đã tồn tại."
 fi
 
+# Patch rasterizer_impl.h to add #include <cstdint> if missing (fixes build with newer compilers)
+PATCH_FILE="src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.h"
+if [ -f "$PATCH_FILE" ]; then
+    if ! grep -q "<cstdint>" "$PATCH_FILE"; then
+        echo "Patching rasterizer_impl.h with <cstdint>..."
+        # Insert #include <cstdint> after #include <vector>
+        sed -i '/#include <vector>/a #include <cstdint>' "$PATCH_FILE"
+    fi
+fi
+
 # 4. Install CUDA submodules with uv
 echo ""
 echo ">>> [3/4] Biên dịch và cài đặt các CUDA submodules (diff-gaussian-rasterization, simple-knn, fused-ssim)..."

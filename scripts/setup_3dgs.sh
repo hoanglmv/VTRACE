@@ -15,6 +15,16 @@ else
     echo "gaussian-splatting repository already exists."
 fi
 
+# Patch rasterizer_impl.h to add #include <cstdint> if missing (fixes build with newer compilers)
+PATCH_FILE="src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.h"
+if [ -f "$PATCH_FILE" ]; then
+    if ! grep -q "<cstdint>" "$PATCH_FILE"; then
+        echo "Patching rasterizer_impl.h with <cstdint>..."
+        # Insert #include <cstdint> after #include <vector>
+        sed -i '/#include <vector>/a #include <cstdint>' "$PATCH_FILE"
+    fi
+fi
+
 echo "Syncing Python environment with uv (installing PyTorch, OpenCV, etc.)..."
 uv sync
 
