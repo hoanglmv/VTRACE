@@ -15,45 +15,14 @@ if ! command -v uv &> /dev/null; then
     exit 1
 fi
 
-# 2. Syncing Python environment
+# 2. Run 3DGS and environment setup
 echo ""
-echo ">>> [1/4] Khởi tạo môi trường ảo Python bằng uv..."
-uv sync
-
-# 3. Setup 3D Gaussian Splatting submodules
-echo ""
-echo ">>> [2/4] Thiết lập mô hình 3D Gaussian Splatting..."
-mkdir -p src/vtrace
-
-if [ ! -d "src/vtrace/gaussian-splatting" ]; then
-    echo "Đang clone kho lưu trữ gaussian-splatting từ graphdeco-inria..."
-    git clone --recursive https://github.com/graphdeco-inria/gaussian-splatting src/vtrace/gaussian-splatting
-else
-    echo "Kho lưu trữ gaussian-splatting đã tồn tại."
-fi
-
-# Apply patches to the cloned repository
-echo "Applying custom patches to 3DGS repository..."
-if [ -f "src/vtrace/patches/dataset_readers.py" ]; then
-    cp src/vtrace/patches/dataset_readers.py src/vtrace/gaussian-splatting/scene/dataset_readers.py
-fi
-if [ -f "src/vtrace/patches/train.py" ]; then
-    cp src/vtrace/patches/train.py src/vtrace/gaussian-splatting/train.py
-fi
-if [ -f "src/vtrace/patches/rasterizer_impl.h" ]; then
-    cp src/vtrace/patches/rasterizer_impl.h src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.h
-fi
-
-# 4. Install CUDA submodules with uv
-echo ""
-echo ">>> [3/4] Biên dịch và cài đặt các CUDA submodules (diff-gaussian-rasterization, simple-knn, fused-ssim)..."
-uv pip install -p .venv --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization
-uv pip install -p .venv --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/simple-knn
-uv pip install -p .venv --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/fused-ssim
+echo ">>> [1/2] Khởi tạo môi trường ảo Python và thiết lập 3D Gaussian Splatting..."
+./scripts/setup_3dgs.sh
 
 # 5. Download data
 echo ""
-echo ">>> [4/4] Tải dữ liệu VAI_NVS_DATA từ Google Drive..."
+echo ">>> [2/2] Tải dữ liệu VAI_NVS_DATA từ Google Drive..."
 FILE_ID="12vOrYdBT_0yrvV48pf--yXaSzXD5QONV"
 
 download_and_extract() {

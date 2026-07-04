@@ -30,6 +30,52 @@ fi
 echo "Syncing Python environment with uv (installing PyTorch, OpenCV, etc.)..."
 uv sync
 
+# --- CUDA Version Auto-Detection & PyTorch Alignment ---
+echo "Checking CUDA version and aligning environment..."
+
+# Make sure CUDA_HOME is set if /usr/local/cuda exists
+if [ -z "$CUDA_HOME" ]; then
+    if [ -d "/usr/local/cuda" ]; then
+        export CUDA_HOME="/usr/local/cuda"
+    elif [ -d "/usr/local/cuda-12.1" ]; then
+        export CUDA_HOME="/usr/local/cuda-12.1"
+    fi
+fi
+
+if command -v nvcc &> /dev/null; then
+    SYS_CUDA_VERSION=$(nvcc --version | grep "release" | awk '{print $5}' | cut -d, -f1)
+    echo "Detected system NVCC version: $SYS_CUDA_VERSION"
+    
+    # If the system NVCC is not 12.1, but /usr/local/cuda-12.1 is available,
+    # we can use the 12.1 compiler to match PyTorch's default build.
+    if [ "$SYS_CUDA_VERSION" != "12.1" ] && [ -d "/usr/local/cuda-12.1" ]; then
+        echo "Found CUDA 12.1 toolkit. Switching build tools to CUDA 12.1 to match default PyTorch..."
+        export CUDA_HOME="/usr/local/cuda-12.1"
+        export PATH="/usr/local/cuda-12.1/bin:$PATH"
+        export LD_LIBRARY_PATH="/usr/local/cuda-12.1/lib64:$LD_LIBRARY_PATH"
+        SYS_CUDA_VERSION="12.1"
+    fi
+    
+    # If we are stuck with a different system CUDA version (no 12.1 toolkit on disk),
+    # we reinstall PyTorch to match the system CUDA toolkit version.
+    if [ "$SYS_CUDA_VERSION" != "12.1" ]; then
+        if [ "$SYS_CUDA_VERSION" = "12.4" ]; then
+            echo "System CUDA is 12.4. Reinstalling PyTorch to match CUDA 12.4..."
+            uv pip install --force-reinstall torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+        elif [ "$SYS_CUDA_VERSION" = "12.6" ]; then
+            echo "System CUDA is 12.6. Reinstalling PyTorch to match CUDA 12.6..."
+            uv pip install --force-reinstall torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
+        elif [ "$SYS_CUDA_VERSION" = "11.8" ]; then
+            echo "System CUDA is 11.8. Reinstalling PyTorch to match CUDA 11.8..."
+            uv pip install --force-reinstall torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+        else
+            echo "Warning: System CUDA version is $SYS_CUDA_VERSION. If build fails, manually run matching PyTorch install."
+        fi
+    fi
+else
+    echo "Warning: nvcc not found in PATH. Ensure CUDA Toolkit is installed."
+fi
+
 echo "Installing submodules using uv..."
 # Install submodules without build isolation so they use the installed PyTorch
 uv pip install -p .venv --no-build-isolation ./src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization
