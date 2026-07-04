@@ -67,6 +67,12 @@ def main():
     sh_degree = args.sh_degree if args.sh_degree is not None else config_data["training"].get("sh_degree", 2)
     skip_training = args.skip_training if args.skip_training is not None else config_data["render"]["skip_training"]
     render_format = args.render_format if args.render_format is not None else config_data["render"].get("format", "png")
+    
+    # New regularization parameters
+    lambda_opacity = config_data["training"].get("lambda_opacity", 0.0)
+    lambda_scale = config_data["training"].get("lambda_scale", 0.0)
+    lambda_dssim = config_data["training"].get("lambda_dssim", 0.2)
+    lambda_edge = config_data["training"].get("lambda_edge", 0.0)
 
     models_dir = os.path.join(out_dir, "models")
     submission_dir = os.path.join(out_dir, "submission")
@@ -96,7 +102,11 @@ def main():
                 iterations=iterations, 
                 resolution=resolution,
                 data_device=data_device,
-                sh_degree=sh_degree
+                sh_degree=sh_degree,
+                lambda_opacity=lambda_opacity,
+                lambda_scale=lambda_scale,
+                lambda_dssim=lambda_dssim,
+                lambda_edge=lambda_edge
             )
         
         logger.info(f"--- Rendering {scene} ---")
