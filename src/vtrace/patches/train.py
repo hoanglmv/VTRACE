@@ -164,11 +164,12 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 if len(loss_history) > 30:
                     loss_history.pop(0)
                 
-                # Check convergence after iteration 7000
-                if iteration >= 7000 and len(loss_history) >= 20:
-                    old_iter, old_loss = loss_history[-20] # 2000 iterations ago
+                # Check convergence
+                window_size = max(1, opt.early_stopping_window_iters // 100)
+                if iteration >= opt.early_stopping_start_iter and len(loss_history) >= window_size:
+                    old_iter, old_loss = loss_history[-window_size] # old iterations ago
                     rel_change = abs(ema_loss_long - old_loss) / old_loss
-                    if rel_change < 0.005: # 0.5% relative change over 2000 steps
+                    if rel_change < opt.early_stopping_rel_change: # relative change over window_size steps
                         print(f"\n[Early Stopping] Converged at iteration {iteration}. Relative change: {rel_change:.5f}")
                         progress_bar.close()
                         scene.save(iteration)
