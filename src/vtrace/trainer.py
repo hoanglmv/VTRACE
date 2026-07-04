@@ -2,10 +2,11 @@ import os
 import subprocess
 import sys
 import logging
+from .quality_filter import QualityFilter
 
 logger = logging.getLogger(__name__)
 
-def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_device="cpu", sh_degree=2, gs_path="src/vtrace/gaussian-splatting"):
+def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_device="cpu", sh_degree=2, gs_path="src/vtrace/gaussian-splatting", early_stopping_start_iter=7000, early_stopping_window_iters=2000, early_stopping_rel_change=0.005):
     """
     Trains the 3DGS model for a given scene.
     scene_dir: path to the scene directory (e.g. VAI_NVS_DATA/phase1/public_set/HCM0181)
@@ -31,14 +32,23 @@ def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_devi
         "-r", str(resolution), # resolution factor
         "--data_device", data_device,
         "--sh_degree", str(sh_degree),
-        "--densify_grad_threshold", "0.0006"
+        "--densify_grad_threshold", "0.0006",
+        "--early_stopping_start_iter", str(early_stopping_start_iter),
+        "--early_stopping_window_iters", str(early_stopping_window_iters),
+        "--early_stopping_rel_change", str(early_stopping_rel_change)
     ]
+    
+    image_dir = os.path.join(source_path, "images")
+    q_filter = QualityFilter(image_dir)
     
     logger.info(f"Running training command for {scene_dir}...")
     
     try:
+        q_filter.apply()
         # Popen can be used for streaming output or subprocess.run for blocking
         subprocess.run(cmd, check=True)
         logger.info(f"Training completed for scene {scene_dir}. Model saved to {output_dir}")
     except subprocess.CalledProcessError as e:
         logger.error(f"Error during training scene {scene_dir}: {e}")
+    finally:
+        q_filter.restore()

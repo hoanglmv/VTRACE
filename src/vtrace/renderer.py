@@ -132,12 +132,18 @@ def render_scene(scene_name, scene_dir, model_path, output_dir, render_format="p
             img_np = np.clip(img_np * 255, 0, 255).astype(np.uint8)
             img = Image.fromarray(img_np)
             
-            # Use requested format/extension
-            base_img_name = os.path.splitext(img_name)[0]
-            out_img_name = base_img_name + ext
+            # Use original extension from test_poses.csv if it exists
+            # Otherwise use the requested format/extension
+            ext_in_csv = os.path.splitext(img_name)[1]
+            if ext_in_csv:
+                out_img_name = img_name
+                save_fmt = "JPEG" if ext_in_csv.lower() in [".jpg", ".jpeg"] else "PNG"
+            else:
+                out_img_name = img_name + ext
+                save_fmt = "JPEG" if fmt == "jpeg" else "PNG"
             
             out_path = os.path.join(out_scene_dir, out_img_name)
-            if fmt == "jpeg":
+            if save_fmt == "JPEG":
                 img.save(out_path, "JPEG", quality=90)
             else:
                 img.save(out_path, "PNG")

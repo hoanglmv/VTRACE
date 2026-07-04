@@ -5,7 +5,7 @@ pipeline:
 
 training:
   iterations: 30000
-  resolution: 2
+  resolution: 1
   data_device: "cpu"
   sh_degree: 2
 
