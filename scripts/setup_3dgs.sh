@@ -26,6 +26,9 @@ fi
 if [ -f "src/vtrace/patches/arguments_init.py" ]; then
     cp src/vtrace/patches/arguments_init.py src/vtrace/gaussian-splatting/arguments/__init__.py
 fi
+if [ -f "src/vtrace/patches/cameras.py" ]; then
+    cp src/vtrace/patches/cameras.py src/vtrace/gaussian-splatting/scene/cameras.py
+fi
 if [ -f "src/vtrace/patches/rasterizer_impl.h" ]; then
     cp src/vtrace/patches/rasterizer_impl.h src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.h
 fi

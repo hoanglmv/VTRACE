@@ -121,7 +121,15 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
 
         # Loss
         gt_image = viewpoint_cam.original_image.cuda()
-        Ll1 = l1_loss(image, gt_image)
+        
+        if opt.lambda_edge > 0 and hasattr(viewpoint_cam, 'edge_mask'):
+            edge_mask = viewpoint_cam.edge_mask.cuda() # shape (H, W)
+            # Spatial weighting map: pixels on edges get more weight
+            weight_map = 1.0 + edge_mask.unsqueeze(0) * opt.lambda_edge # shape (1, H, W)
+            Ll1 = (torch.abs(image - gt_image) * weight_map).mean()
+        else:
+            Ll1 = l1_loss(image, gt_image)
+
         if FUSED_SSIM_AVAILABLE:
             ssim_value = fused_ssim(image.unsqueeze(0), gt_image.unsqueeze(0))
         else:
@@ -142,6 +150,16 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             Ll1depth = Ll1depth.item()
         else:
             Ll1depth = 0
+
+        # Opacity regularization (penalize semi-transparent Gaussians)
+        if opt.lambda_opacity > 0:
+            opacity_loss = opt.lambda_opacity * gaussians.get_opacity.abs().mean()
+            loss += opacity_loss
+
+        # Scale regularization (penalize large scales to prevent big thin floaters)
+        if opt.lambda_scale > 0:
+            scale_loss = opt.lambda_scale * gaussians.get_scaling.max(dim=1).values.mean()
+            loss += scale_loss
 
         loss.backward()
 
