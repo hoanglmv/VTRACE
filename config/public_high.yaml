@@ -5,9 +5,9 @@ pipeline:
 
 training:
   iterations: 30000
-  resolution: 1
+  resolution: 2
   data_device: "cpu"
-  sh_degree: 3
+  sh_degree: 2
 
 render:
   skip_training: false
