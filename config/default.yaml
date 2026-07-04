@@ -5,7 +5,7 @@ pipeline:
 training:
   iterations: 30000
   resolution: 2
-  data_device: "cuda"
+  data_device: "cpu"
   sh_degree: 3
 
 render:
