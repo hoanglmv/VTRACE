@@ -35,7 +35,8 @@ def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_devi
         "--densify_grad_threshold", "0.0006",
         "--early_stopping_start_iter", str(early_stopping_start_iter),
         "--early_stopping_window_iters", str(early_stopping_window_iters),
-        "--early_stopping_rel_change", str(early_stopping_rel_change)
+        "--early_stopping_rel_change", str(early_stopping_rel_change),
+        "--disable_viewer"
     ]
     
     image_dir = os.path.join(source_path, "images")
