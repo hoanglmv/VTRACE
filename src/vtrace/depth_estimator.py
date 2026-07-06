@@ -88,8 +88,8 @@ def estimate_scene_depth(scene_dir, device="cuda" if torch.cuda.is_available() e
             except Exception as e:
                 logger.error(f"Failed batch depth estimation at index {i}: {e}")
 
-    # Write depth_params.json to sparse/0/ directory
-    sparse_dir = os.path.join(scene_dir, "sparse", "0")
+    # Write depth_params.json to train/sparse/0/ directory
+    sparse_dir = os.path.join(scene_dir, "train", "sparse", "0")
     os.makedirs(sparse_dir, exist_ok=True)
     depth_params_file = os.path.join(sparse_dir, "depth_params.json")
     

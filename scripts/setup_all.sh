@@ -10,9 +10,9 @@ cd "$(dirname "$0")/.."
 
 # 1. Check for uv command
 if ! command -v uv &> /dev/null; then
-    echo "Lỗi: Không tìm thấy lệnh 'uv'."
-    echo "Vui lòng cài đặt uv trước bằng lệnh: curl -LsSf https://astral.sh/uv/install.sh | sh"
-    exit 1
+    echo "Không tìm thấy lệnh 'uv'. Đang tự động cài đặt uv..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    source $HOME/.local/bin/env
 fi
 
 # 2. Run 3DGS and environment setup
