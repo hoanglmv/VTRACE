@@ -1,19 +1,19 @@
 # VTRACE - Viettel AI Race: Novel View Synthesis (3DGS)
 
-Dự án này là mã nguồn tự động hoá việc huấn luyện (training) và sinh ảnh góc nhìn mới (inference) sử dụng phương pháp **3D Gaussian Splatting** dành riêng cho tập dữ liệu của cuộc thi Viettel AI Race (Digital Twin).
+Dự án này là mã nguồn tự động hoá việc huấn luyện (training) và sinh ảnh góc nhìn mới (inference) sử dụng phương pháp **3D Gaussian Splatting (MCMC Optimization với lõi gsplat)** dành riêng cho tập dữ liệu của cuộc thi Viettel AI Race (Digital Twin).
 
 ## 🗂️ Cấu trúc dự án (Src-layout)
 
 - `src/vtrace/`: Package chứa mã nguồn cốt lõi.
   - `data_utils.py`: Đọc cấu trúc thư mục COLMAP và xử lý dữ liệu đầu vào.
-  - `trainer.py`: Gọi script training của 3D Gaussian Splatting.
+  - `trainer.py`: Gọi vòng lặp huấn luyện tối ưu hóa bằng MCMC Strategy.
   - `renderer.py`: Sinh ảnh dựa vào file `test_poses.csv` (Quaternion/Translation) và đóng gói submission.
 - `scripts/`: Chứa các script hệ thống.
-  - `setup_3dgs.py`: Clone repo 3DGS và cài đặt tự động bằng `uv sync`.
+  - `setup_all.sh`: Tự động setup toàn bộ (Cài uv, tải gsplat, bắt lỗi mismatch CUDA và tự động tải dữ liệu giải nén từ Google Drive).
 - `notebooks/`: Chứa các Jupyter Notebooks giúp quá trình chạy trở nên trực quan.
   - `01_data_analysis_and_training.ipynb`: Phân tích dữ liệu & Train.
   - `02_inference_and_submission.ipynb`: Render ảnh test & nén thành `submission.zip`.
-- `VAI_NVS_DATA/`: (Yêu cầu) Bạn cần đặt dữ liệu gốc của BTC tại thư mục này.
+- `VAI_NVS_DATA/`: Thư mục lưu dữ liệu thi. Script setup sẽ tự động tải cho bạn.
 
 ---
 
@@ -29,22 +29,22 @@ Vì việc huấn luyện yêu cầu GPU NVIDIA mạnh (khuyên dùng RTX 3090 /
 
 #### 2. Kết nối và Setup tự động
 - Mở Terminal của máy chủ vừa thuê (hoặc thông qua Jupyter Lab Terminal).
-- Chạy lệnh sau để clone repository mã nguồn của bạn và di chuyển vào thư mục dự án.
-- Chạy script cài đặt tất cả trong một:
+- Kéo mã nguồn (git pull) và di chuyển vào thư mục VTRACE.
+- Chạy script cài đặt tất cả trong một (DUY NHẤT 1 LỆNH CHẠY):
   ```bash
-  bash scripts/setup_all.sh
+  ./scripts/setup_all.sh
   ```
-  *Lệnh này sẽ tự động: Cài đặt trình quản lý `uv`, tạo môi trường ảo `.venv`, tải và compile thư viện CUDA 3DGS, và tự động tải tập dữ liệu VAI_NVS_DATA từ Google Drive.*
+  *Lệnh này sẽ tự động: Cài đặt trình quản lý `uv`, đồng bộ thư viện lõi `gsplat`, tự động kiểm tra và triệt tiêu lỗi CUDA mismatch (nếu có), đồng thời kéo tập dữ liệu VAI_NVS_DATA từ Google Drive.*
 
 #### 3. Chạy Huấn luyện và Render Pipeline
-Sau khi cài đặt xong, hãy chạy toàn bộ pipeline (tự động ước lượng Depth, huấn luyện mô hình với tối ưu hóa SOTA 2024, render ảnh và đóng gói kết quả):
-- Chạy trên tập **Private Set**:
+Sau khi cài đặt xong, hãy chạy toàn bộ pipeline (tự động ước lượng Depth, huấn luyện mô hình MCMC, render ảnh và đóng gói kết quả):
+- Chạy trên toàn bộ tập **Private Set**:
   ```bash
   uv run python pipeline/run_pipeline.py --config config/private_high.yaml
   ```
-- Chạy trên tập **Public Set**:
+- Chạy riêng biệt cho 1 Scene cụ thể:
   ```bash
-  uv run python pipeline/run_pipeline.py --config config/public_high.yaml
+  uv run python pipeline/run_pipeline.py --scene VAI_NVS_DATA/phase1/private_set1/HCM0249 --config config/private_high.yaml --mode train
   ```
 
 #### 4. Tải kết quả nộp bài

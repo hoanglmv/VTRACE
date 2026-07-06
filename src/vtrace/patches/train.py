@@ -170,6 +170,10 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
     ema_loss_long = None
     loss_history = []
 
+    from gsplat.strategy import MCMCStrategy
+    strategy = MCMCStrategy(verbose=False)
+    strategy_state = strategy.initialize_state()
+
     progress_bar = tqdm(range(first_iter, opt.iterations), desc="Training progress")
     first_iter += 1
     for iteration in range(first_iter, opt.iterations + 1):
@@ -338,35 +342,45 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 print("\n[ITER {}] Saving Gaussians".format(iteration))
                 scene.save(iteration)
 
-            # Densification
-            if iteration < opt.densify_until_iter:
-                # Keep track of max radii in image-space for pruning
-                gaussians.max_radii2D[visibility_filter] = torch.max(gaussians.max_radii2D[visibility_filter], radii[visibility_filter])
-                gaussians.add_densification_stats(viewspace_point_tensor, visibility_filter)
-
-                if iteration > opt.densify_from_iter and iteration % opt.densification_interval == 0:
-                    size_threshold = 20 if iteration > opt.opacity_reset_interval else None
-                    gaussians.densify_and_prune(opt.densify_grad_threshold, 0.005, scene.cameras_extent, size_threshold, radii)
-                    
-                    # Apply depth-guided floater pruning every 500 iterations during the densification phase
-                    if iteration > 1000 and iteration % 500 == 0:
-                        prune_depth_floaters(gaussians, scene, num_cameras_to_check=5, thresh=0.1)
-                
-                if iteration % opt.opacity_reset_interval == 0 or (dataset.white_background and iteration == opt.densify_from_iter):
-                    gaussians.reset_opacity()
-
             # Optimizer step
             if iteration < opt.iterations:
                 gaussians.exposure_optimizer.step()
                 gaussians.exposure_optimizer.zero_grad(set_to_none = True)
-                if use_sparse_adam:
-                    visible = radii > 0
-                    gaussians.optimizer.step(visible, radii.shape[0])
-                    gaussians.optimizer.zero_grad(set_to_none = True)
-                else:
-                    gaussians.optimizer.step()
-                    gaussians.optimizer.zero_grad(set_to_none = True)
+                gaussians.optimizer.step()
+                gaussians.optimizer.zero_grad(set_to_none = True)
 
+            # MCMC Densification Strategy
+            if iteration < opt.densify_until_iter:
+                params_dict = {
+                    "means": gaussians._xyz,
+                    "scales": gaussians._scaling,
+                    "quats": gaussians._rotation,
+                    "opacities": gaussians._opacity,
+                    "f_dc": gaussians._features_dc,
+                    "f_rest": gaussians._features_rest
+                }
+
+                # Step the strategy
+                strategy.step_post_backward(
+                    params_dict, 
+                    gaussians.optimizers, 
+                    strategy_state, 
+                    iteration, 
+                    render_pkg["meta"]
+                )
+
+                # Reassign the tensors back to the model because MCMCStrategy might have recreated them
+                gaussians._xyz = params_dict["means"]
+                gaussians._scaling = params_dict["scales"]
+                gaussians._rotation = params_dict["quats"]
+                gaussians._opacity = params_dict["opacities"]
+                gaussians._features_dc = params_dict["f_dc"]
+                gaussians._features_rest = params_dict["f_rest"]
+                
+                # Apply depth-guided floater pruning every 500 iterations during the densification phase
+                if iteration > 1000 and iteration % 500 == 0:
+                    prune_depth_floaters(gaussians, scene, num_cameras_to_check=5, thresh=0.1)
+                
             if (iteration in checkpoint_iterations):
                 print("\n[ITER {}] Saving Checkpoint".format(iteration))
                 torch.save((gaussians.capture(), iteration), scene.model_path + "/chkpnt" + str(iteration) + ".pth")
