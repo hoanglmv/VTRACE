@@ -163,6 +163,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
     viewpoint_stack = scene.getTrainCameras().copy()
     viewpoint_indices = list(range(len(viewpoint_stack)))
     ema_loss_for_log = 0.0
+    ema_color_loss_for_log = 0.0
     ema_Ll1depth_for_log = 0.0
     
     # Early stopping variables
@@ -232,7 +233,9 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         else:
             ssim_value = ssim(image, gt_image)
 
-        loss = (1.0 - opt.lambda_dssim) * Ll1 + opt.lambda_dssim * (1.0 - ssim_value)
+        color_loss = (1.0 - opt.lambda_dssim) * Ll1 + opt.lambda_dssim * (1.0 - ssim_value)
+        color_loss_val = color_loss.item()
+        loss = color_loss
 
         # Depth regularization
         Ll1depth_pure = 0.0
@@ -273,13 +276,14 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         with torch.no_grad():
             # Progress bar
             ema_loss_for_log = 0.4 * loss.item() + 0.6 * ema_loss_for_log
+            ema_color_loss_for_log = 0.4 * color_loss_val + 0.6 * ema_color_loss_for_log
             ema_Ll1depth_for_log = 0.4 * Ll1depth + 0.6 * ema_Ll1depth_for_log
 
-            # Early stopping check
+            # Early stopping check (based purely on visual color reconstruction loss)
             if ema_loss_long is None:
-                ema_loss_long = loss.item()
+                ema_loss_long = color_loss_val
             else:
-                ema_loss_long = 0.999 * ema_loss_long + 0.001 * loss.item()
+                ema_loss_long = 0.999 * ema_loss_long + 0.001 * color_loss_val
 
             early_stopped = False
             if iteration % 100 == 0:
@@ -320,7 +324,10 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 break
 
             if iteration % 10 == 0:
-                progress_bar.set_postfix({"Loss": f"{ema_loss_for_log:.{7}f}"})
+                progress_bar.set_postfix({
+                    "Loss_Tot": f"{ema_loss_for_log:.4f}",
+                    "Loss_Col": f"{ema_color_loss_for_log:.4f}"
+                })
                 progress_bar.update(10)
             if iteration == opt.iterations:
                 progress_bar.close()
