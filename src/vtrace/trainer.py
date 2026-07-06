@@ -49,7 +49,6 @@ def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_devi
         "--lambda_dssim", str(lambda_dssim),
         "--lambda_edge", str(lambda_edge),
         "--depths", "train/depth",
-        "--port", str(port),
         "--disable_viewer"
     ]
     
