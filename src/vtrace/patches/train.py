@@ -121,7 +121,23 @@ def prune_depth_floaters(gaussians, scene, num_cameras_to_check=5, thresh=0.1):
         print(f"\n[Depth Pruner] Pruning {prune_mask.sum().item()} floaters out of {N} points.")
         gaussians.prune_points(prune_mask)
 
+def save_loss_history(model_path, history_logs):
+    import csv
+    csv_file = os.path.join(model_path, "loss_history.csv")
+    if not history_logs:
+        return
+    keys = history_logs[0].keys()
+    try:
+        with open(csv_file, 'w', newline='') as f:
+            dict_writer = csv.DictWriter(f, fieldnames=keys)
+            dict_writer.writeheader()
+            dict_writer.writerows(history_logs)
+        print(f"\n[Loss Logger] Saved training history to {csv_file}")
+    except Exception as e:
+        print(f"\n[Loss Logger] Failed to save history: {e}")
+
 def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoint_iterations, checkpoint, debug_from):
+    history_logs = []
 
     if not SPARSE_ADAM_AVAILABLE and opt.optimizer_type == "sparse_adam":
         sys.exit(f"Trying to use sparse adam but it is not installed, please install the correct rasterizer using pip install [3dgs_accel].")
@@ -245,9 +261,9 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             opacity_loss = opt.lambda_opacity * entropy.mean()
             loss += opacity_loss
 
-        # Scale regularization (L2 penalty to suppress large blurry Gaussians)
+        # Scale regularization (Penalize scaling factors only when they exceed 0.05 to allow normal optimization growth)
         if opt.lambda_scale > 0:
-            scale_loss = opt.lambda_scale * (gaussians.get_scaling ** 2).mean()
+            scale_loss = opt.lambda_scale * torch.clamp(gaussians.get_scaling - 0.05, min=0.0).mean()
             loss += scale_loss
 
         loss.backward()
@@ -271,6 +287,23 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 if len(loss_history) > 30:
                     loss_history.pop(0)
                 
+                # Log current metrics to history
+                history_logs.append({
+                    "iteration": iteration,
+                    "loss": loss.item(),
+                    "l1_loss": Ll1.item(),
+                    "ssim": ssim_value.item() if isinstance(ssim_value, torch.Tensor) else ssim_value,
+                    "depth_l1": Ll1depth_pure.item() if isinstance(Ll1depth_pure, torch.Tensor) else Ll1depth_pure,
+                    "depth_pearson": p_loss.item() if 'p_loss' in locals() and isinstance(p_loss, torch.Tensor) else 0.0,
+                    "opacity_entropy": opacity_loss.item() / opt.lambda_opacity if 'opacity_loss' in locals() and isinstance(opacity_loss, torch.Tensor) and opt.lambda_opacity > 0 else 0.0,
+                    "scale_loss": scale_loss.item() if 'scale_loss' in locals() and isinstance(scale_loss, torch.Tensor) else 0.0,
+                    "num_points": gaussians.get_xyz.shape[0]
+                })
+                
+                # Periodically backup the loss history to disk
+                if iteration % 1000 == 0:
+                    save_loss_history(scene.model_path, history_logs)
+                
                 # Check convergence
                 window_size = max(1, opt.early_stopping_window_iters // 100)
                 if iteration >= opt.early_stopping_start_iter and len(loss_history) >= window_size:
@@ -280,6 +313,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                         print(f"\n[Early Stopping] Converged at iteration {iteration}. Relative change: {rel_change:.5f}")
                         progress_bar.close()
                         scene.save(iteration)
+                        save_loss_history(scene.model_path, history_logs)
                         early_stopped = True
 
             if early_stopped:
@@ -329,6 +363,9 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             if (iteration in checkpoint_iterations):
                 print("\n[ITER {}] Saving Checkpoint".format(iteration))
                 torch.save((gaussians.capture(), iteration), scene.model_path + "/chkpnt" + str(iteration) + ".pth")
+                
+    # Save final loss history when training loop finishes
+    save_loss_history(scene.model_path, history_logs)
 
 def prepare_output_and_logger(args):    
     if not args.model_path:
