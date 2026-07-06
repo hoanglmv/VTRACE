@@ -40,6 +40,87 @@ try:
 except:
     SPARSE_ADAM_AVAILABLE = False
 
+def pearson_correlation_loss(x, y, mask=None):
+    if mask is not None:
+        x = x[mask]
+        y = y[mask]
+    else:
+        x = x.flatten()
+        y = y.flatten()
+    
+    if len(x) < 3:
+        return torch.tensor(0.0, device=x.device)
+        
+    x_mean = x.mean()
+    y_mean = y.mean()
+    
+    x_diff = x - x_mean
+    y_diff = y - y_mean
+    
+    num = (x_diff * y_diff).sum()
+    den = torch.sqrt((x_diff ** 2).sum() * (y_diff ** 2).sum() + 1e-8)
+    
+    r = num / den
+    return 1.0 - r
+
+@torch.no_grad()
+def prune_depth_floaters(gaussians, scene, num_cameras_to_check=5, thresh=0.1):
+    cams = scene.getTrainCameras()
+    if not cams:
+        return
+    
+    import random
+    check_cams = random.sample(cams, min(len(cams), num_cameras_to_check))
+    
+    xyz = gaussians.get_xyz
+    N = xyz.shape[0]
+    
+    floater_votes = torch.zeros(N, dtype=torch.int32, device="cuda")
+    overlap_count = torch.zeros(N, dtype=torch.int32, device="cuda")
+    
+    xyz_homo = torch.cat([xyz, torch.ones((N, 1), device="cuda")], dim=-1)
+    
+    for cam in check_cams:
+        if not cam.depth_reliable or cam.invdepthmap is None:
+            continue
+            
+        pts_w = xyz_homo @ cam.full_proj_transform
+        w = pts_w[:, 3:4]
+        w = torch.where(w.abs() < 1e-5, torch.ones_like(w) * 1e-5, w)
+        pts_ndc = pts_w[:, :3] / w
+        
+        in_frustum = (pts_ndc[:, 0] >= -1.0) & (pts_ndc[:, 0] <= 1.0) & \
+                     (pts_ndc[:, 1] >= -1.0) & (pts_ndc[:, 1] <= 1.0) & \
+                     (pts_ndc[:, 2] >= 0.0) & (pts_ndc[:, 2] <= 1.0)
+                     
+        if not in_frustum.any():
+            continue
+            
+        u = ((pts_ndc[:, 0] + 1.0) * 0.5 * cam.image_width).long()
+        v = ((1.0 - pts_ndc[:, 1]) * 0.5 * cam.image_height).long()
+        
+        u = torch.clamp(u, 0, cam.image_width - 1)
+        v = torch.clamp(v, 0, cam.image_height - 1)
+        
+        pts_cam = xyz_homo @ cam.world_view_transform
+        z_cam = pts_cam[:, 2]
+        
+        inv_z = 1.0 / torch.clamp(z_cam, min=1e-5)
+        
+        mono_invdepth = cam.invdepthmap[0, v, u]
+        depth_mask = cam.depth_mask[0, v, u]
+        
+        is_floater = in_frustum & (depth_mask > 0) & (inv_z > (mono_invdepth + thresh))
+        
+        floater_votes += is_floater.int()
+        overlap_count += (in_frustum & (depth_mask > 0)).int()
+        
+    prune_mask = (floater_votes >= 2) & (floater_votes >= (overlap_count // 2))
+    
+    if prune_mask.any():
+        print(f"\n[Depth Pruner] Pruning {prune_mask.sum().item()} floaters out of {N} points.")
+        gaussians.prune_points(prune_mask)
+
 def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoint_iterations, checkpoint, debug_from):
 
     if not SPARSE_ADAM_AVAILABLE and opt.optimizer_type == "sparse_adam":
@@ -145,20 +226,28 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             depth_mask = viewpoint_cam.depth_mask.cuda()
 
             Ll1depth_pure = torch.abs((invDepth  - mono_invdepth) * depth_mask).mean()
-            Ll1depth = depth_l1_weight(iteration) * Ll1depth_pure 
+            
+            # Pearson correlation depth loss to force structure alignment
+            p_loss = pearson_correlation_loss(invDepth, mono_invdepth, depth_mask.bool())
+            
+            # Combine L1 depth loss and Pearson correlation loss
+            Ll1depth = depth_l1_weight(iteration) * (Ll1depth_pure + 0.1 * p_loss)
             loss += Ll1depth
             Ll1depth = Ll1depth.item()
         else:
             Ll1depth = 0
 
-        # Opacity regularization (penalize semi-transparent Gaussians)
+        # Opacity regularization (Entropy regularization to force opacities to 0 or 1)
         if opt.lambda_opacity > 0:
-            opacity_loss = opt.lambda_opacity * gaussians.get_opacity.abs().mean()
+            eps = 1e-7
+            o = gaussians.get_opacity
+            entropy = - (o * torch.log(o + eps) + (1.0 - o) * torch.log(1.0 - o + eps))
+            opacity_loss = opt.lambda_opacity * entropy.mean()
             loss += opacity_loss
 
-        # Scale regularization (penalize large scales to prevent big thin floaters)
+        # Scale regularization (L2 penalty to suppress large blurry Gaussians)
         if opt.lambda_scale > 0:
-            scale_loss = opt.lambda_scale * gaussians.get_scaling.max(dim=1).values.mean()
+            scale_loss = opt.lambda_scale * (gaussians.get_scaling ** 2).mean()
             loss += scale_loss
 
         loss.backward()
@@ -217,6 +306,10 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 if iteration > opt.densify_from_iter and iteration % opt.densification_interval == 0:
                     size_threshold = 20 if iteration > opt.opacity_reset_interval else None
                     gaussians.densify_and_prune(opt.densify_grad_threshold, 0.005, scene.cameras_extent, size_threshold, radii)
+                    
+                    # Apply depth-guided floater pruning every 500 iterations during the densification phase
+                    if iteration > 1000 and iteration % 500 == 0:
+                        prune_depth_floaters(gaussians, scene, num_cameras_to_check=5, thresh=0.1)
                 
                 if iteration % opt.opacity_reset_interval == 0 or (dataset.white_background and iteration == opt.densify_from_iter):
                     gaussians.reset_opacity()

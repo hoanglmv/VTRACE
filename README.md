@@ -19,29 +19,50 @@ Dự án này là mã nguồn tự động hoá việc huấn luyện (training)
 
 ## 🚀 Hướng dẫn cài đặt và sử dụng
 
-### 1. Chuẩn bị dữ liệu
-Đảm bảo bạn đã giải nén tập dữ liệu của Ban Tổ Chức vào thư mục gốc của project với tên `VAI_NVS_DATA`.
-Cấu trúc chuẩn của một scene sẽ như sau: `VAI_NVS_DATA/phase1/public_set/HCM0181/train/sparse/0/...`
+### A. Quy trình chạy trên Vast.ai (Rút gọn & Tự động hoá)
 
-### 2. Thiết lập Môi trường (Environment Setup)
-Dự án sử dụng trình quản lý package siêu tốc `uv`. Mở Terminal tại thư mục gốc của dự án và chạy:
-```bash
-python scripts/setup_3dgs.py
-```
-> **Lưu ý**: Lệnh trên sẽ tự động `git clone` mã nguồn 3D Gaussian Splatting từ inria và chạy `uv sync` để biên dịch C++/CUDA cho `diff-gaussian-rasterization`. Hãy đảm bảo máy tính của bạn đã được cài sẵn bộ **CUDA Toolkit** (khuyến nghị phiên bản >= 11.8).
+Vì việc huấn luyện yêu cầu GPU NVIDIA mạnh (khuyên dùng RTX 3090 / 4090), quy trình chạy tối ưu nhất trên **Vast.ai** như sau:
 
-### 3. Huấn luyện Mô hình (Training)
-1. Mở file `notebooks/01_data_analysis_and_training.ipynb`.
-2. Đảm bảo bạn đã chọn kernel Python của môi trường ảo (ví dụ: `Python 3.10 (.venv)`).
-3. Chạy từng Cell trong Notebook để phân tích dữ liệu, sau đó chạy khối Huấn luyện. Mô hình sau khi huấn luyện sẽ tự động lưu trong thư mục `output/`.
+#### 1. Thuê máy chủ GPU
+- Lên trang web Vast.ai, chọn thuê một instance **RTX 3090 hoặc RTX 4090** (24GB VRAM).
+- Chọn Docker Image có sẵn PyTorch và CUDA (ví dụ: `pytorch/pytorch:2.3.1-cuda12.1-cudnn8-devel` hoặc sử dụng mặc định có Jupyter Lab).
 
-### 4. Sinh ảnh và tạo file Submission (Inference)
-1. Mở file `notebooks/02_inference_and_submission.ipynb`.
-2. Chạy khối lệnh để hệ thống tự động tải model vừa được train, đọc các tọa độ pose cần sinh ảnh từ `test_poses.csv`, và render ảnh kết quả.
-3. Chạy khối lệnh cuối cùng để hệ thống nén toàn bộ thư mục `submission/` ra file `submission.zip` đúng chuẩn nộp bài của BTC!
+#### 2. Kết nối và Setup tự động
+- Mở Terminal của máy chủ vừa thuê (hoặc thông qua Jupyter Lab Terminal).
+- Chạy lệnh sau để clone repository mã nguồn của bạn và di chuyển vào thư mục dự án.
+- Chạy script cài đặt tất cả trong một:
+  ```bash
+  bash scripts/setup_all.sh
+  ```
+  *Lệnh này sẽ tự động: Cài đặt trình quản lý `uv`, tạo môi trường ảo `.venv`, tải và compile thư viện CUDA 3DGS, và tự động tải tập dữ liệu VAI_NVS_DATA từ Google Drive.*
+
+#### 3. Chạy Huấn luyện và Render Pipeline
+Sau khi cài đặt xong, hãy chạy toàn bộ pipeline (tự động ước lượng Depth, huấn luyện mô hình với tối ưu hóa SOTA 2024, render ảnh và đóng gói kết quả):
+- Chạy trên tập **Private Set**:
+  ```bash
+  uv run python pipeline/run_pipeline.py --config config/private_high.yaml
+  ```
+- Chạy trên tập **Public Set**:
+  ```bash
+  uv run python pipeline/run_pipeline.py --config config/public_high.yaml
+  ```
+
+#### 4. Tải kết quả nộp bài
+- Khi pipeline chạy xong, file nén `submission_round1.zip` sẽ nằm trong thư mục `output_private_high/` hoặc `output_public_high/`.
+- Chỉ cần click chuột phải vào file này trong cột thư mục bên trái của Jupyter Lab và chọn **Download** để tải về máy cá nhân của bạn.
+
+---
+
+### B. Quy trình chạy thủ công trên Laptop (Không cần GPU - Để phát triển code)
+
+Nếu bạn chỉ chỉnh sửa code trên laptop cá nhân (không có GPU):
+1. **Thiết lập code:** Chạy `uv sync` để cài đặt môi trường ảo Python.
+2. **Chỉnh sửa:** Thực hiện chỉnh sửa code trực tiếp trên laptop và đẩy lên GitHub (hoặc dùng `scp`/`rsync` để đồng bộ code lên Vast.ai).
 
 ---
 
 ## 🛠️ Xử lý sự cố thường gặp (Troubleshooting)
-- **Lỗi không cài được `diff-gaussian-rasterization`**: Hãy chắc chắn bạn đã cài đặt `nvcc` bằng cách gõ `nvcc --version` vào Terminal. Nếu chưa có, bạn cần cài đặt NVIDIA CUDA Toolkit.
-- **Lỗi ImportError vtrace trong Notebook**: Đảm bảo bạn đang chọn đúng kernel (môi trường `.venv` mà `uv` vừa tạo ra). Trong VS Code, bạn có thể bấm vào góc phải phía trên của Notebook để đổi Kernel.
+
+- **Lỗi `Found no NVIDIA driver on your system`**: Lỗi này xảy ra khi bạn cố tình chạy huấn luyện/render trực tiếp trên laptop cá nhân không có GPU NVIDIA. Hãy đảm bảo bạn chỉ chạy lệnh chạy huấn luyện trên server Vast.ai.
+- **Lỗi vRAM (OOM) khi sinh Depth**: Model depth đã được cấu hình chạy theo cơ chế **Batched Inference (Batch size = 8)** rất tối ưu cho RTX 3090/4090. Nếu thuê máy vRAM thấp hơn (ví dụ RTX 3060 12GB), hãy giảm batch size trong `src/vtrace/depth_estimator.py` xuống `4` hoặc `2`.
+- **Lỗi không nhận diện được PyTorch**: Hãy đảm bảo bạn đã chạy lệnh `source .venv/bin/activate` hoặc luôn chạy lệnh kèm tiền tố `uv run`.
