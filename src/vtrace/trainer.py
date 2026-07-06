@@ -23,6 +23,27 @@ def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_devi
             train_script = alternative_script
         else:
             raise FileNotFoundError(f"train.py not found in {gs_path} or fallback {alternative_path}. Have you run setup.py?")
+            
+    # Automatically apply patches to the cloned gaussian-splatting folder before training
+    import shutil
+    patches = {
+        "dataset_readers.py": "scene/dataset_readers.py",
+        "train.py": "train.py",
+        "arguments_init.py": "arguments/__init__.py",
+        "cameras.py": "scene/cameras.py",
+        "gaussian_model.py": "scene/gaussian_model.py"
+    }
+    patches_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "patches"))
+    for patch_name, relative_dest in patches.items():
+        src_file = os.path.join(patches_dir, patch_name)
+        dest_file = os.path.join(gs_path, relative_dest)
+        if os.path.exists(src_file):
+            try:
+                os.makedirs(os.path.dirname(dest_file), exist_ok=True)
+                shutil.copy2(src_file, dest_file)
+                logger.info(f"Auto-patched: {patch_name} -> {relative_dest}")
+            except Exception as e:
+                logger.warning(f"Failed to auto-patch {patch_name}: {e}")
     
     # The source data is in scene_dir/train
     source_path = os.path.join(scene_dir, "train")
