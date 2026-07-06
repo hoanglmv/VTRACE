@@ -16,7 +16,7 @@ dependencies = [
     "numpy<2",
     "setuptools<70",
     "wheel",
-    "transformers",
+    "transformers>=4.40.0,<4.45.0",
     "accelerate",
 ]
 
