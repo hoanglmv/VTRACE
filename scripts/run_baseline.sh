@@ -38,5 +38,5 @@ echo "Bắt đầu chạy huấn luyện đầy đủ (Full Baseline)..."
 uv run python pipeline/run_pipeline.py --config "$CONFIG_FILE"
 
 echo "======================================"
-echo "Huấn luyện hoàn tất! Kết quả được nén tại: $OUTPUT_DIR/submission.zip"
+echo "Huấn luyện hoàn tất! Kết quả được nén tại: $OUTPUT_DIR/submission_round1.zip"
 echo "======================================"

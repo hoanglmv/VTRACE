@@ -16,6 +16,8 @@ dependencies = [
     "numpy<2",
     "setuptools<70",
     "wheel",
+    "transformers",
+    "accelerate",
 ]
 
 [[tool.uv.index]]

@@ -10,6 +10,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from src.vtrace.data_utils import list_scenes, analyze_scene
 from src.vtrace.trainer import train_scene
 from src.vtrace.renderer import render_scene, create_submission_zip
+from src.vtrace.depth_estimator import estimate_scene_depth
+from src.vtrace.post_processor import post_process_scene_renders
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -95,6 +97,9 @@ def main():
         scene_model_dir = os.path.join(models_dir, scene)
         
         if not skip_training:
+            logger.info(f"--- Estimating Depth for {scene} ---")
+            estimate_scene_depth(scene_dir, device=data_device)
+            
             logger.info(f"--- Training {scene} ---")
             train_scene(
                 scene_dir, 
@@ -112,8 +117,11 @@ def main():
         logger.info(f"--- Rendering {scene} ---")
         render_scene(scene, scene_dir, scene_model_dir, submission_dir, render_format=render_format)
         
+        logger.info(f"--- Post-processing {scene} ---")
+        post_process_scene_renders(submission_dir, scene)
+        
     logger.info("--- Creating Submission Archive ---")
-    create_submission_zip(submission_dir, os.path.join(out_dir, "submission.zip"))
+    create_submission_zip(submission_dir, os.path.join(out_dir, "submission_round1.zip"))
 
 if __name__ == "__main__":
     main()

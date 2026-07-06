@@ -12,9 +12,17 @@ def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_devi
     scene_dir: path to the scene directory (e.g. VAI_NVS_DATA/phase1/public_set/HCM0181)
     output_dir: where to save the trained model
     """
+    # Resolve gs_path robustly if not found directly
     train_script = os.path.join(gs_path, "train.py")
     if not os.path.exists(train_script):
-        raise FileNotFoundError(f"train.py not found in {gs_path}. Have you run setup.py?")
+        # Try resolving relative to this trainer.py file
+        alternative_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "gaussian-splatting"))
+        alternative_script = os.path.join(alternative_path, "train.py")
+        if os.path.exists(alternative_script):
+            gs_path = alternative_path
+            train_script = alternative_script
+        else:
+            raise FileNotFoundError(f"train.py not found in {gs_path} or fallback {alternative_path}. Have you run setup.py?")
     
     # The source data is in scene_dir/train
     source_path = os.path.join(scene_dir, "train")
@@ -40,6 +48,8 @@ def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_devi
         "--lambda_scale", str(lambda_scale),
         "--lambda_dssim", str(lambda_dssim),
         "--lambda_edge", str(lambda_edge),
+        "--depths", "train/depth",
+        "--port", str(port),
         "--disable_viewer"
     ]
     
