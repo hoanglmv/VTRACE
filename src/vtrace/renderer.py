@@ -38,6 +38,37 @@ def qvec2rotmat(qvec):
          2 * qvec[2] * qvec[3] + 2 * qvec[0] * qvec[1],
          1 - 2 * qvec[1]**2 - 2 * qvec[2]**2]])
 
+def generate_dummy_renders(test_csv, out_scene_dir, render_format):
+    os.makedirs(out_scene_dir, exist_ok=True)
+    fmt = render_format.strip(".").lower()
+    if fmt == "jpg":
+        fmt = "jpeg"
+    ext = "." + fmt
+    if ext not in [".png", ".jpeg"]:
+        ext = ".png"
+        fmt = "png"
+    
+    with open(test_csv, "r") as f:
+        reader = csv.DictReader(f)
+        for row in tqdm(list(reader), desc=f"Generating dummy renders"):
+            img_name = row["image_name"]
+            width, height = int(row["width"]), int(row["height"])
+            dummy = Image.new("RGB", (width, height), (0, 0, 0))
+            
+            ext_in_csv = os.path.splitext(img_name)[1]
+            if ext_in_csv:
+                out_img_name = img_name
+                save_fmt = "JPEG" if ext_in_csv.lower() in [".jpg", ".jpeg"] else "PNG"
+            else:
+                out_img_name = img_name + ext
+                save_fmt = "JPEG" if fmt == "jpeg" else "PNG"
+                
+            out_path = os.path.join(out_scene_dir, out_img_name)
+            if save_fmt == "JPEG":
+                dummy.save(out_path, "JPEG", quality=90)
+            else:
+                dummy.save(out_path, "PNG")
+
 def render_scene(scene_name, scene_dir, model_path, output_dir, render_format="png"):
     test_csv = os.path.join(scene_dir, "test", "test_poses.csv")
     if not os.path.exists(test_csv):
@@ -48,14 +79,17 @@ def render_scene(scene_name, scene_dir, model_path, output_dir, render_format="p
     import math
     from plyfile import PlyData
     
+    out_scene_dir = os.path.join(output_dir, scene_name)
     iter_dir = os.path.join(model_path, "point_cloud")
     if not os.path.exists(iter_dir):
-        logger.warning(f"Model not found at {iter_dir}")
+        logger.warning(f"Model not found at {iter_dir}, falling back to dummy renders.")
+        generate_dummy_renders(test_csv, out_scene_dir, render_format)
         return
         
     iterations = sorted([int(i.split("_")[-1]) for i in os.listdir(iter_dir) if "iteration_" in i])
     if not iterations:
-        logger.warning("No iterations found")
+        logger.warning("No iterations found, falling back to dummy renders.")
+        generate_dummy_renders(test_csv, out_scene_dir, render_format)
         return
         
     latest_iter = iterations[-1]

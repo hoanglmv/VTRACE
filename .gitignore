@@ -16,6 +16,8 @@ env/
 # Data & Models
 VAI_NVS_DATA/
 output*/
+!output*/logs/
+!output*/logs/*.log
 submission*/
 submission*.zip
 

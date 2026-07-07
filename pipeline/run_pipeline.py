@@ -100,13 +100,14 @@ def main():
         stats = analyze_scene(scene_dir)
         logger.info(f"Scene {scene} stats: {stats}")
         
-        if not stats["has_sparse_reconstruction"]:
-            logger.warning(f"Scene {scene} missing sparse reconstruction. Skipping.")
-            continue
-            
         scene_model_dir = os.path.join(models_dir, scene)
         
-        if not skip_training:
+        do_train = not skip_training
+        if not stats["has_sparse_reconstruction"]:
+            logger.warning(f"Scene {scene} missing sparse reconstruction. Skipping training, will generate dummy renders.")
+            do_train = False
+            
+        if do_train:
             logger.info(f"--- Estimating Depth for {scene} ---")
             estimate_scene_depth(scene_dir, device=data_device)
             
