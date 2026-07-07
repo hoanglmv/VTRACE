@@ -82,6 +82,16 @@ def main():
     os.makedirs(models_dir, exist_ok=True)
     os.makedirs(submission_dir, exist_ok=True)
     
+    # Set up pipeline log file
+    log_dir = os.path.join(out_dir, "logs")
+    os.makedirs(log_dir, exist_ok=True)
+    pipeline_log_path = os.path.join(log_dir, "pipeline.log")
+    
+    file_handler = logging.FileHandler(pipeline_log_path, encoding='utf-8')
+    file_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+    logging.getLogger().addHandler(file_handler)
+    logger.info(f"Pipeline log will be saved to {pipeline_log_path}")
+    
     scenes = list_scenes(data_dir)
     logger.info(f"Found {len(scenes)} scenes in {data_dir}")
     

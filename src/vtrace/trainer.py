@@ -76,12 +76,25 @@ def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_devi
     image_dir = os.path.join(source_path, "images")
     q_filter = QualityFilter(image_dir)
     
-    logger.info(f"Running training command for {scene_dir}...")
+    scene_name = os.path.basename(scene_dir.rstrip("/\\"))
+    log_dir = os.path.abspath(os.path.join(output_dir, "..", "..", "logs"))
+    os.makedirs(log_dir, exist_ok=True)
+    train_log_path = os.path.join(log_dir, f"{scene_name}_train.log")
+    
+    logger.info(f"Running training command for {scene_name}...")
+    logger.info(f"Training output will be saved to: {train_log_path}")
     
     try:
         q_filter.apply()
-        # Popen can be used for streaming output or subprocess.run for blocking
-        subprocess.run(cmd, check=True)
+        with open(train_log_path, "w", encoding="utf-8") as log_file:
+            process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+            for line in process.stdout:
+                sys.stdout.write(line)
+                sys.stdout.flush()
+                log_file.write(line)
+            process.wait()
+            if process.returncode != 0:
+                raise subprocess.CalledProcessError(process.returncode, cmd)
         logger.info(f"Training completed for scene {scene_dir}. Model saved to {output_dir}")
     except subprocess.CalledProcessError as e:
         logger.error(f"Error during training scene {scene_dir}: {e}")
