@@ -47,6 +47,9 @@ fi
 if [ -f "src/vtrace/patches/rasterizer_impl.h" ]; then
     cp src/vtrace/patches/rasterizer_impl.h src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.h
 fi
+if [ -f "src/vtrace/patches/camera_utils.py" ]; then
+    cp src/vtrace/patches/camera_utils.py src/vtrace/gaussian-splatting/utils/camera_utils.py
+fi
 
 echo "Syncing Python environment with uv (installing PyTorch, OpenCV, etc.)..."
 uv sync
