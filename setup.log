@@ -1,0 +1,227 @@
+========================================================
+   VTRACE: COMPLETE SYSTEM & DATA SETUP
+========================================================
+
+>>> [1/2] Khởi tạo môi trường ảo Python và thiết lập 3D Gaussian Splatting...
+gaussian-splatting repository already exists.
+Applying custom patches to 3DGS repository...
+Syncing Python environment with uv (installing PyTorch, OpenCV, etc.)...
+Resolved 146 packages in 1ms
+Checked 81 packages in 4ms
+Checking CUDA version and aligning environment...
+Detected system NVCC version: 13.0
+Warning: System CUDA version is 13.0. If build fails, manually run matching PyTorch install.
+Patching PyTorch's cpp_extension.py to bypass CUDA mismatch verification...
+Found CUDA mismatch check, patching it...
+Patch applied successfully.
+Installing remaining submodules using uv...
+Resolved 1 package in 2.37s
+   Building diff-gaussian-rasterization @ file:///workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization
+  × Failed to build `diff-gaussian-rasterization @
+  │ file:///workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization`
+  ├─▶ The build backend returned an error
+  ╰─▶ Call to `setuptools.build_meta:__legacy__.build_wheel` failed (exit status: 1)
+
+      [stdout]
+      running bdist_wheel
+      running build
+      running build_py
+      copying diff_gaussian_rasterization/__init__.py -> build/lib.linux-x86_64-cpython-310/diff_gaussian_rasterization
+      running build_ext
+      Warning: CUDA mismatch warning bypassed
+      building 'diff_gaussian_rasterization._C' extension
+      [1/1] /usr/local/cuda/bin/nvcc --generate-dependencies-with-compile --dependency-output
+      /workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/build/temp.linux-x86_64-cpython-310/cuda_rasterizer/rasterizer_impl.o.d
+      -I/workspace/VTRACE/.venv/lib/python3.10/site-packages/torch/include
+      -I/workspace/VTRACE/.venv/lib/python3.10/site-packages/torch/include/torch/csrc/api/include
+      -I/workspace/VTRACE/.venv/lib/python3.10/site-packages/torch/include/TH
+      -I/workspace/VTRACE/.venv/lib/python3.10/site-packages/torch/include/THC -I/usr/local/cuda/include
+      -I/workspace/VTRACE/.venv/include -I/.uv/python_install/cpython-3.10.20-linux-x86_64-gnu/include/python3.10 -c -c
+      /workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.cu
+      -o /workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/build/temp.linux-x86_64-cpython-310/cuda_rasterizer/rasterizer_impl.o
+      -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__
+      -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr --compiler-options ''"'"'-fPIC'"'"''
+      -I/workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/third_party/glm/
+      -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"'
+      '-DPYBIND11_BUILD_ABI="_cxxabi1011"' -DTORCH_EXTENSION_NAME=_C -D_GLIBCXX_USE_CXX11_ABI=0
+      -gencode=arch=compute_86,code=compute_86 -gencode=arch=compute_86,code=sm_86 -std=c++17
+      FAILED: [code=2]
+      /workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/build/temp.linux-x86_64-cpython-310/cuda_rasterizer/rasterizer_impl.o
+      /usr/local/cuda/bin/nvcc --generate-dependencies-with-compile --dependency-output
+      /workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/build/temp.linux-x86_64-cpython-310/cuda_rasterizer/rasterizer_impl.o.d
+      -I/workspace/VTRACE/.venv/lib/python3.10/site-packages/torch/include
+      -I/workspace/VTRACE/.venv/lib/python3.10/site-packages/torch/include/torch/csrc/api/include
+      -I/workspace/VTRACE/.venv/lib/python3.10/site-packages/torch/include/TH
+      -I/workspace/VTRACE/.venv/lib/python3.10/site-packages/torch/include/THC -I/usr/local/cuda/include
+      -I/workspace/VTRACE/.venv/include -I/.uv/python_install/cpython-3.10.20-linux-x86_64-gnu/include/python3.10 -c -c
+      /workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.cu
+      -o /workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/build/temp.linux-x86_64-cpython-310/cuda_rasterizer/rasterizer_impl.o
+      -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__
+      -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr --compiler-options ''"'"'-fPIC'"'"''
+      -I/workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/third_party/glm/
+      -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"'
+      '-DPYBIND11_BUILD_ABI="_cxxabi1011"' -DTORCH_EXTENSION_NAME=_C -D_GLIBCXX_USE_CXX11_ABI=0
+      -gencode=arch=compute_86,code=compute_86 -gencode=arch=compute_86,code=sm_86 -std=c++17
+      /workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.h(24):
+      error: namespace "std" has no member "uintptr_t"
+          std::size_t offset = (reinterpret_cast<std::uintptr_t>(chunk) + alignment - 1) & ~(alignment - 1);
+                                                      ^
+
+      /workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.h(40):
+      error: identifier "uint32_t" is undefined
+          uint32_t* point_offsets;
+          ^
+
+      /workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.h(41):
+      error: identifier "uint32_t" is undefined
+          uint32_t* tiles_touched;
+          ^
+
+      /workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.h(49):
+      error: identifier "uint32_t" is undefined
+          uint32_t* n_contrib;
+          ^
+
+      /workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.h(58):
+      error: identifier "uint64_t" is undefined
+          uint64_t* point_list_keys_unsorted;
+          ^
+
+      /workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.h(59):
+      error: identifier "uint64_t" is undefined
+          uint64_t* point_list_keys;
+          ^
+
+      /workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.h(60):
+      error: identifier "uint32_t" is undefined
+          uint32_t* point_list_unsorted;
+          ^
+
+      /workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.h(61):
+      error: identifier "uint32_t" is undefined
+          uint32_t* point_list;
+          ^
+
+      /workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.cu(184):
+      warning #549-D: variable "binning" is used before its value is set
+         obtain(chunk, binning.point_list, P, 128);
+                       ^
+
+      Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+      8 errors detected in the compilation of
+      "/workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.cu".
+      ninja: build stopped: subcommand failed.
+
+      [stderr]
+      /workspace/VTRACE/.venv/lib/python3.10/site-packages/wheel/bdist_wheel.py:4: FutureWarning: The 'wheel' package
+      is no longer the canonical location of the 'bdist_wheel' command, and will be removed in a future release.
+      Please update to setuptools v70.1 or later which contains an integrated version of this command.
+        warn(
+      /workspace/VTRACE/.venv/lib/python3.10/site-packages/torch/utils/cpp_extension.py:418: UserWarning: The detected
+      CUDA version (13.0) has a minor version mismatch with the version that was used to compile PyTorch (12.1). Most
+      likely this shouldn't be a problem.
+        warnings.warn(CUDA_MISMATCH_WARN.format(cuda_str_version, torch.version.cuda))
+      /workspace/VTRACE/.venv/lib/python3.10/site-packages/torch/utils/cpp_extension.py:428: UserWarning: There are no
+      c++ version bounds defined for CUDA version 13.0
+        warnings.warn(f'There are no {compiler_name} version bounds defined for CUDA version {cuda_str_version}')
+      /workspace/VTRACE/.venv/lib/python3.10/site-packages/torch/utils/cpp_extension.py:1967: UserWarning:
+      TORCH_CUDA_ARCH_LIST is not set, all archs for visible cards are included for compilation.
+      If this is not desired, please set os.environ['TORCH_CUDA_ARCH_LIST'].
+        warnings.warn(
+      Emitting ninja build file
+      /workspace/VTRACE/src/vtrace/gaussian-splatting/submodules/diff-gaussian-rasterization/build/temp.linux-x86_64-cpython-310/build.ninja...
+      Compiling objects...
+      Allowing ninja to set a default number of workers... (overridable by setting the environment variable
+      MAX_JOBS=N)
+      Traceback (most recent call last):
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/torch/utils/cpp_extension.py", line 2107, in
+      _run_ninja_build
+          subprocess.run(
+        File "/.uv/python_install/cpython-3.10-linux-x86_64-gnu/lib/python3.10/subprocess.py", line 526, in run
+          raise CalledProcessError(retcode, process.args,
+      subprocess.CalledProcessError: Command '['ninja', '-v']' returned non-zero exit status 2.
+
+      The above exception was the direct cause of the following exception:
+
+      Traceback (most recent call last):
+        File "<string>", line 11, in <module>
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/build_meta.py", line 410, in build_wheel
+          return self._build_with_temp_dir(
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/build_meta.py", line 395, in
+      _build_with_temp_dir
+          self.run_setup()
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/build_meta.py", line 487, in run_setup
+          super().run_setup(setup_script=setup_script)
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/build_meta.py", line 311, in run_setup
+          exec(code, locals())
+        File "<string>", line 17, in <module>
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/__init__.py", line 104, in setup
+          return distutils.core.setup(**attrs)
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/_distutils/core.py", line 184, in setup
+          return run_commands(dist)
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/_distutils/core.py", line 200, in
+      run_commands
+          dist.run_commands()
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/_distutils/dist.py", line 969, in
+      run_commands
+          self.run_command(cmd)
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/dist.py", line 967, in run_command
+          super().run_command(command)
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/_distutils/dist.py", line 988, in
+      run_command
+          cmd_obj.run()
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/wheel/_bdist_wheel.py", line 390, in run
+          self.run_command("build")
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/_distutils/cmd.py", line 316, in
+      run_command
+          self.distribution.run_command(command)
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/dist.py", line 967, in run_command
+          super().run_command(command)
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/_distutils/dist.py", line 988, in
+      run_command
+          cmd_obj.run()
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/_distutils/command/build.py", line 132,
+      in run
+          self.run_command(cmd_name)
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/_distutils/cmd.py", line 316, in
+      run_command
+          self.distribution.run_command(command)
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/dist.py", line 967, in run_command
+          super().run_command(command)
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/_distutils/dist.py", line 988, in
+      run_command
+          cmd_obj.run()
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/command/build_ext.py", line 91, in run
+          _build_ext.run(self)
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/_distutils/command/build_ext.py", line
+      359, in run
+          self.build_extensions()
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/torch/utils/cpp_extension.py", line 870, in
+      build_extensions
+          build_ext.build_extensions(self)
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/_distutils/command/build_ext.py", line
+      479, in build_extensions
+          self._build_extensions_serial()
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/_distutils/command/build_ext.py", line
+      505, in _build_extensions_serial
+          self.build_extension(ext)
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/command/build_ext.py", line 252, in
+      build_extension
+          _build_ext.build_extension(self, ext)
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/setuptools/_distutils/command/build_ext.py", line
+      560, in build_extension
+          objects = self.compiler.compile(
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/torch/utils/cpp_extension.py", line 683, in
+      unix_wrap_ninja_compile
+          _write_ninja_file_and_compile_objects(
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/torch/utils/cpp_extension.py", line 1783, in
+      _write_ninja_file_and_compile_objects
+          _run_ninja_build(
+        File "/workspace/VTRACE/.venv/lib/python3.10/site-packages/torch/utils/cpp_extension.py", line 2123, in
+      _run_ninja_build
+          raise RuntimeError(message) from e
+      RuntimeError: Error compiling objects for extension
+
+
+hint: Build failures usually indicate a problem with the package or the build environment
