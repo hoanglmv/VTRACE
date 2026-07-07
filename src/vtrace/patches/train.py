@@ -378,6 +378,25 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 gaussians._features_dc = params_dict["f_dc"]
                 gaussians._features_rest = params_dict["f_rest"]
                 
+                # Resize helper tensors to match the new number of Gaussians
+                num_points = gaussians.get_xyz.shape[0]
+                device = gaussians.get_xyz.device
+                old_size = gaussians.xyz_gradient_accum.shape[0]
+                if num_points != old_size:
+                    if num_points > old_size:
+                        padding_accum = torch.zeros((num_points - old_size, 1), device=device)
+                        gaussians.xyz_gradient_accum = torch.cat([gaussians.xyz_gradient_accum, padding_accum], dim=0)
+                        
+                        padding_denom = torch.zeros((num_points - old_size, 1), device=device)
+                        gaussians.denom = torch.cat([gaussians.denom, padding_denom], dim=0)
+                        
+                        padding_radii = torch.zeros((num_points - old_size), device=device)
+                        gaussians.max_radii2D = torch.cat([gaussians.max_radii2D, padding_radii], dim=0)
+                    else:
+                        gaussians.xyz_gradient_accum = gaussians.xyz_gradient_accum[:num_points]
+                        gaussians.denom = gaussians.denom[:num_points]
+                        gaussians.max_radii2D = gaussians.max_radii2D[:num_points]
+                
                 # Apply depth-guided floater pruning every 500 iterations during the densification phase
                 if iteration > 1000 and iteration % 500 == 0:
                     prune_depth_floaters(gaussians, scene, num_cameras_to_check=5, thresh=0.1)
