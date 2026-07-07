@@ -1,0 +1,1323 @@
+Optimizing /workspace/VTRACE/output_private_high/models/HNI0366
+Output folder: /workspace/VTRACE/output_private_high/models/HNI0366 [07/07 05:48:09]
+Tensorboard not available: not logging progress [07/07 05:48:09]
+
+Reading camera 1/357 [07/07 05:48:10]
+ 2 not found in depths_params [07/07 05:48:10]
+
+Reading camera 2/357 [07/07 05:48:10]
+ 247 not found in depths_params [07/07 05:48:10]
+
+Reading camera 3/357 [07/07 05:48:10]
+ 263 not found in depths_params [07/07 05:48:10]
+
+Reading camera 4/357 [07/07 05:48:10]
+ 228 not found in depths_params [07/07 05:48:10]
+
+Reading camera 5/357 [07/07 05:48:10]
+ 212 not found in depths_params [07/07 05:48:10]
+
+Reading camera 6/357 [07/07 05:48:10]
+ 202 not found in depths_params [07/07 05:48:10]
+
+Reading camera 7/357 [07/07 05:48:10]
+ 201 not found in depths_params [07/07 05:48:10]
+
+Reading camera 8/357 [07/07 05:48:10]
+ 173 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151057_0173_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 9/357 [07/07 05:48:10]
+ 203 not found in depths_params [07/07 05:48:10]
+
+Reading camera 10/357 [07/07 05:48:10]
+ 239 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151231_0239_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 11/357 [07/07 05:48:10]
+ 200 not found in depths_params [07/07 05:48:10]
+
+Reading camera 12/357 [07/07 05:48:10]
+ 246 not found in depths_params [07/07 05:48:10]
+
+Reading camera 13/357 [07/07 05:48:10]
+ 211 not found in depths_params [07/07 05:48:10]
+
+Reading camera 14/357 [07/07 05:48:10]
+ 199 not found in depths_params [07/07 05:48:10]
+
+Reading camera 15/357 [07/07 05:48:10]
+ 227 not found in depths_params [07/07 05:48:10]
+
+Reading camera 16/357 [07/07 05:48:10]
+ 262 not found in depths_params [07/07 05:48:10]
+
+Reading camera 17/357 [07/07 05:48:10]
+ 222 not found in depths_params [07/07 05:48:10]
+
+Reading camera 18/357 [07/07 05:48:10]
+ 238 not found in depths_params [07/07 05:48:10]
+
+Reading camera 19/357 [07/07 05:48:10]
+ 198 not found in depths_params [07/07 05:48:10]
+
+Reading camera 20/357 [07/07 05:48:10]
+ 280 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151328_0280_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 21/357 [07/07 05:48:10]
+ 294 not found in depths_params [07/07 05:48:10]
+
+Reading camera 22/357 [07/07 05:48:10]
+ 305 not found in depths_params [07/07 05:48:10]
+
+Reading camera 23/357 [07/07 05:48:10]
+ 321 not found in depths_params [07/07 05:48:10]
+
+Reading camera 24/357 [07/07 05:48:10]
+ 310 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151414_0310_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 25/357 [07/07 05:48:10]
+ 89 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150831_0089_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 26/357 [07/07 05:48:10]
+ 88 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150830_0088_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 27/357 [07/07 05:48:10]
+ 87 not found in depths_params [07/07 05:48:10]
+
+Reading camera 28/357 [07/07 05:48:10]
+ 86 not found in depths_params [07/07 05:48:10]
+
+Reading camera 29/357 [07/07 05:48:10]
+ 90 not found in depths_params [07/07 05:48:10]
+
+Reading camera 30/357 [07/07 05:48:10]
+ 281 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151329_0281_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 31/357 [07/07 05:48:10]
+ 204 not found in depths_params [07/07 05:48:10]
+
+Reading camera 32/357 [07/07 05:48:10]
+ 174 not found in depths_params [07/07 05:48:10]
+
+Reading camera 33/357 [07/07 05:48:10]
+ 229 not found in depths_params [07/07 05:48:10]
+
+Reading camera 34/357 [07/07 05:48:10]
+ 213 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151158_0213_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 35/357 [07/07 05:48:10]
+ 205 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151129_0205_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 36/357 [07/07 05:48:10]
+ 175 not found in depths_params [07/07 05:48:10]
+
+Reading camera 37/357 [07/07 05:48:10]
+ 248 not found in depths_params [07/07 05:48:10]
+
+Reading camera 38/357 [07/07 05:48:10]
+ 264 not found in depths_params [07/07 05:48:10]
+
+Reading camera 39/357 [07/07 05:48:10]
+ 91 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150833_0091_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 40/357 [07/07 05:48:10]
+ 295 not found in depths_params [07/07 05:48:10]
+
+Reading camera 41/357 [07/07 05:48:10]
+ 92 not found in depths_params [07/07 05:48:10]
+
+Reading camera 42/357 [07/07 05:48:10]
+ 176 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151100_0176_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 43/357 [07/07 05:48:10]
+ 206 not found in depths_params [07/07 05:48:10]
+
+Reading camera 44/357 [07/07 05:48:10]
+ 322 not found in depths_params [07/07 05:48:10]
+
+Reading camera 45/357 [07/07 05:48:10]
+ 93 not found in depths_params [07/07 05:48:10]
+
+Reading camera 46/357 [07/07 05:48:10]
+ 230 not found in depths_params [07/07 05:48:10]
+
+Reading camera 47/357 [07/07 05:48:10]
+ 177 not found in depths_params [07/07 05:48:10]
+
+Reading camera 48/357 [07/07 05:48:10]
+ 207 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151131_0207_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 49/357 [07/07 05:48:10]
+ 214 not found in depths_params [07/07 05:48:10]
+
+Reading camera 50/357 [07/07 05:48:10]
+ 282 not found in depths_params [07/07 05:48:10]
+
+Reading camera 51/357 [07/07 05:48:10]
+ 249 not found in depths_params [07/07 05:48:10]
+
+Reading camera 52/357 [07/07 05:48:10]
+ 265 not found in depths_params [07/07 05:48:10]
+
+Reading camera 53/357 [07/07 05:48:10]
+ 178 not found in depths_params [07/07 05:48:10]
+
+Reading camera 54/357 [07/07 05:48:10]
+ 296 not found in depths_params [07/07 05:48:10]
+
+Reading camera 55/357 [07/07 05:48:10]
+ 337 not found in depths_params [07/07 05:48:10]
+
+Reading camera 56/357 [07/07 05:48:10]
+ 354 not found in depths_params [07/07 05:48:10]
+
+Reading camera 57/357 [07/07 05:48:10]
+ 326 not found in depths_params [07/07 05:48:10]
+
+Reading camera 58/357 [07/07 05:48:10]
+ 342 not found in depths_params [07/07 05:48:10]
+
+Reading camera 59/357 [07/07 05:48:10]
+ 311 not found in depths_params [07/07 05:48:10]
+
+Reading camera 60/357 [07/07 05:48:10]
+ 94 not found in depths_params [07/07 05:48:10]
+
+Reading camera 61/357 [07/07 05:48:10]
+ 95 not found in depths_params [07/07 05:48:10]
+
+Reading camera 62/357 [07/07 05:48:10]
+ 197 not found in depths_params [07/07 05:48:10]
+
+Reading camera 63/357 [07/07 05:48:10]
+ 245 not found in depths_params [07/07 05:48:10]
+
+Reading camera 64/357 [07/07 05:48:10]
+ 261 not found in depths_params [07/07 05:48:10]
+
+Reading camera 65/357 [07/07 05:48:10]
+ 279 not found in depths_params [07/07 05:48:10]
+
+Reading camera 66/357 [07/07 05:48:10]
+ 210 not found in depths_params [07/07 05:48:10]
+
+Reading camera 67/357 [07/07 05:48:10]
+ 226 not found in depths_params [07/07 05:48:10]
+
+Reading camera 68/357 [07/07 05:48:10]
+ 196 not found in depths_params [07/07 05:48:10]
+
+Reading camera 69/357 [07/07 05:48:10]
+ 272 not found in depths_params [07/07 05:48:10]
+
+Reading camera 70/357 [07/07 05:48:10]
+ 221 not found in depths_params [07/07 05:48:10]
+
+Reading camera 71/357 [07/07 05:48:10]
+ 237 not found in depths_params [07/07 05:48:10]
+
+Reading camera 72/357 [07/07 05:48:10]
+ 195 not found in depths_params [07/07 05:48:10]
+
+Reading camera 73/357 [07/07 05:48:10]
+ 304 not found in depths_params [07/07 05:48:10]
+
+Reading camera 74/357 [07/07 05:48:10]
+ 278 not found in depths_params [07/07 05:48:10]
+
+Reading camera 75/357 [07/07 05:48:10]
+ 292 not found in depths_params [07/07 05:48:10]
+
+Reading camera 76/357 [07/07 05:48:10]
+ 303 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151400_0303_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 77/357 [07/07 05:48:10]
+ 319 not found in depths_params [07/07 05:48:10]
+
+Reading camera 78/357 [07/07 05:48:10]
+ 308 not found in depths_params [07/07 05:48:10]
+
+Reading camera 79/357 [07/07 05:48:10]
+ 244 not found in depths_params [07/07 05:48:10]
+
+Reading camera 80/357 [07/07 05:48:10]
+ 260 not found in depths_params [07/07 05:48:10]
+
+Reading camera 81/357 [07/07 05:48:10]
+ 209 not found in depths_params [07/07 05:48:10]
+
+Reading camera 82/357 [07/07 05:48:10]
+ 194 not found in depths_params [07/07 05:48:10]
+
+Reading camera 83/357 [07/07 05:48:10]
+ 225 not found in depths_params [07/07 05:48:10]
+
+Reading camera 84/357 [07/07 05:48:10]
+ 255 not found in depths_params [07/07 05:48:10]
+
+Reading camera 85/357 [07/07 05:48:10]
+ 271 not found in depths_params [07/07 05:48:10]
+
+Reading camera 86/357 [07/07 05:48:10]
+ 220 not found in depths_params [07/07 05:48:10]
+
+Reading camera 87/357 [07/07 05:48:10]
+ 193 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151117_0193_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 88/357 [07/07 05:48:10]
+ 236 not found in depths_params [07/07 05:48:10]
+
+Reading camera 89/357 [07/07 05:48:10]
+ 291 not found in depths_params [07/07 05:48:10]
+
+Reading camera 90/357 [07/07 05:48:10]
+ 277 not found in depths_params [07/07 05:48:10]
+
+Reading camera 91/357 [07/07 05:48:10]
+ 318 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151422_0318_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 92/357 [07/07 05:48:10]
+ 302 not found in depths_params [07/07 05:48:10]
+
+Reading camera 93/357 [07/07 05:48:10]
+ 307 not found in depths_params [07/07 05:48:10]
+
+Reading camera 94/357 [07/07 05:48:10]
+ 293 not found in depths_params [07/07 05:48:10]
+
+Reading camera 95/357 [07/07 05:48:10]
+ 80 not found in depths_params [07/07 05:48:10]
+
+Reading camera 96/357 [07/07 05:48:10]
+ 192 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151116_0192_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 97/357 [07/07 05:48:10]
+ 243 not found in depths_params [07/07 05:48:10]
+
+Reading camera 98/357 [07/07 05:48:10]
+ 259 not found in depths_params [07/07 05:48:10]
+
+Reading camera 99/357 [07/07 05:48:10]
+ 288 not found in depths_params [07/07 05:48:10]
+
+Reading camera 100/357 [07/07 05:48:10]
+ 208 not found in depths_params [07/07 05:48:10]
+
+Reading camera 101/357 [07/07 05:48:10]
+ 224 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151216_0224_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 102/357 [07/07 05:48:10]
+ 254 not found in depths_params [07/07 05:48:10]
+
+Reading camera 103/357 [07/07 05:48:10]
+ 270 not found in depths_params [07/07 05:48:10]
+
+Reading camera 104/357 [07/07 05:48:10]
+ 191 not found in depths_params [07/07 05:48:10]
+
+Reading camera 105/357 [07/07 05:48:10]
+ 219 not found in depths_params [07/07 05:48:10]
+
+Reading camera 106/357 [07/07 05:48:10]
+ 235 not found in depths_params [07/07 05:48:10]
+
+Reading camera 107/357 [07/07 05:48:10]
+ 190 not found in depths_params [07/07 05:48:10]
+
+Reading camera 108/357 [07/07 05:48:10]
+ 276 not found in depths_params [07/07 05:48:10]
+
+Reading camera 109/357 [07/07 05:48:10]
+ 306 not found in depths_params [07/07 05:48:10]
+
+Reading camera 110/357 [07/07 05:48:10]
+ 290 not found in depths_params [07/07 05:48:10]
+
+Reading camera 111/357 [07/07 05:48:10]
+ 317 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151421_0317_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 112/357 [07/07 05:48:10]
+ 301 not found in depths_params [07/07 05:48:10]
+
+Reading camera 113/357 [07/07 05:48:10]
+ 242 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151238_0242_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 114/357 [07/07 05:48:10]
+ 287 not found in depths_params [07/07 05:48:10]
+
+Reading camera 115/357 [07/07 05:48:10]
+ 258 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151301_0258_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 116/357 [07/07 05:48:10]
+ 223 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151215_0223_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 117/357 [07/07 05:48:10]
+ 269 not found in depths_params [07/07 05:48:10]
+
+Reading camera 118/357 [07/07 05:48:10]
+ 253 not found in depths_params [07/07 05:48:10]
+
+Reading camera 119/357 [07/07 05:48:10]
+ 289 not found in depths_params [07/07 05:48:10]
+
+Reading camera 120/357 [07/07 05:48:10]
+ 275 not found in depths_params [07/07 05:48:10]
+
+Reading camera 121/357 [07/07 05:48:10]
+ 316 not found in depths_params [07/07 05:48:10]
+
+Reading camera 122/357 [07/07 05:48:10]
+ 300 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151357_0300_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 123/357 [07/07 05:48:10]
+ 234 not found in depths_params [07/07 05:48:10]
+
+Reading camera 124/357 [07/07 05:48:10]
+ 218 not found in depths_params [07/07 05:48:10]
+
+Reading camera 125/357 [07/07 05:48:10]
+ 188 not found in depths_params [07/07 05:48:10]
+
+Reading camera 126/357 [07/07 05:48:10]
+ 286 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151334_0286_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 127/357 [07/07 05:48:10]
+ 187 not found in depths_params [07/07 05:48:10]
+
+Reading camera 128/357 [07/07 05:48:10]
+ 241 not found in depths_params [07/07 05:48:10]
+
+Reading camera 129/357 [07/07 05:48:10]
+ 257 not found in depths_params [07/07 05:48:10]
+
+Reading camera 130/357 [07/07 05:48:10]
+ 268 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151311_0268_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 131/357 [07/07 05:48:10]
+ 332 not found in depths_params [07/07 05:48:10]
+
+Reading camera 132/357 [07/07 05:48:10]
+ 349 not found in depths_params [07/07 05:48:10]
+
+Reading camera 133/357 [07/07 05:48:10]
+ 186 not found in depths_params [07/07 05:48:10]
+
+Reading camera 134/357 [07/07 05:48:10]
+ 320 not found in depths_params [07/07 05:48:10]
+
+Reading camera 135/357 [07/07 05:48:10]
+ 335 not found in depths_params [07/07 05:48:10]
+
+Reading camera 136/357 [07/07 05:48:10]
+ 352 not found in depths_params [07/07 05:48:10]
+
+Reading camera 137/357 [07/07 05:48:10]
+ 83 not found in depths_params [07/07 05:48:10]
+
+Reading camera 138/357 [07/07 05:48:10]
+ 82 not found in depths_params [07/07 05:48:10]
+
+Reading camera 139/357 [07/07 05:48:10]
+ 81 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150823_0081_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 140/357 [07/07 05:48:10]
+ 84 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150826_0084_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 141/357 [07/07 05:48:10]
+ 85 not found in depths_params [07/07 05:48:10]
+
+Reading camera 142/357 [07/07 05:48:10]
+ 334 not found in depths_params [07/07 05:48:10]
+
+Reading camera 143/357 [07/07 05:48:10]
+ 309 not found in depths_params [07/07 05:48:10]
+
+Reading camera 144/357 [07/07 05:48:10]
+ 336 not found in depths_params [07/07 05:48:10]
+
+Reading camera 145/357 [07/07 05:48:10]
+ 343 not found in depths_params [07/07 05:48:10]
+
+Reading camera 146/357 [07/07 05:48:10]
+ 353 not found in depths_params [07/07 05:48:10]
+
+Reading camera 147/357 [07/07 05:48:10]
+ 333 not found in depths_params [07/07 05:48:10]
+
+Reading camera 148/357 [07/07 05:48:10]
+ 351 not found in depths_params [07/07 05:48:10]
+
+Reading camera 149/357 [07/07 05:48:10]
+ 189 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151113_0189_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 150/357 [07/07 05:48:10]
+ 274 not found in depths_params [07/07 05:48:10]
+
+Reading camera 151/357 [07/07 05:48:10]
+ 315 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151419_0315_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 152/357 [07/07 05:48:10]
+ 299 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151356_0299_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 153/357 [07/07 05:48:10]
+ 285 not found in depths_params [07/07 05:48:10]
+
+Reading camera 154/357 [07/07 05:48:10]
+ 252 not found in depths_params [07/07 05:48:10]
+
+Reading camera 155/357 [07/07 05:48:10]
+ 79 not found in depths_params [07/07 05:48:10]
+
+Reading camera 156/357 [07/07 05:48:10]
+ 233 not found in depths_params [07/07 05:48:10]
+
+Reading camera 157/357 [07/07 05:48:10]
+ 217 not found in depths_params [07/07 05:48:10]
+
+Reading camera 158/357 [07/07 05:48:10]
+ 185 not found in depths_params [07/07 05:48:10]
+
+Reading camera 159/357 [07/07 05:48:10]
+ 240 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151236_0240_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 160/357 [07/07 05:48:10]
+ 256 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151259_0256_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 161/357 [07/07 05:48:10]
+ 184 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151108_0184_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 162/357 [07/07 05:48:10]
+ 350 not found in depths_params [07/07 05:48:10]
+
+Reading camera 163/357 [07/07 05:48:10]
+ 348 not found in depths_params [07/07 05:48:10]
+
+Reading camera 164/357 [07/07 05:48:10]
+ 331 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151442_0331_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 165/357 [07/07 05:48:10]
+ 78 not found in depths_params [07/07 05:48:10]
+
+Reading camera 166/357 [07/07 05:48:10]
+ 183 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151107_0183_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 167/357 [07/07 05:48:10]
+ 312 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151416_0312_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 168/357 [07/07 05:48:10]
+ 323 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151427_0323_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 169/357 [07/07 05:48:10]
+ 216 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151201_0216_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 170/357 [07/07 05:48:10]
+ 251 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151247_0251_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 171/357 [07/07 05:48:10]
+ 267 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151310_0267_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 172/357 [07/07 05:48:10]
+ 232 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151224_0232_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 173/357 [07/07 05:48:10]
+ 181 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151105_0181_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 174/357 [07/07 05:48:10]
+ 180 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151104_0180_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 175/357 [07/07 05:48:10]
+ 215 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151200_0215_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 176/357 [07/07 05:48:10]
+ 250 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151246_0250_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 177/357 [07/07 05:48:10]
+ 266 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151309_0266_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 178/357 [07/07 05:48:10]
+ 231 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151223_0231_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 179/357 [07/07 05:48:10]
+ 179 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151103_0179_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 180/357 [07/07 05:48:10]
+ 182 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151106_0182_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 181/357 [07/07 05:48:10]
+ 284 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151332_0284_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 182/357 [07/07 05:48:10]
+ 298 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151355_0298_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 183/357 [07/07 05:48:10]
+ 297 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151354_0297_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 184/357 [07/07 05:48:10]
+ 283 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151331_0283_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 185/357 [07/07 05:48:10]
+ 273 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151321_0273_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 186/357 [07/07 05:48:10]
+ 313 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151417_0313_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 187/357 [07/07 05:48:10]
+ 324 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151428_0324_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 188/357 [07/07 05:48:10]
+ 325 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151429_0325_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 189/357 [07/07 05:48:10]
+ 329 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151440_0329_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 190/357 [07/07 05:48:10]
+ 341 not found in depths_params [07/07 05:48:10]
+
+Reading camera 191/357 [07/07 05:48:10]
+ 346 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151503_0346_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 192/357 [07/07 05:48:10]
+ 357 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151514_0357_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 193/357 [07/07 05:48:10]
+ 328 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151439_0328_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 194/357 [07/07 05:48:10]
+ 339 not found in depths_params [07/07 05:48:10]
+
+Reading camera 195/357 [07/07 05:48:10]
+ 345 not found in depths_params [07/07 05:48:10]
+
+Reading camera 196/357 [07/07 05:48:10]
+ 356 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151513_0356_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 197/357 [07/07 05:48:10]
+ 314 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151418_0314_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 198/357 [07/07 05:48:10]
+ 96 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150838_0096_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 199/357 [07/07 05:48:10]
+ 97 not found in depths_params [07/07 05:48:10]
+
+Reading camera 200/357 [07/07 05:48:10]
+ 98 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150840_0098_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 201/357 [07/07 05:48:10]
+ 99 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150841_0099_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 202/357 [07/07 05:48:10]
+ 100 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150842_0100_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 203/357 [07/07 05:48:10]
+ 101 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150844_0101_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 204/357 [07/07 05:48:10]
+ 102 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150844_0102_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 205/357 [07/07 05:48:10]
+ 103 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150845_0103_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 206/357 [07/07 05:48:10]
+ 104 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150846_0104_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 207/357 [07/07 05:48:10]
+ 340 not found in depths_params [07/07 05:48:10]
+
+Reading camera 208/357 [07/07 05:48:10]
+ 330 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151441_0330_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 209/357 [07/07 05:48:10]
+ 347 not found in depths_params [07/07 05:48:10]
+
+Reading camera 210/357 [07/07 05:48:10]
+ 105 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150847_0105_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 211/357 [07/07 05:48:10]
+ 106 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150848_0106_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 212/357 [07/07 05:48:10]
+ 71 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150813_0071_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 213/357 [07/07 05:48:10]
+ 107 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150849_0107_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 214/357 [07/07 05:48:10]
+ 72 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150814_0072_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 215/357 [07/07 05:48:10]
+ 73 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150815_0073_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 216/357 [07/07 05:48:10]
+ 74 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150816_0074_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 217/357 [07/07 05:48:10]
+ 77 not found in depths_params [07/07 05:48:10]
+
+Reading camera 218/357 [07/07 05:48:10]
+ 75 not found in depths_params [07/07 05:48:10]
+
+Reading camera 219/357 [07/07 05:48:10]
+ 76 not found in depths_params [07/07 05:48:10]
+
+Reading camera 220/357 [07/07 05:48:10]
+ 327 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151438_0327_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 221/357 [07/07 05:48:10]
+ 338 not found in depths_params [07/07 05:48:10]
+
+Reading camera 222/357 [07/07 05:48:10]
+ 344 not found in depths_params [07/07 05:48:10]
+
+Reading camera 223/357 [07/07 05:48:10]
+ 355 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151512_0355_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 224/357 [07/07 05:48:10]
+ 12 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150703_0012_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 225/357 [07/07 05:48:10]
+ 44 not found in depths_params [07/07 05:48:10]
+
+Reading camera 226/357 [07/07 05:48:10]
+ 45 not found in depths_params [07/07 05:48:10]
+
+Reading camera 227/357 [07/07 05:48:10]
+ 43 not found in depths_params [07/07 05:48:10]
+
+Reading camera 228/357 [07/07 05:48:10]
+ 11 not found in depths_params [07/07 05:48:10]
+
+Reading camera 229/357 [07/07 05:48:10]
+ 10 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150701_0010_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 230/357 [07/07 05:48:10]
+ 42 not found in depths_params [07/07 05:48:10]
+
+Reading camera 231/357 [07/07 05:48:10]
+ 9 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150700_0009_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 232/357 [07/07 05:48:10]
+ 41 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150735_0041_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 233/357 [07/07 05:48:10]
+ 8 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150659_0008_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 234/357 [07/07 05:48:10]
+ 40 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150734_0040_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 235/357 [07/07 05:48:10]
+ 7 not found in depths_params [07/07 05:48:10]
+
+Reading camera 236/357 [07/07 05:48:10]
+ 39 not found in depths_params [07/07 05:48:10]
+
+Reading camera 237/357 [07/07 05:48:10]
+ 6 not found in depths_params [07/07 05:48:10]
+
+Reading camera 238/357 [07/07 05:48:10]
+ 38 not found in depths_params [07/07 05:48:10]
+
+Reading camera 239/357 [07/07 05:48:10]
+ 5 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150656_0005_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 240/357 [07/07 05:48:10]
+ 4 not found in depths_params [07/07 05:48:10]
+
+Reading camera 241/357 [07/07 05:48:10]
+ 37 not found in depths_params [07/07 05:48:10]
+
+Reading camera 242/357 [07/07 05:48:10]
+ 36 not found in depths_params [07/07 05:48:10]
+
+Reading camera 243/357 [07/07 05:48:10]
+ 3 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150654_0003_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 244/357 [07/07 05:48:10]
+ 70 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150804_0070_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 245/357 [07/07 05:48:10]
+ 69 not found in depths_params [07/07 05:48:10]
+
+Reading camera 246/357 [07/07 05:48:10]
+ 13 not found in depths_params [07/07 05:48:10]
+
+Reading camera 247/357 [07/07 05:48:10]
+ 68 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150802_0068_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 248/357 [07/07 05:48:10]
+ 35 not found in depths_params [07/07 05:48:10]
+
+Reading camera 249/357 [07/07 05:48:10]
+ 67 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150801_0067_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 250/357 [07/07 05:48:10]
+ 34 not found in depths_params [07/07 05:48:10]
+
+Reading camera 251/357 [07/07 05:48:10]
+ 66 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150800_0066_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 252/357 [07/07 05:48:10]
+ 33 not found in depths_params [07/07 05:48:10]
+
+Reading camera 253/357 [07/07 05:48:10]
+ 65 not found in depths_params [07/07 05:48:10]
+
+Reading camera 254/357 [07/07 05:48:10]
+ 32 not found in depths_params [07/07 05:48:10]
+
+Reading camera 255/357 [07/07 05:48:10]
+ 46 not found in depths_params [07/07 05:48:10]
+
+Reading camera 256/357 [07/07 05:48:10]
+ 14 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150705_0014_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 257/357 [07/07 05:48:10]
+ 64 not found in depths_params [07/07 05:48:10]
+
+Reading camera 258/357 [07/07 05:48:10]
+ 31 not found in depths_params [07/07 05:48:10]
+
+Reading camera 259/357 [07/07 05:48:10]
+ 63 not found in depths_params [07/07 05:48:10]
+
+Reading camera 260/357 [07/07 05:48:10]
+ 30 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150721_0030_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 261/357 [07/07 05:48:10]
+ 62 not found in depths_params [07/07 05:48:10]
+
+Reading camera 262/357 [07/07 05:48:10]
+ 28 not found in depths_params [07/07 05:48:10]
+
+Reading camera 263/357 [07/07 05:48:10]
+ 29 not found in depths_params [07/07 05:48:10]
+
+Reading camera 264/357 [07/07 05:48:10]
+ 60 not found in depths_params [07/07 05:48:10]
+
+Reading camera 265/357 [07/07 05:48:10]
+ 61 not found in depths_params [07/07 05:48:10]
+
+Reading camera 266/357 [07/07 05:48:10]
+ 27 not found in depths_params [07/07 05:48:10]
+
+Reading camera 267/357 [07/07 05:48:10]
+ 59 not found in depths_params [07/07 05:48:10]
+
+Reading camera 268/357 [07/07 05:48:10]
+ 26 not found in depths_params [07/07 05:48:10]
+
+Reading camera 269/357 [07/07 05:48:10]
+ 25 not found in depths_params [07/07 05:48:10]
+
+Reading camera 270/357 [07/07 05:48:10]
+ 58 not found in depths_params [07/07 05:48:10]
+
+Reading camera 271/357 [07/07 05:48:10]
+ 57 not found in depths_params [07/07 05:48:10]
+
+Reading camera 272/357 [07/07 05:48:10]
+ 24 not found in depths_params [07/07 05:48:10]
+
+Reading camera 273/357 [07/07 05:48:10]
+ 23 not found in depths_params [07/07 05:48:10]
+
+Reading camera 274/357 [07/07 05:48:10]
+ 56 not found in depths_params [07/07 05:48:10]
+
+Reading camera 275/357 [07/07 05:48:10]
+ 55 not found in depths_params [07/07 05:48:10]
+
+Reading camera 276/357 [07/07 05:48:10]
+ 22 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150713_0022_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 277/357 [07/07 05:48:10]
+ 54 not found in depths_params [07/07 05:48:10]
+
+Reading camera 278/357 [07/07 05:48:10]
+ 21 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150712_0021_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 279/357 [07/07 05:48:10]
+ 53 not found in depths_params [07/07 05:48:10]
+
+Reading camera 280/357 [07/07 05:48:10]
+ 20 not found in depths_params [07/07 05:48:10]
+
+Reading camera 281/357 [07/07 05:48:10]
+ 52 not found in depths_params [07/07 05:48:10]
+
+Reading camera 282/357 [07/07 05:48:10]
+ 19 not found in depths_params [07/07 05:48:10]
+
+Reading camera 283/357 [07/07 05:48:10]
+ 51 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150745_0051_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 284/357 [07/07 05:48:10]
+ 18 not found in depths_params [07/07 05:48:10]
+
+Reading camera 285/357 [07/07 05:48:10]
+ 50 not found in depths_params [07/07 05:48:10]
+
+Reading camera 286/357 [07/07 05:48:10]
+ 17 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150708_0017_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 287/357 [07/07 05:48:10]
+ 49 not found in depths_params [07/07 05:48:10]
+
+Reading camera 288/357 [07/07 05:48:10]
+ 15 not found in depths_params [07/07 05:48:10]
+
+Reading camera 289/357 [07/07 05:48:10]
+ 47 not found in depths_params [07/07 05:48:10]
+
+Reading camera 290/357 [07/07 05:48:10]
+ 48 not found in depths_params [07/07 05:48:10]
+
+Reading camera 291/357 [07/07 05:48:10]
+ 16 not found in depths_params [07/07 05:48:10]
+
+Reading camera 292/357 [07/07 05:48:10]
+ 109 not found in depths_params [07/07 05:48:10]
+
+Reading camera 293/357 [07/07 05:48:10]
+ 137 not found in depths_params [07/07 05:48:10]
+
+Reading camera 294/357 [07/07 05:48:10]
+ 110 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150915_0110_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 295/357 [07/07 05:48:10]
+ 136 not found in depths_params [07/07 05:48:10]
+
+Reading camera 296/357 [07/07 05:48:10]
+ 108 not found in depths_params [07/07 05:48:10]
+
+Reading camera 297/357 [07/07 05:48:10]
+ 135 not found in depths_params [07/07 05:48:10]
+
+Reading camera 298/357 [07/07 05:48:10]
+ 155 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151011_0155_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 299/357 [07/07 05:48:10]
+ 156 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151012_0156_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 300/357 [07/07 05:48:10]
+ 138 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150943_0138_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 301/357 [07/07 05:48:10]
+ 111 not found in depths_params [07/07 05:48:10]
+
+Reading camera 302/357 [07/07 05:48:10]
+ 157 not found in depths_params [07/07 05:48:10]
+
+Reading camera 303/357 [07/07 05:48:10]
+ 154 not found in depths_params [07/07 05:48:10]
+
+Reading camera 304/357 [07/07 05:48:10]
+ 134 not found in depths_params [07/07 05:48:10]
+
+Reading camera 305/357 [07/07 05:48:10]
+ 139 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150944_0139_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 306/357 [07/07 05:48:10]
+ 112 not found in depths_params [07/07 05:48:10]
+
+Reading camera 307/357 [07/07 05:48:10]
+ 158 not found in depths_params [07/07 05:48:10]
+
+Reading camera 308/357 [07/07 05:48:10]
+ 113 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150918_0113_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 309/357 [07/07 05:48:10]
+ 140 not found in depths_params [07/07 05:48:10]
+
+Reading camera 310/357 [07/07 05:48:10]
+ 159 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151015_0159_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 311/357 [07/07 05:48:10]
+ 114 not found in depths_params [07/07 05:48:10]
+
+Reading camera 312/357 [07/07 05:48:10]
+ 153 not found in depths_params [07/07 05:48:10]
+
+Reading camera 313/357 [07/07 05:48:10]
+ 160 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151016_0160_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 314/357 [07/07 05:48:10]
+ 133 not found in depths_params [07/07 05:48:10]
+
+Reading camera 315/357 [07/07 05:48:10]
+ 152 not found in depths_params [07/07 05:48:10]
+
+Reading camera 316/357 [07/07 05:48:10]
+ 132 not found in depths_params [07/07 05:48:10]
+
+Reading camera 317/357 [07/07 05:48:10]
+ 151 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151007_0151_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 318/357 [07/07 05:48:10]
+ 131 not found in depths_params [07/07 05:48:10]
+
+Reading camera 319/357 [07/07 05:48:10]
+ 150 not found in depths_params [07/07 05:48:10]
+
+Reading camera 320/357 [07/07 05:48:10]
+ 130 not found in depths_params [07/07 05:48:10]
+
+Reading camera 321/357 [07/07 05:48:10]
+ 149 not found in depths_params [07/07 05:48:10]
+
+Reading camera 322/357 [07/07 05:48:10]
+ 129 not found in depths_params [07/07 05:48:10]
+
+Reading camera 323/357 [07/07 05:48:10]
+ 148 not found in depths_params [07/07 05:48:10]
+
+Reading camera 324/357 [07/07 05:48:10]
+ 128 not found in depths_params [07/07 05:48:10]
+
+Reading camera 325/357 [07/07 05:48:10]
+ 147 not found in depths_params [07/07 05:48:10]
+
+Reading camera 326/357 [07/07 05:48:10]
+ 127 not found in depths_params [07/07 05:48:10]
+
+Reading camera 327/357 [07/07 05:48:10]
+ 146 not found in depths_params [07/07 05:48:10]
+
+Reading camera 328/357 [07/07 05:48:10]
+ 126 not found in depths_params [07/07 05:48:10]
+
+Reading camera 329/357 [07/07 05:48:10]
+ 161 not found in depths_params [07/07 05:48:10]
+
+Reading camera 330/357 [07/07 05:48:10]
+ 115 not found in depths_params [07/07 05:48:10]
+
+Reading camera 331/357 [07/07 05:48:10]
+ 116 not found in depths_params [07/07 05:48:10]
+
+Reading camera 332/357 [07/07 05:48:10]
+ 162 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151018_0162_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 333/357 [07/07 05:48:10]
+ 117 not found in depths_params [07/07 05:48:10]
+
+Reading camera 334/357 [07/07 05:48:10]
+ 163 not found in depths_params [07/07 05:48:10]
+
+Reading camera 335/357 [07/07 05:48:10]
+ 145 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151001_0145_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 336/357 [07/07 05:48:10]
+ 125 not found in depths_params [07/07 05:48:10]
+
+Reading camera 337/357 [07/07 05:48:10]
+ 172 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151028_0172_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 338/357 [07/07 05:48:10]
+ 144 not found in depths_params [07/07 05:48:10]
+
+Reading camera 339/357 [07/07 05:48:10]
+ 171 not found in depths_params [07/07 05:48:10]
+
+Reading camera 340/357 [07/07 05:48:10]
+ 143 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150959_0143_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 341/357 [07/07 05:48:10]
+ 124 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150929_0124_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 342/357 [07/07 05:48:10]
+ 170 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151026_0170_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 343/357 [07/07 05:48:10]
+ 142 not found in depths_params [07/07 05:48:10]
+
+Reading camera 344/357 [07/07 05:48:10]
+ 123 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150928_0123_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 345/357 [07/07 05:48:10]
+ 169 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151025_0169_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 346/357 [07/07 05:48:10]
+ 141 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227150957_0141_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 347/357 [07/07 05:48:10]
+ 122 not found in depths_params [07/07 05:48:10]
+
+Reading camera 348/357 [07/07 05:48:10]
+ 168 not found in depths_params [07/07 05:48:10]
+
+Reading camera 349/357 [07/07 05:48:10]
+ 121 not found in depths_params [07/07 05:48:10]
+
+Reading camera 350/357 [07/07 05:48:10]
+ 167 not found in depths_params [07/07 05:48:10]
+
+Reading camera 351/357 [07/07 05:48:10]
+ 120 not found in depths_params [07/07 05:48:10]
+
+Reading camera 352/357 [07/07 05:48:10]
+ 119 not found in depths_params [07/07 05:48:10]
+
+Reading camera 353/357 [07/07 05:48:10]
+ 118 not found in depths_params [07/07 05:48:10]
+
+Reading camera 354/357 [07/07 05:48:10]
+ 164 not found in depths_params [07/07 05:48:10]
+
+Warning: Image /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images/DJI_20241227151020_0164_V.JPG not found on disk. Skipping. [07/07 05:48:10]
+
+Reading camera 355/357 [07/07 05:48:10]
+ 165 not found in depths_params [07/07 05:48:10]
+
+Reading camera 356/357 [07/07 05:48:10]
+ 166 not found in depths_params [07/07 05:48:10]
+
+Reading camera 357/357 [07/07 05:48:10]
+ 1 not found in depths_params [07/07 05:48:10]
+ [07/07 05:48:10]
+Loading Training Cameras [07/07 05:48:10]
+An unexpected error occurred when trying to read depth at /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/depth/DJI_20241227150935_0130_V.png: 'NoneType' object has no attribute 'astype' [07/07 05:48:13]
+Traceback (most recent call last):
+  File "/workspace/VTRACE/src/vtrace/gaussian-splatting/train.py", line 501, in <module>
+    training(lp.extract(args), op.extract(args), pp.extract(args), args.test_iterations, args.save_iterations, args.checkpoint_iterations, args.start_checkpoint, args.debug_from)
+  File "/workspace/VTRACE/src/vtrace/gaussian-splatting/train.py", line 148, in training
+    scene = Scene(dataset, gaussians)
+  File "/workspace/VTRACE/src/vtrace/gaussian-splatting/scene/__init__.py", line 73, in __init__
+    self.train_cameras[resolution_scale] = cameraList_from_camInfos(scene_info.train_cameras, resolution_scale, args, scene_info.is_nerf_synthetic, False)
+  File "/workspace/VTRACE/src/vtrace/gaussian-splatting/utils/camera_utils.py", line 73, in cameraList_from_camInfos
+    camera_list.append(loadCam(args, id, c, resolution_scale, is_nerf_synthetic, is_test_dataset))
+  File "/workspace/VTRACE/src/vtrace/gaussian-splatting/utils/camera_utils.py", line 28, in loadCam
+    invdepthmap = cv2.imread(cam_info.depth_path, -1).astype(np.float32) / float(2**16)
+AttributeError: 'NoneType' object has no attribute 'astype'

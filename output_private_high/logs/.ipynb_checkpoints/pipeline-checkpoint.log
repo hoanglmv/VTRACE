@@ -1,0 +1,639 @@
+2026-07-07 04:25:25,614 - __main__ - INFO - Pipeline log will be saved to /workspace/VTRACE/output_private_high/logs/pipeline.log
+2026-07-07 04:25:25,614 - __main__ - INFO - Found 8 scenes in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1
+2026-07-07 04:25:25,615 - __main__ - INFO - Scene HCM0249 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 165726, 'num_test_poses': 60}
+2026-07-07 04:25:25,615 - __main__ - INFO - --- Estimating Depth for HCM0249 ---
+2026-07-07 04:25:25,618 - src.vtrace.depth_estimator - INFO - Loading DepthAnythingV2 model on cuda...
+2026-07-07 04:25:52,571 - src.vtrace.depth_estimator - INFO - Estimating depth for 240 remaining images in batches of 8...
+2026-07-07 04:26:36,530 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train/sparse/0/depth_params.json
+2026-07-07 04:26:36,530 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:26:36,531 - __main__ - INFO - --- Training HCM0249 ---
+2026-07-07 04:26:36,531 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:26:36,532 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:26:36,532 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:26:36,532 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:26:36,532 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:26:36,533 - src.vtrace.trainer - INFO - Running training command for HCM0249...
+2026-07-07 04:26:36,533 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0249_train.log
+2026-07-07 04:26:36,533 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train/images...
+2026-07-07 04:27:17,444 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train', '-m', '/workspace/VTRACE/output_private_high/models/HCM0249', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 04:27:17,444 - __main__ - INFO - --- Rendering HCM0249 ---
+2026-07-07 04:27:17,444 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HCM0249/point_cloud
+2026-07-07 04:27:17,445 - __main__ - INFO - --- Post-processing HCM0249 ---
+2026-07-07 04:27:17,445 - src.vtrace.post_processor - WARNING - No renders found for scene HCM0249 at /workspace/VTRACE/output_private_high/submission/HCM0249
+2026-07-07 04:27:17,446 - __main__ - INFO - Scene HCM0254 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 176590, 'num_test_poses': 60}
+2026-07-07 04:27:17,446 - __main__ - INFO - --- Estimating Depth for HCM0254 ---
+2026-07-07 04:27:17,453 - src.vtrace.depth_estimator - INFO - Loading DepthAnythingV2 model on cuda...
+2026-07-07 04:27:18,947 - src.vtrace.depth_estimator - INFO - Estimating depth for 240 remaining images in batches of 8...
+2026-07-07 04:28:02,979 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train/sparse/0/depth_params.json
+2026-07-07 04:28:02,979 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:28:02,988 - __main__ - INFO - --- Training HCM0254 ---
+2026-07-07 04:28:02,988 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:28:02,989 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:28:02,989 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:28:02,989 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:28:02,990 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:28:02,990 - src.vtrace.trainer - INFO - Running training command for HCM0254...
+2026-07-07 04:28:02,990 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0254_train.log
+2026-07-07 04:28:02,990 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train/images...
+2026-07-07 04:28:44,289 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train', '-m', '/workspace/VTRACE/output_private_high/models/HCM0254', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 04:28:44,289 - __main__ - INFO - --- Rendering HCM0254 ---
+2026-07-07 04:28:44,289 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HCM0254/point_cloud
+2026-07-07 04:28:44,289 - __main__ - INFO - --- Post-processing HCM0254 ---
+2026-07-07 04:28:44,289 - src.vtrace.post_processor - WARNING - No renders found for scene HCM0254 at /workspace/VTRACE/output_private_high/submission/HCM0254
+2026-07-07 04:28:44,290 - __main__ - INFO - Scene HCM0276 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 220581, 'num_test_poses': 60}
+2026-07-07 04:28:44,290 - __main__ - INFO - --- Estimating Depth for HCM0276 ---
+2026-07-07 04:28:44,296 - src.vtrace.depth_estimator - INFO - Loading DepthAnythingV2 model on cuda...
+2026-07-07 04:28:45,498 - src.vtrace.depth_estimator - INFO - Estimating depth for 240 remaining images in batches of 8...
+2026-07-07 04:29:29,585 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276/train/sparse/0/depth_params.json
+2026-07-07 04:29:29,585 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:29:29,596 - __main__ - INFO - --- Training HCM0276 ---
+2026-07-07 04:29:29,597 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:29:29,597 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:29:29,597 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:29:29,598 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:29:29,598 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:29:29,598 - src.vtrace.trainer - INFO - Running training command for HCM0276...
+2026-07-07 04:29:29,598 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0276_train.log
+2026-07-07 04:29:29,599 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276/train/images...
+2026-07-07 04:30:10,700 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276/train', '-m', '/workspace/VTRACE/output_private_high/models/HCM0276', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 04:30:10,700 - __main__ - INFO - --- Rendering HCM0276 ---
+2026-07-07 04:30:10,700 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HCM0276/point_cloud
+2026-07-07 04:30:10,700 - __main__ - INFO - --- Post-processing HCM0276 ---
+2026-07-07 04:30:10,700 - src.vtrace.post_processor - WARNING - No renders found for scene HCM0276 at /workspace/VTRACE/output_private_high/submission/HCM0276
+2026-07-07 04:30:10,701 - __main__ - INFO - Scene HCM1439 stats: {'num_train_images': 103, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 48347, 'num_test_poses': 26}
+2026-07-07 04:30:10,701 - __main__ - INFO - --- Estimating Depth for HCM1439 ---
+2026-07-07 04:30:10,703 - src.vtrace.depth_estimator - INFO - Loading DepthAnythingV2 model on cuda...
+2026-07-07 04:30:12,112 - src.vtrace.depth_estimator - INFO - Estimating depth for 103 remaining images in batches of 8...
+2026-07-07 04:30:30,578 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM1439/train/sparse/0/depth_params.json
+2026-07-07 04:30:30,578 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:30:30,588 - __main__ - INFO - --- Training HCM1439 ---
+2026-07-07 04:30:30,589 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:30:30,589 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:30:30,589 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:30:30,590 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:30:30,590 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:30:30,590 - src.vtrace.trainer - INFO - Running training command for HCM1439...
+2026-07-07 04:30:30,590 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM1439_train.log
+2026-07-07 04:30:30,591 - src.vtrace.quality_filter - INFO - Scanning 103 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM1439/train/images...
+2026-07-07 04:30:50,152 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM1439: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM1439/train', '-m', '/workspace/VTRACE/output_private_high/models/HCM1439', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 04:30:50,152 - __main__ - INFO - --- Rendering HCM1439 ---
+2026-07-07 04:30:50,152 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HCM1439/point_cloud
+2026-07-07 04:30:50,153 - __main__ - INFO - --- Post-processing HCM1439 ---
+2026-07-07 04:30:50,153 - src.vtrace.post_processor - WARNING - No renders found for scene HCM1439 at /workspace/VTRACE/output_private_high/submission/HCM1439
+2026-07-07 04:30:50,153 - __main__ - INFO - Scene HNI0131 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 147464, 'num_test_poses': 60}
+2026-07-07 04:30:50,154 - __main__ - INFO - --- Estimating Depth for HNI0131 ---
+2026-07-07 04:30:50,157 - src.vtrace.depth_estimator - INFO - Loading DepthAnythingV2 model on cuda...
+2026-07-07 04:30:51,304 - src.vtrace.depth_estimator - INFO - Estimating depth for 240 remaining images in batches of 8...
+2026-07-07 04:31:33,222 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0131/train/sparse/0/depth_params.json
+2026-07-07 04:31:33,222 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:31:33,232 - __main__ - INFO - --- Training HNI0131 ---
+2026-07-07 04:31:33,233 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:31:33,233 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:31:33,233 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:31:33,234 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:31:33,234 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:31:33,234 - src.vtrace.trainer - INFO - Running training command for HNI0131...
+2026-07-07 04:31:33,234 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HNI0131_train.log
+2026-07-07 04:31:33,235 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0131/train/images...
+2026-07-07 04:32:15,177 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0131: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0131/train', '-m', '/workspace/VTRACE/output_private_high/models/HNI0131', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 04:32:15,177 - __main__ - INFO - --- Rendering HNI0131 ---
+2026-07-07 04:32:15,177 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HNI0131/point_cloud
+2026-07-07 04:32:15,177 - __main__ - INFO - --- Post-processing HNI0131 ---
+2026-07-07 04:32:15,177 - src.vtrace.post_processor - WARNING - No renders found for scene HNI0131 at /workspace/VTRACE/output_private_high/submission/HNI0131
+2026-07-07 04:32:15,178 - __main__ - INFO - Scene HNI0265 stats: {'num_train_images': 205, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 83992, 'num_test_poses': 52}
+2026-07-07 04:32:15,178 - __main__ - INFO - --- Estimating Depth for HNI0265 ---
+2026-07-07 04:32:15,181 - src.vtrace.depth_estimator - INFO - Loading DepthAnythingV2 model on cuda...
+2026-07-07 04:32:16,795 - src.vtrace.depth_estimator - INFO - Estimating depth for 205 remaining images in batches of 8...
+2026-07-07 04:32:51,966 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0265/train/sparse/0/depth_params.json
+2026-07-07 04:32:51,966 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:32:51,967 - __main__ - INFO - --- Training HNI0265 ---
+2026-07-07 04:32:51,967 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:32:51,968 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:32:51,968 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:32:51,968 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:32:51,968 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:32:51,969 - src.vtrace.trainer - INFO - Running training command for HNI0265...
+2026-07-07 04:32:51,969 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HNI0265_train.log
+2026-07-07 04:32:51,969 - src.vtrace.quality_filter - INFO - Scanning 205 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0265/train/images...
+2026-07-07 04:33:27,892 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0265: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0265/train', '-m', '/workspace/VTRACE/output_private_high/models/HNI0265', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 04:33:27,892 - __main__ - INFO - --- Rendering HNI0265 ---
+2026-07-07 04:33:27,892 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HNI0265/point_cloud
+2026-07-07 04:33:27,892 - __main__ - INFO - --- Post-processing HNI0265 ---
+2026-07-07 04:33:27,893 - src.vtrace.post_processor - WARNING - No renders found for scene HNI0265 at /workspace/VTRACE/output_private_high/submission/HNI0265
+2026-07-07 04:33:27,894 - __main__ - INFO - Scene HNI0366 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 145502, 'num_test_poses': 60}
+2026-07-07 04:33:27,894 - __main__ - INFO - --- Estimating Depth for HNI0366 ---
+2026-07-07 04:33:27,901 - src.vtrace.depth_estimator - INFO - Loading DepthAnythingV2 model on cuda...
+2026-07-07 04:33:29,063 - src.vtrace.depth_estimator - INFO - Estimating depth for 240 remaining images in batches of 8...
+2026-07-07 04:53:13,251 - __main__ - INFO - Pipeline log will be saved to /workspace/VTRACE/output_private_high/logs/pipeline.log
+2026-07-07 04:53:13,251 - __main__ - INFO - Found 8 scenes in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1
+2026-07-07 04:53:13,252 - __main__ - INFO - Scene HCM0249 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 165726, 'num_test_poses': 60}
+2026-07-07 04:53:13,252 - __main__ - INFO - --- Estimating Depth for HCM0249 ---
+2026-07-07 04:53:13,255 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249. Skipping depth estimation.
+2026-07-07 04:53:13,257 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train/sparse/0/depth_params.json
+2026-07-07 04:53:13,257 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:53:13,257 - __main__ - INFO - --- Training HCM0249 ---
+2026-07-07 04:53:13,257 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:53:13,258 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:53:13,258 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:53:13,258 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:53:13,259 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:53:13,259 - src.vtrace.trainer - INFO - Running training command for HCM0249...
+2026-07-07 04:53:13,259 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0249_train.log
+2026-07-07 04:53:13,259 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train/images...
+2026-07-07 04:53:55,724 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train', '-m', '/workspace/VTRACE/output_private_high/models/HCM0249', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 04:53:55,725 - __main__ - INFO - --- Rendering HCM0249 ---
+2026-07-07 04:53:55,725 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HCM0249/point_cloud
+2026-07-07 04:53:55,725 - __main__ - INFO - --- Post-processing HCM0249 ---
+2026-07-07 04:53:55,725 - src.vtrace.post_processor - WARNING - No renders found for scene HCM0249 at /workspace/VTRACE/output_private_high/submission/HCM0249
+2026-07-07 04:53:55,726 - __main__ - INFO - Scene HCM0254 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 176590, 'num_test_poses': 60}
+2026-07-07 04:53:55,726 - __main__ - INFO - --- Estimating Depth for HCM0254 ---
+2026-07-07 04:53:55,732 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254. Skipping depth estimation.
+2026-07-07 04:53:55,736 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train/sparse/0/depth_params.json
+2026-07-07 04:53:55,736 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:53:55,736 - __main__ - INFO - --- Training HCM0254 ---
+2026-07-07 04:53:55,737 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:53:55,737 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:53:55,738 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:53:55,739 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:53:55,739 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:53:55,740 - src.vtrace.trainer - INFO - Running training command for HCM0254...
+2026-07-07 04:53:55,740 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0254_train.log
+2026-07-07 04:53:55,741 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train/images...
+2026-07-07 04:54:38,654 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train', '-m', '/workspace/VTRACE/output_private_high/models/HCM0254', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 04:54:38,655 - __main__ - INFO - --- Rendering HCM0254 ---
+2026-07-07 04:54:38,655 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HCM0254/point_cloud
+2026-07-07 04:54:38,655 - __main__ - INFO - --- Post-processing HCM0254 ---
+2026-07-07 04:54:38,655 - src.vtrace.post_processor - WARNING - No renders found for scene HCM0254 at /workspace/VTRACE/output_private_high/submission/HCM0254
+2026-07-07 04:54:38,655 - __main__ - INFO - Scene HCM0276 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 220581, 'num_test_poses': 60}
+2026-07-07 04:54:38,656 - __main__ - INFO - --- Estimating Depth for HCM0276 ---
+2026-07-07 04:54:38,659 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276. Skipping depth estimation.
+2026-07-07 04:54:38,660 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276/train/sparse/0/depth_params.json
+2026-07-07 04:54:38,660 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:54:38,660 - __main__ - INFO - --- Training HCM0276 ---
+2026-07-07 04:54:38,661 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:54:38,661 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:54:38,661 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:54:38,662 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:54:38,662 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:54:38,662 - src.vtrace.trainer - INFO - Running training command for HCM0276...
+2026-07-07 04:54:38,662 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0276_train.log
+2026-07-07 04:54:38,663 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276/train/images...
+2026-07-07 04:55:21,026 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276/train', '-m', '/workspace/VTRACE/output_private_high/models/HCM0276', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 04:55:21,026 - __main__ - INFO - --- Rendering HCM0276 ---
+2026-07-07 04:55:21,026 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HCM0276/point_cloud
+2026-07-07 04:55:21,027 - __main__ - INFO - --- Post-processing HCM0276 ---
+2026-07-07 04:55:21,027 - src.vtrace.post_processor - WARNING - No renders found for scene HCM0276 at /workspace/VTRACE/output_private_high/submission/HCM0276
+2026-07-07 04:55:21,027 - __main__ - INFO - Scene HCM1439 stats: {'num_train_images': 103, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 48347, 'num_test_poses': 26}
+2026-07-07 04:55:21,027 - __main__ - INFO - --- Estimating Depth for HCM1439 ---
+2026-07-07 04:55:21,030 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM1439. Skipping depth estimation.
+2026-07-07 04:55:21,031 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM1439/train/sparse/0/depth_params.json
+2026-07-07 04:55:21,031 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:55:21,031 - __main__ - INFO - --- Training HCM1439 ---
+2026-07-07 04:55:21,032 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:55:21,033 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:55:21,033 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:55:21,033 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:55:21,034 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:55:21,034 - src.vtrace.trainer - INFO - Running training command for HCM1439...
+2026-07-07 04:55:21,034 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM1439_train.log
+2026-07-07 04:55:21,035 - src.vtrace.quality_filter - INFO - Scanning 103 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM1439/train/images...
+2026-07-07 04:55:41,009 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM1439: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM1439/train', '-m', '/workspace/VTRACE/output_private_high/models/HCM1439', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 04:55:41,009 - __main__ - INFO - --- Rendering HCM1439 ---
+2026-07-07 04:55:41,010 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HCM1439/point_cloud
+2026-07-07 04:55:41,010 - __main__ - INFO - --- Post-processing HCM1439 ---
+2026-07-07 04:55:41,010 - src.vtrace.post_processor - WARNING - No renders found for scene HCM1439 at /workspace/VTRACE/output_private_high/submission/HCM1439
+2026-07-07 04:55:41,011 - __main__ - INFO - Scene HNI0131 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 147464, 'num_test_poses': 60}
+2026-07-07 04:55:41,011 - __main__ - INFO - --- Estimating Depth for HNI0131 ---
+2026-07-07 04:55:41,018 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0131. Skipping depth estimation.
+2026-07-07 04:55:41,021 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0131/train/sparse/0/depth_params.json
+2026-07-07 04:55:41,021 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:55:41,022 - __main__ - INFO - --- Training HNI0131 ---
+2026-07-07 04:55:41,022 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:55:41,023 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:55:41,024 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:55:41,024 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:55:41,025 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:55:41,025 - src.vtrace.trainer - INFO - Running training command for HNI0131...
+2026-07-07 04:55:41,026 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HNI0131_train.log
+2026-07-07 04:55:41,027 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0131/train/images...
+2026-07-07 04:56:20,319 - __main__ - INFO - Pipeline log will be saved to /workspace/VTRACE/output_private_high/logs/pipeline.log
+2026-07-07 04:56:20,319 - __main__ - INFO - Found 8 scenes in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1
+2026-07-07 04:56:20,320 - __main__ - INFO - Scene HCM0249 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 165726, 'num_test_poses': 60}
+2026-07-07 04:56:20,320 - __main__ - INFO - --- Estimating Depth for HCM0249 ---
+2026-07-07 04:56:20,324 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249. Skipping depth estimation.
+2026-07-07 04:56:20,326 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train/sparse/0/depth_params.json
+2026-07-07 04:56:20,326 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:56:20,326 - __main__ - INFO - --- Training HCM0249 ---
+2026-07-07 04:56:20,327 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:56:20,327 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:56:20,327 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:56:20,328 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:56:20,328 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:56:20,328 - src.vtrace.trainer - INFO - Running training command for HCM0249...
+2026-07-07 04:56:20,328 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0249_train.log
+2026-07-07 04:56:20,329 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train/images...
+2026-07-07 04:56:23,089 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0131: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0131/train', '-m', '/workspace/VTRACE/output_private_high/models/HNI0131', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 04:56:23,089 - __main__ - INFO - --- Rendering HNI0131 ---
+2026-07-07 04:56:23,090 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HNI0131/point_cloud
+2026-07-07 04:56:23,090 - __main__ - INFO - --- Post-processing HNI0131 ---
+2026-07-07 04:56:23,090 - src.vtrace.post_processor - WARNING - No renders found for scene HNI0131 at /workspace/VTRACE/output_private_high/submission/HNI0131
+2026-07-07 04:56:23,091 - __main__ - INFO - Scene HNI0265 stats: {'num_train_images': 205, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 83992, 'num_test_poses': 52}
+2026-07-07 04:56:23,091 - __main__ - INFO - --- Estimating Depth for HNI0265 ---
+2026-07-07 04:56:23,095 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0265. Skipping depth estimation.
+2026-07-07 04:56:23,097 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0265/train/sparse/0/depth_params.json
+2026-07-07 04:56:23,098 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:56:23,098 - __main__ - INFO - --- Training HNI0265 ---
+2026-07-07 04:56:23,098 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:56:23,099 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:56:23,099 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:56:23,100 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:56:23,100 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:56:23,100 - src.vtrace.trainer - INFO - Running training command for HNI0265...
+2026-07-07 04:56:23,100 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HNI0265_train.log
+2026-07-07 04:56:23,101 - src.vtrace.quality_filter - INFO - Scanning 205 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0265/train/images...
+2026-07-07 04:57:39,504 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0265: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0265/train', '-m', '/workspace/VTRACE/output_private_high/models/HNI0265', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 04:57:39,505 - __main__ - INFO - --- Rendering HNI0265 ---
+2026-07-07 04:57:39,505 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HNI0265/point_cloud
+2026-07-07 04:57:39,505 - __main__ - INFO - --- Post-processing HNI0265 ---
+2026-07-07 04:57:39,505 - src.vtrace.post_processor - WARNING - No renders found for scene HNI0265 at /workspace/VTRACE/output_private_high/submission/HNI0265
+2026-07-07 04:57:39,506 - __main__ - INFO - Scene HNI0366 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 145502, 'num_test_poses': 60}
+2026-07-07 04:57:39,507 - __main__ - INFO - --- Estimating Depth for HNI0366 ---
+2026-07-07 04:57:39,512 - src.vtrace.depth_estimator - INFO - Loading DepthAnythingV2 model on cuda...
+2026-07-07 04:57:40,548 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train', '-m', '/workspace/VTRACE/output_private_high/models/HCM0249', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 04:57:40,548 - __main__ - INFO - --- Rendering HCM0249 ---
+2026-07-07 04:57:40,548 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HCM0249/point_cloud
+2026-07-07 04:57:40,548 - __main__ - INFO - --- Post-processing HCM0249 ---
+2026-07-07 04:57:40,548 - src.vtrace.post_processor - WARNING - No renders found for scene HCM0249 at /workspace/VTRACE/output_private_high/submission/HCM0249
+2026-07-07 04:57:40,550 - __main__ - INFO - Scene HCM0254 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 176590, 'num_test_poses': 60}
+2026-07-07 04:57:40,550 - __main__ - INFO - --- Estimating Depth for HCM0254 ---
+2026-07-07 04:57:40,556 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254. Skipping depth estimation.
+2026-07-07 04:57:40,560 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train/sparse/0/depth_params.json
+2026-07-07 04:57:40,560 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:57:40,560 - __main__ - INFO - --- Training HCM0254 ---
+2026-07-07 04:57:40,561 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:57:40,562 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:57:40,562 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:57:40,563 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:57:40,564 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:57:40,564 - src.vtrace.trainer - INFO - Running training command for HCM0254...
+2026-07-07 04:57:40,564 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0254_train.log
+2026-07-07 04:57:40,565 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train/images...
+2026-07-07 04:57:41,243 - src.vtrace.depth_estimator - INFO - Estimating depth for 152 remaining images in batches of 8...
+2026-07-07 04:58:31,216 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/sparse/0/depth_params.json
+2026-07-07 04:58:31,217 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:58:31,223 - __main__ - INFO - --- Training HNI0366 ---
+2026-07-07 04:58:31,224 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:58:31,224 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:58:31,224 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:58:31,225 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:58:31,225 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:58:31,225 - src.vtrace.trainer - INFO - Running training command for HNI0366...
+2026-07-07 04:58:31,225 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HNI0366_train.log
+2026-07-07 04:58:31,226 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images...
+2026-07-07 04:58:36,599 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train', '-m', '/workspace/VTRACE/output_private_high/models/HCM0254', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 04:58:36,600 - __main__ - INFO - --- Rendering HCM0254 ---
+2026-07-07 04:58:36,600 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HCM0254/point_cloud
+2026-07-07 04:58:36,600 - __main__ - INFO - --- Post-processing HCM0254 ---
+2026-07-07 04:58:36,600 - src.vtrace.post_processor - WARNING - No renders found for scene HCM0254 at /workspace/VTRACE/output_private_high/submission/HCM0254
+2026-07-07 04:58:36,601 - __main__ - INFO - Scene HCM0276 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 220581, 'num_test_poses': 60}
+2026-07-07 04:58:36,601 - __main__ - INFO - --- Estimating Depth for HCM0276 ---
+2026-07-07 04:58:36,607 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276. Skipping depth estimation.
+2026-07-07 04:58:36,610 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276/train/sparse/0/depth_params.json
+2026-07-07 04:58:36,611 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:58:36,611 - __main__ - INFO - --- Training HCM0276 ---
+2026-07-07 04:58:36,611 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:58:36,612 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:58:36,613 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:58:36,613 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:58:36,614 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:58:36,614 - src.vtrace.trainer - INFO - Running training command for HCM0276...
+2026-07-07 04:58:36,614 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0276_train.log
+2026-07-07 04:58:36,616 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276/train/images...
+2026-07-07 04:58:44,713 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train', '-m', '/workspace/VTRACE/output_private_high/models/HNI0366', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 04:58:44,714 - __main__ - INFO - --- Rendering HNI0366 ---
+2026-07-07 04:58:44,714 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HNI0366/point_cloud
+2026-07-07 04:58:44,714 - __main__ - INFO - --- Post-processing HNI0366 ---
+2026-07-07 04:58:44,714 - src.vtrace.post_processor - WARNING - No renders found for scene HNI0366 at /workspace/VTRACE/output_private_high/submission/HNI0366
+2026-07-07 04:58:44,715 - __main__ - INFO - Scene HNI0437 stats: {'num_train_images': 224, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 115026, 'num_test_poses': 56}
+2026-07-07 04:58:44,715 - __main__ - INFO - --- Estimating Depth for HNI0437 ---
+2026-07-07 04:58:44,720 - src.vtrace.depth_estimator - INFO - Loading DepthAnythingV2 model on cuda...
+2026-07-07 04:58:46,046 - src.vtrace.depth_estimator - INFO - Estimating depth for 224 remaining images in batches of 8...
+2026-07-07 04:59:18,233 - __main__ - INFO - Pipeline log will be saved to /workspace/VTRACE/output_private_high/logs/pipeline.log
+2026-07-07 04:59:18,233 - __main__ - INFO - Found 8 scenes in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1
+2026-07-07 04:59:18,234 - __main__ - INFO - Scene HCM0249 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 165726, 'num_test_poses': 60}
+2026-07-07 04:59:18,234 - __main__ - INFO - --- Estimating Depth for HCM0249 ---
+2026-07-07 04:59:18,237 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249. Skipping depth estimation.
+2026-07-07 04:59:18,239 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train/sparse/0/depth_params.json
+2026-07-07 04:59:18,239 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:59:18,239 - __main__ - INFO - --- Training HCM0249 ---
+2026-07-07 04:59:18,239 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:59:18,240 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:59:18,240 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:59:18,240 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:59:18,241 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:59:18,241 - src.vtrace.trainer - INFO - Running training command for HCM0249...
+2026-07-07 04:59:18,241 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0249_train.log
+2026-07-07 04:59:18,241 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train/images...
+2026-07-07 04:59:35,226 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0437/train/sparse/0/depth_params.json
+2026-07-07 04:59:35,226 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 04:59:35,289 - __main__ - INFO - --- Training HNI0437 ---
+2026-07-07 04:59:35,290 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 04:59:35,290 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 04:59:35,291 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 04:59:35,291 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 04:59:35,291 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 04:59:35,292 - src.vtrace.trainer - INFO - Running training command for HNI0437...
+2026-07-07 04:59:35,292 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HNI0437_train.log
+2026-07-07 04:59:35,292 - src.vtrace.quality_filter - INFO - Scanning 224 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0437/train/images...
+2026-07-07 05:00:22,132 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train', '-m', '/workspace/VTRACE/output_private_high/models/HCM0249', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 05:00:22,132 - __main__ - INFO - --- Rendering HCM0249 ---
+2026-07-07 05:00:22,133 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HCM0249/point_cloud
+2026-07-07 05:00:22,133 - __main__ - INFO - --- Post-processing HCM0249 ---
+2026-07-07 05:00:22,133 - src.vtrace.post_processor - WARNING - No renders found for scene HCM0249 at /workspace/VTRACE/output_private_high/submission/HCM0249
+2026-07-07 05:00:22,134 - __main__ - INFO - Scene HCM0254 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 176590, 'num_test_poses': 60}
+2026-07-07 05:00:22,134 - __main__ - INFO - --- Estimating Depth for HCM0254 ---
+2026-07-07 05:00:22,141 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254. Skipping depth estimation.
+2026-07-07 05:00:22,144 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train/sparse/0/depth_params.json
+2026-07-07 05:00:22,144 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 05:00:22,144 - __main__ - INFO - --- Training HCM0254 ---
+2026-07-07 05:00:22,145 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 05:00:22,146 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 05:00:22,146 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 05:00:22,147 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 05:00:22,148 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 05:00:22,148 - src.vtrace.trainer - INFO - Running training command for HCM0254...
+2026-07-07 05:00:22,148 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0254_train.log
+2026-07-07 05:00:22,149 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train/images...
+2026-07-07 05:00:41,191 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0437: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0437/train', '-m', '/workspace/VTRACE/output_private_high/models/HNI0437', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 05:00:41,192 - __main__ - INFO - --- Rendering HNI0437 ---
+2026-07-07 05:00:41,192 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HNI0437/point_cloud
+2026-07-07 05:00:41,192 - __main__ - INFO - --- Post-processing HNI0437 ---
+2026-07-07 05:00:41,192 - src.vtrace.post_processor - WARNING - No renders found for scene HNI0437 at /workspace/VTRACE/output_private_high/submission/HNI0437
+2026-07-07 05:00:41,192 - __main__ - INFO - --- Creating Submission Archive ---
+2026-07-07 05:00:41,192 - src.vtrace.renderer - INFO - Zipping /workspace/VTRACE/output_private_high/submission into /workspace/VTRACE/output_private_high/submission_round1.zip...
+2026-07-07 05:00:41,193 - src.vtrace.renderer - INFO - Done!
+2026-07-07 05:04:32,869 - __main__ - INFO - Pipeline log will be saved to /workspace/VTRACE/output_private_high/logs/pipeline.log
+2026-07-07 05:04:32,869 - __main__ - INFO - Found 8 scenes in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1
+2026-07-07 05:04:32,870 - __main__ - INFO - Scene HCM0249 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 165726, 'num_test_poses': 60}
+2026-07-07 05:04:32,870 - __main__ - INFO - --- Estimating Depth for HCM0249 ---
+2026-07-07 05:04:32,873 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249. Skipping depth estimation.
+2026-07-07 05:04:32,875 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train/sparse/0/depth_params.json
+2026-07-07 05:04:32,875 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 05:04:32,875 - __main__ - INFO - --- Training HCM0249 ---
+2026-07-07 05:04:32,876 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 05:04:32,876 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 05:04:32,876 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 05:04:32,877 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 05:04:32,877 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 05:04:32,877 - src.vtrace.trainer - INFO - Running training command for HCM0249...
+2026-07-07 05:04:32,877 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0249_train.log
+2026-07-07 05:04:32,878 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train/images...
+2026-07-07 05:07:57,942 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train', '-m', '/workspace/VTRACE/output_private_high/models/HCM0249', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 05:07:57,942 - __main__ - INFO - --- Rendering HCM0249 ---
+2026-07-07 05:07:57,942 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HCM0249/point_cloud
+2026-07-07 05:07:57,942 - __main__ - INFO - --- Post-processing HCM0249 ---
+2026-07-07 05:07:57,942 - src.vtrace.post_processor - WARNING - No renders found for scene HCM0249 at /workspace/VTRACE/output_private_high/submission/HCM0249
+2026-07-07 05:07:57,944 - __main__ - INFO - Scene HCM0254 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 176590, 'num_test_poses': 60}
+2026-07-07 05:07:57,944 - __main__ - INFO - --- Estimating Depth for HCM0254 ---
+2026-07-07 05:07:57,951 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254. Skipping depth estimation.
+2026-07-07 05:07:57,954 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train/sparse/0/depth_params.json
+2026-07-07 05:07:57,954 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 05:07:57,955 - __main__ - INFO - --- Training HCM0254 ---
+2026-07-07 05:07:57,955 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 05:07:57,956 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 05:07:57,957 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 05:07:57,957 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 05:07:57,958 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 05:07:57,958 - src.vtrace.trainer - INFO - Running training command for HCM0254...
+2026-07-07 05:07:57,958 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0254_train.log
+2026-07-07 05:07:57,960 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train/images...
+2026-07-07 05:09:25,492 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train', '-m', '/workspace/VTRACE/output_private_high/models/HCM0254', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 05:09:25,492 - __main__ - INFO - --- Rendering HCM0254 ---
+2026-07-07 05:09:25,493 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HCM0254/point_cloud
+2026-07-07 05:09:25,493 - __main__ - INFO - --- Post-processing HCM0254 ---
+2026-07-07 05:09:25,493 - src.vtrace.post_processor - WARNING - No renders found for scene HCM0254 at /workspace/VTRACE/output_private_high/submission/HCM0254
+2026-07-07 05:09:25,494 - __main__ - INFO - Scene HCM0276 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 220581, 'num_test_poses': 60}
+2026-07-07 05:09:25,494 - __main__ - INFO - --- Estimating Depth for HCM0276 ---
+2026-07-07 05:09:25,501 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276. Skipping depth estimation.
+2026-07-07 05:09:25,504 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276/train/sparse/0/depth_params.json
+2026-07-07 05:09:25,505 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 05:09:25,505 - __main__ - INFO - --- Training HCM0276 ---
+2026-07-07 05:09:25,505 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 05:09:25,506 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 05:09:25,507 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 05:09:25,507 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 05:09:25,508 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 05:09:25,508 - src.vtrace.trainer - INFO - Running training command for HCM0276...
+2026-07-07 05:09:25,508 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0276_train.log
+2026-07-07 05:09:25,510 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276/train/images...
+2026-07-07 05:10:30,283 - __main__ - INFO - Pipeline log will be saved to /workspace/VTRACE/output_private_high/logs/pipeline.log
+2026-07-07 05:10:30,283 - __main__ - INFO - Found 8 scenes in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1
+2026-07-07 05:10:30,284 - __main__ - INFO - Scene HCM0249 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 165726, 'num_test_poses': 60}
+2026-07-07 05:10:30,284 - __main__ - INFO - --- Estimating Depth for HCM0249 ---
+2026-07-07 05:10:30,287 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249. Skipping depth estimation.
+2026-07-07 05:10:30,288 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train/sparse/0/depth_params.json
+2026-07-07 05:10:30,289 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 05:10:30,289 - __main__ - INFO - --- Training HCM0249 ---
+2026-07-07 05:10:30,289 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 05:10:30,289 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 05:10:30,290 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 05:10:30,290 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 05:10:30,290 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 05:10:30,290 - src.vtrace.trainer - INFO - Running training command for HCM0249...
+2026-07-07 05:10:30,290 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0249_train.log
+2026-07-07 05:10:30,291 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train/images...
+2026-07-07 05:11:54,158 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train', '-m', '/workspace/VTRACE/output_private_high/models/HCM0249', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 05:11:54,158 - __main__ - INFO - --- Rendering HCM0249 ---
+2026-07-07 05:11:54,159 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HCM0249/point_cloud
+2026-07-07 05:11:54,159 - __main__ - INFO - --- Post-processing HCM0249 ---
+2026-07-07 05:11:54,159 - src.vtrace.post_processor - WARNING - No renders found for scene HCM0249 at /workspace/VTRACE/output_private_high/submission/HCM0249
+2026-07-07 05:11:54,160 - __main__ - INFO - Scene HCM0254 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 176590, 'num_test_poses': 60}
+2026-07-07 05:11:54,160 - __main__ - INFO - --- Estimating Depth for HCM0254 ---
+2026-07-07 05:11:54,167 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254. Skipping depth estimation.
+2026-07-07 05:11:54,171 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train/sparse/0/depth_params.json
+2026-07-07 05:11:54,171 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 05:11:54,171 - __main__ - INFO - --- Training HCM0254 ---
+2026-07-07 05:11:54,172 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 05:11:54,172 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 05:11:54,173 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 05:11:54,174 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 05:11:54,174 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 05:11:54,175 - src.vtrace.trainer - INFO - Running training command for HCM0254...
+2026-07-07 05:11:54,175 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0254_train.log
+2026-07-07 05:11:54,176 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train/images...
+2026-07-07 05:13:22,103 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train', '-m', '/workspace/VTRACE/output_private_high/models/HCM0254', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 05:13:22,104 - __main__ - INFO - --- Rendering HCM0254 ---
+2026-07-07 05:13:22,104 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HCM0254/point_cloud
+2026-07-07 05:13:22,104 - __main__ - INFO - --- Post-processing HCM0254 ---
+2026-07-07 05:13:22,104 - src.vtrace.post_processor - WARNING - No renders found for scene HCM0254 at /workspace/VTRACE/output_private_high/submission/HCM0254
+2026-07-07 05:13:22,105 - __main__ - INFO - Scene HCM0276 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 220581, 'num_test_poses': 60}
+2026-07-07 05:13:22,105 - __main__ - INFO - --- Estimating Depth for HCM0276 ---
+2026-07-07 05:13:22,112 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276. Skipping depth estimation.
+2026-07-07 05:13:22,116 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276/train/sparse/0/depth_params.json
+2026-07-07 05:13:22,116 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 05:13:22,116 - __main__ - INFO - --- Training HCM0276 ---
+2026-07-07 05:13:22,117 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 05:13:22,117 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 05:13:22,118 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 05:13:22,119 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 05:13:22,119 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 05:13:22,120 - src.vtrace.trainer - INFO - Running training command for HCM0276...
+2026-07-07 05:13:22,120 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0276_train.log
+2026-07-07 05:13:22,121 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276/train/images...
+2026-07-07 05:14:53,877 - __main__ - INFO - Pipeline log will be saved to /workspace/VTRACE/output_private_high/logs/pipeline.log
+2026-07-07 05:14:53,877 - __main__ - INFO - Found 8 scenes in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1
+2026-07-07 05:14:53,878 - __main__ - INFO - Scene HCM0249 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 165726, 'num_test_poses': 60}
+2026-07-07 05:14:53,878 - __main__ - INFO - --- Estimating Depth for HCM0249 ---
+2026-07-07 05:14:53,881 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249. Skipping depth estimation.
+2026-07-07 05:14:53,883 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train/sparse/0/depth_params.json
+2026-07-07 05:14:53,883 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 05:14:53,883 - __main__ - INFO - --- Training HCM0249 ---
+2026-07-07 05:14:53,883 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 05:14:53,884 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 05:14:53,884 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 05:14:53,884 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 05:14:53,885 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 05:14:53,885 - src.vtrace.trainer - INFO - Running training command for HCM0249...
+2026-07-07 05:14:53,885 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0249_train.log
+2026-07-07 05:14:53,885 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249/train/images...
+2026-07-07 05:20:33,169 - src.vtrace.trainer - INFO - Training completed for scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0249. Model saved to /workspace/VTRACE/output_private_high/models/HCM0249
+2026-07-07 05:20:33,169 - __main__ - INFO - --- Rendering HCM0249 ---
+2026-07-07 05:20:33,172 - src.vtrace.renderer - INFO - Detected SH degree 3 from PLY file /workspace/VTRACE/output_private_high/models/HCM0249/point_cloud/iteration_8000/point_cloud.ply
+2026-07-07 05:20:41,744 - __main__ - INFO - --- Post-processing HCM0249 ---
+2026-07-07 05:20:41,744 - src.vtrace.post_processor - INFO - Post-processing 60 rendered images for HCM0249...
+2026-07-07 05:20:42,967 - __main__ - INFO - Scene HCM0254 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 176590, 'num_test_poses': 60}
+2026-07-07 05:20:42,967 - __main__ - INFO - --- Estimating Depth for HCM0254 ---
+2026-07-07 05:20:42,970 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254. Skipping depth estimation.
+2026-07-07 05:20:42,972 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train/sparse/0/depth_params.json
+2026-07-07 05:20:42,972 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 05:20:42,972 - __main__ - INFO - --- Training HCM0254 ---
+2026-07-07 05:20:42,973 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 05:20:42,973 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 05:20:42,973 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 05:20:42,974 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 05:20:42,974 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 05:20:42,974 - src.vtrace.trainer - INFO - Running training command for HCM0254...
+2026-07-07 05:20:42,974 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0254_train.log
+2026-07-07 05:20:42,975 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254/train/images...
+2026-07-07 05:25:57,360 - src.vtrace.trainer - INFO - Training completed for scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0254. Model saved to /workspace/VTRACE/output_private_high/models/HCM0254
+2026-07-07 05:25:57,361 - __main__ - INFO - --- Rendering HCM0254 ---
+2026-07-07 05:25:57,364 - src.vtrace.renderer - INFO - Detected SH degree 3 from PLY file /workspace/VTRACE/output_private_high/models/HCM0254/point_cloud/iteration_7000/point_cloud.ply
+2026-07-07 05:26:06,362 - __main__ - INFO - --- Post-processing HCM0254 ---
+2026-07-07 05:26:06,362 - src.vtrace.post_processor - INFO - Post-processing 60 rendered images for HCM0254...
+2026-07-07 05:26:07,387 - __main__ - INFO - Scene HCM0276 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 220581, 'num_test_poses': 60}
+2026-07-07 05:26:07,387 - __main__ - INFO - --- Estimating Depth for HCM0276 ---
+2026-07-07 05:26:07,391 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276. Skipping depth estimation.
+2026-07-07 05:26:07,392 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276/train/sparse/0/depth_params.json
+2026-07-07 05:26:07,392 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 05:26:07,392 - __main__ - INFO - --- Training HCM0276 ---
+2026-07-07 05:26:07,393 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 05:26:07,393 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 05:26:07,393 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 05:26:07,394 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 05:26:07,394 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 05:26:07,394 - src.vtrace.trainer - INFO - Running training command for HCM0276...
+2026-07-07 05:26:07,394 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM0276_train.log
+2026-07-07 05:26:07,395 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276/train/images...
+2026-07-07 05:31:03,233 - src.vtrace.trainer - INFO - Training completed for scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM0276. Model saved to /workspace/VTRACE/output_private_high/models/HCM0276
+2026-07-07 05:31:03,233 - __main__ - INFO - --- Rendering HCM0276 ---
+2026-07-07 05:31:03,236 - src.vtrace.renderer - INFO - Detected SH degree 3 from PLY file /workspace/VTRACE/output_private_high/models/HCM0276/point_cloud/iteration_7000/point_cloud.ply
+2026-07-07 05:31:11,643 - __main__ - INFO - --- Post-processing HCM0276 ---
+2026-07-07 05:31:11,644 - src.vtrace.post_processor - INFO - Post-processing 60 rendered images for HCM0276...
+2026-07-07 05:31:12,461 - __main__ - INFO - Scene HCM1439 stats: {'num_train_images': 103, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 48347, 'num_test_poses': 26}
+2026-07-07 05:31:12,461 - __main__ - INFO - --- Estimating Depth for HCM1439 ---
+2026-07-07 05:31:12,462 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM1439. Skipping depth estimation.
+2026-07-07 05:31:12,463 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM1439/train/sparse/0/depth_params.json
+2026-07-07 05:31:12,463 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 05:31:12,463 - __main__ - INFO - --- Training HCM1439 ---
+2026-07-07 05:31:12,464 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 05:31:12,464 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 05:31:12,464 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 05:31:12,465 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 05:31:12,465 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 05:31:12,465 - src.vtrace.trainer - INFO - Running training command for HCM1439...
+2026-07-07 05:31:12,465 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HCM1439_train.log
+2026-07-07 05:31:12,465 - src.vtrace.quality_filter - INFO - Scanning 103 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM1439/train/images...
+2026-07-07 05:35:52,732 - src.vtrace.trainer - INFO - Training completed for scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HCM1439. Model saved to /workspace/VTRACE/output_private_high/models/HCM1439
+2026-07-07 05:35:52,732 - __main__ - INFO - --- Rendering HCM1439 ---
+2026-07-07 05:35:52,734 - src.vtrace.renderer - INFO - Detected SH degree 3 from PLY file /workspace/VTRACE/output_private_high/models/HCM1439/point_cloud/iteration_8600/point_cloud.ply
+2026-07-07 05:35:57,039 - __main__ - INFO - --- Post-processing HCM1439 ---
+2026-07-07 05:35:57,040 - src.vtrace.post_processor - INFO - Post-processing 26 rendered images for HCM1439...
+2026-07-07 05:35:57,377 - __main__ - INFO - Scene HNI0131 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 147464, 'num_test_poses': 60}
+2026-07-07 05:35:57,377 - __main__ - INFO - --- Estimating Depth for HNI0131 ---
+2026-07-07 05:35:57,380 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0131. Skipping depth estimation.
+2026-07-07 05:35:57,382 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0131/train/sparse/0/depth_params.json
+2026-07-07 05:35:57,382 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 05:35:57,382 - __main__ - INFO - --- Training HNI0131 ---
+2026-07-07 05:35:57,382 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 05:35:57,382 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 05:35:57,383 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 05:35:57,383 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 05:35:57,383 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 05:35:57,384 - src.vtrace.trainer - INFO - Running training command for HNI0131...
+2026-07-07 05:35:57,384 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HNI0131_train.log
+2026-07-07 05:35:57,384 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0131/train/images...
+2026-07-07 05:40:25,493 - src.vtrace.trainer - INFO - Training completed for scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0131. Model saved to /workspace/VTRACE/output_private_high/models/HNI0131
+2026-07-07 05:40:25,493 - __main__ - INFO - --- Rendering HNI0131 ---
+2026-07-07 05:40:25,495 - src.vtrace.renderer - INFO - Detected SH degree 3 from PLY file /workspace/VTRACE/output_private_high/models/HNI0131/point_cloud/iteration_7000/point_cloud.ply
+2026-07-07 05:40:33,833 - __main__ - INFO - --- Post-processing HNI0131 ---
+2026-07-07 05:40:33,833 - src.vtrace.post_processor - INFO - Post-processing 60 rendered images for HNI0131...
+2026-07-07 05:40:34,569 - __main__ - INFO - Scene HNI0265 stats: {'num_train_images': 205, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 83992, 'num_test_poses': 52}
+2026-07-07 05:40:34,570 - __main__ - INFO - --- Estimating Depth for HNI0265 ---
+2026-07-07 05:40:34,572 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0265. Skipping depth estimation.
+2026-07-07 05:40:34,574 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0265/train/sparse/0/depth_params.json
+2026-07-07 05:40:34,574 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 05:40:34,574 - __main__ - INFO - --- Training HNI0265 ---
+2026-07-07 05:40:34,574 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 05:40:34,574 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 05:40:34,575 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 05:40:34,575 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 05:40:34,575 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 05:40:34,576 - src.vtrace.trainer - INFO - Running training command for HNI0265...
+2026-07-07 05:40:34,576 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HNI0265_train.log
+2026-07-07 05:40:34,576 - src.vtrace.quality_filter - INFO - Scanning 205 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0265/train/images...
+2026-07-07 05:47:55,882 - src.vtrace.trainer - INFO - Training completed for scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0265. Model saved to /workspace/VTRACE/output_private_high/models/HNI0265
+2026-07-07 05:47:55,882 - __main__ - INFO - --- Rendering HNI0265 ---
+2026-07-07 05:47:55,885 - src.vtrace.renderer - INFO - Detected SH degree 3 from PLY file /workspace/VTRACE/output_private_high/models/HNI0265/point_cloud/iteration_8600/point_cloud.ply
+2026-07-07 05:48:03,330 - __main__ - INFO - --- Post-processing HNI0265 ---
+2026-07-07 05:48:03,331 - src.vtrace.post_processor - INFO - Post-processing 52 rendered images for HNI0265...
+2026-07-07 05:48:03,913 - __main__ - INFO - Scene HNI0366 stats: {'num_train_images': 240, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 145502, 'num_test_poses': 60}
+2026-07-07 05:48:03,913 - __main__ - INFO - --- Estimating Depth for HNI0366 ---
+2026-07-07 05:48:03,916 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366. Skipping depth estimation.
+2026-07-07 05:48:03,918 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/sparse/0/depth_params.json
+2026-07-07 05:48:03,918 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 05:48:03,918 - __main__ - INFO - --- Training HNI0366 ---
+2026-07-07 05:48:03,918 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 05:48:03,919 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 05:48:03,919 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 05:48:03,919 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 05:48:03,920 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 05:48:03,920 - src.vtrace.trainer - INFO - Running training command for HNI0366...
+2026-07-07 05:48:03,920 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HNI0366_train.log
+2026-07-07 05:48:03,920 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train/images...
+2026-07-07 05:48:14,358 - src.vtrace.trainer - ERROR - Error during training scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366: Command '['/workspace/VTRACE/.venv/bin/python3', 'src/vtrace/gaussian-splatting/train.py', '-s', '/workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0366/train', '-m', '/workspace/VTRACE/output_private_high/models/HNI0366', '--iterations', '30000', '-r', '1', '--data_device', 'cuda', '--sh_degree', '3', '--densify_grad_threshold', '0.0006', '--early_stopping_start_iter', '7000', '--early_stopping_window_iters', '2000', '--early_stopping_rel_change', '0.005', '--lambda_opacity', '0.001', '--lambda_scale', '0.01', '--lambda_dssim', '0.4', '--lambda_edge', '1.0', '--depths', 'depth', '--disable_viewer']' returned non-zero exit status 1.
+2026-07-07 05:48:14,358 - __main__ - INFO - --- Rendering HNI0366 ---
+2026-07-07 05:48:14,358 - src.vtrace.renderer - WARNING - Model not found at /workspace/VTRACE/output_private_high/models/HNI0366/point_cloud
+2026-07-07 05:48:14,359 - __main__ - INFO - --- Post-processing HNI0366 ---
+2026-07-07 05:48:14,359 - src.vtrace.post_processor - WARNING - No renders found for scene HNI0366 at /workspace/VTRACE/output_private_high/submission/HNI0366
+2026-07-07 05:48:14,359 - __main__ - INFO - Scene HNI0437 stats: {'num_train_images': 224, 'num_test_images': 0, 'has_sparse_reconstruction': True, 'num_sparse_points': 115026, 'num_test_poses': 56}
+2026-07-07 05:48:14,359 - __main__ - INFO - --- Estimating Depth for HNI0437 ---
+2026-07-07 05:48:14,362 - src.vtrace.depth_estimator - INFO - Depth maps already exist for /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0437. Skipping depth estimation.
+2026-07-07 05:48:14,364 - src.vtrace.depth_estimator - INFO - Saved /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0437/train/sparse/0/depth_params.json
+2026-07-07 05:48:14,364 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-07 05:48:14,364 - __main__ - INFO - --- Training HNI0437 ---
+2026-07-07 05:48:14,364 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-07 05:48:14,365 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-07 05:48:14,365 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-07 05:48:14,365 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-07 05:48:14,365 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-07 05:48:14,366 - src.vtrace.trainer - INFO - Running training command for HNI0437...
+2026-07-07 05:48:14,366 - src.vtrace.trainer - INFO - Training output will be saved to: /workspace/VTRACE/output_private_high/logs/HNI0437_train.log
+2026-07-07 05:48:14,366 - src.vtrace.quality_filter - INFO - Scanning 224 images for quality in /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0437/train/images...
+2026-07-07 05:54:05,305 - src.vtrace.trainer - INFO - Training completed for scene /workspace/VTRACE/VAI_NVS_DATA/phase1/private_set1/HNI0437. Model saved to /workspace/VTRACE/output_private_high/models/HNI0437
+2026-07-07 05:54:05,305 - __main__ - INFO - --- Rendering HNI0437 ---
+2026-07-07 05:54:05,309 - src.vtrace.renderer - INFO - Detected SH degree 3 from PLY file /workspace/VTRACE/output_private_high/models/HNI0437/point_cloud/iteration_9100/point_cloud.ply
+2026-07-07 05:54:13,031 - __main__ - INFO - --- Post-processing HNI0437 ---
+2026-07-07 05:54:13,031 - src.vtrace.post_processor - INFO - Post-processing 56 rendered images for HNI0437...
+2026-07-07 05:54:13,970 - __main__ - INFO - --- Creating Submission Archive ---
+2026-07-07 05:54:13,970 - src.vtrace.renderer - INFO - Zipping /workspace/VTRACE/output_private_high/submission into /workspace/VTRACE/output_private_high/submission_round1.zip...
+2026-07-07 05:54:17,075 - src.vtrace.renderer - INFO - Done!
