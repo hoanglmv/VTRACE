@@ -472,3 +472,34 @@ class GaussianModel:
     def add_densification_stats(self, viewspace_point_tensor, update_filter):
         self.xyz_gradient_accum[update_filter] += torch.norm(viewspace_point_tensor.grad[update_filter,:2], dim=-1, keepdim=True)
         self.denom[update_filter] += 1
+
+    @property
+    def optimizers(self):
+        mapping = {
+            "means": "xyz",
+            "f_dc": "f_dc",
+            "f_rest": "f_rest",
+            "opacities": "opacity",
+            "scales": "scaling",
+            "quats": "rotation"
+        }
+        
+        class OptimizerWrapper:
+            def __init__(self, optimizer, param_group):
+                self.optimizer = optimizer
+                self.param_groups = [param_group]
+                
+            @property
+            def state(self):
+                return self.optimizer.state
+                
+        opts = {}
+        for param_name, group_name in mapping.items():
+            found_group = None
+            for group in self.optimizer.param_groups:
+                if group.get("name") == group_name:
+                    found_group = group
+                    break
+            if found_group is not None:
+                opts[param_name] = OptimizerWrapper(self.optimizer, found_group)
+        return opts
