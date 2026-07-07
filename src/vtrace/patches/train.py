@@ -194,7 +194,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
 
         iter_start.record()
 
-        gaussians.update_learning_rate(iteration)
+        xyz_lr = gaussians.update_learning_rate(iteration)
 
         # Every 1000 its we increase the levels of SH up to a maximum degree
         if iteration % 1000 == 0:
@@ -366,7 +366,8 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                     gaussians.optimizers, 
                     strategy_state, 
                     iteration, 
-                    render_pkg["meta"]
+                    {}, 
+                    xyz_lr
                 )
 
                 # Reassign the tensors back to the model because MCMCStrategy might have recreated them
