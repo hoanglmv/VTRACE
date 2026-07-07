@@ -63,6 +63,7 @@ class GaussianModel:
         self.optimizer = None
         self.percent_dense = 0
         self.spatial_lr_scale = 0
+        self.tmp_radii = None
         self.setup_functions()
 
     def capture(self):
