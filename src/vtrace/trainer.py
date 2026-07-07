@@ -88,10 +88,13 @@ def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_devi
         q_filter.apply()
         with open(train_log_path, "w", encoding="utf-8") as log_file:
             process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
-            for line in process.stdout:
-                sys.stdout.write(line)
+            while True:
+                char = process.stdout.read(1)
+                if not char:
+                    break
+                sys.stdout.write(char)
                 sys.stdout.flush()
-                log_file.write(line)
+                log_file.write(char)
             process.wait()
             if process.returncode != 0:
                 raise subprocess.CalledProcessError(process.returncode, cmd)
