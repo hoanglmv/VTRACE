@@ -44,7 +44,7 @@ def estimate_scene_depth(scene_dir, device="cuda" if torch.cuda.is_available() e
         png_path = os.path.join(depth_dir, f"{base_name}.png")
         
         # Default parameter for each image
-        depth_params[filename] = {"scale": 1.0, "offset": 0.0}
+        depth_params[base_name] = {"scale": 1.0, "offset": 0.0}
         
         is_valid = False
         if os.path.exists(png_path) and os.path.getsize(png_path) > 0:

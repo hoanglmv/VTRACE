@@ -248,13 +248,13 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             mono_invdepth = viewpoint_cam.invdepthmap.cuda()
             depth_mask = viewpoint_cam.depth_mask.cuda()
 
-            Ll1depth_pure = torch.abs((invDepth  - mono_invdepth) * depth_mask).mean()
+            Ll1depth_pure = 0.0
             
             # Pearson correlation depth loss to force structure alignment
             p_loss = pearson_correlation_loss(invDepth, mono_invdepth, depth_mask.bool())
             
-            # Combine L1 depth loss and Pearson correlation loss
-            Ll1depth = depth_l1_weight(iteration) * (Ll1depth_pure + 0.1 * p_loss)
+            # Use only Pearson correlation loss to regularize geometry alignment
+            Ll1depth = depth_l1_weight(iteration) * p_loss
             loss += Ll1depth
             Ll1depth = Ll1depth.item()
         else:
