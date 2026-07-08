@@ -107,13 +107,27 @@ def prune_depth_floaters(gaussians, scene, num_cameras_to_check=5, thresh=0.1):
         
         inv_z = 1.0 / torch.clamp(z_cam, min=1e-5)
         
+        # Dynamic normalization to [0, 1] range within the camera frustum for robust relative depth comparison
+        valid_mask = in_frustum & (cam.depth_mask[0, v, u] > 0)
+        if not valid_mask.any():
+            continue
+            
+        inv_z_valid = inv_z[valid_mask]
         mono_invdepth = cam.invdepthmap[0, v, u]
-        depth_mask = cam.depth_mask[0, v, u]
+        mono_inv_valid = mono_invdepth[valid_mask]
         
-        is_floater = in_frustum & (depth_mask > 0) & (inv_z > (mono_invdepth + thresh))
+        inv_z_min = inv_z_valid.min()
+        inv_z_max = inv_z_valid.max()
+        mono_min = mono_inv_valid.min()
+        mono_max = mono_inv_valid.max()
+        
+        inv_z_norm = (inv_z - inv_z_min) / (inv_z_max - inv_z_min + 1e-5)
+        mono_norm = (mono_invdepth - mono_min) / (mono_max - mono_min + 1e-5)
+        
+        is_floater = valid_mask & (inv_z_norm > (mono_norm + thresh))
         
         floater_votes += is_floater.int()
-        overlap_count += (in_frustum & (depth_mask > 0)).int()
+        overlap_count += (in_frustum & (cam.depth_mask[0, v, u] > 0)).int()
         
     prune_mask = (floater_votes >= 2) & (floater_votes >= (overlap_count // 2))
     

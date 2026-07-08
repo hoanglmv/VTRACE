@@ -30,7 +30,11 @@ def loadCam(args, id, cam_info, resolution_scale, is_nerf_synthetic, is_test_dat
                 if is_nerf_synthetic:
                     invdepthmap = depth_img.astype(np.float32) / 512
                 else:
-                    invdepthmap = depth_img.astype(np.float32) / float(2**16)
+                    # Dynamically detect if PNG is 8-bit or 16-bit to normalize values to [0, 1]
+                    if depth_img.dtype == np.uint16:
+                        invdepthmap = depth_img.astype(np.float32) / 65535.0
+                    else:
+                        invdepthmap = depth_img.astype(np.float32) / 255.0
 
         except FileNotFoundError:
             print(f"Error: The depth file at path '{cam_info.depth_path}' was not found.")
