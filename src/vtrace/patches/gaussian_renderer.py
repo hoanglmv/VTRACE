@@ -77,7 +77,8 @@ def render(viewpoint_camera, pc : GaussianModel, pipe, bg_color : torch.Tensor, 
         backgrounds=bg_color.unsqueeze(0),
         render_mode="RGB+ED",
         rasterize_mode="antialiased" if pipe.antialiasing else "classic",
-        radial_coeffs=radial_coeffs
+        radial_coeffs=radial_coeffs,
+        with_ut=True if radial_coeffs is not None else False
     )
 
     # Convert back from [1, H, W, 4] to [3, H, W] and [1, H, W] to match INRIA's output format

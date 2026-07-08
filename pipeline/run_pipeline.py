@@ -3,9 +3,40 @@ import argparse
 import logging
 import sys
 import yaml
+import shutil
 
 # Ensure src module is in path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+# Automatically apply patches to the cloned gaussian-splatting folder BEFORE importing any local modules
+# to prevent Python from importing unpatched cached modules
+def apply_pre_imports_patches():
+    gs_path = "src/vtrace/gaussian-splatting"
+    # Resolve relative to run_pipeline.py file if not found
+    if not os.path.exists(os.path.join(gs_path, "train.py")):
+        gs_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "vtrace", "gaussian-splatting"))
+        
+    patches = {
+        "dataset_readers.py": "scene/dataset_readers.py",
+        "train.py": "train.py",
+        "arguments_init.py": "arguments/__init__.py",
+        "cameras.py": "scene/cameras.py",
+        "gaussian_model.py": "scene/gaussian_model.py",
+        "camera_utils.py": "utils/camera_utils.py",
+        "gaussian_renderer.py": "gaussian_renderer/__init__.py"
+    }
+    patches_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "vtrace", "patches"))
+    for patch_name, relative_dest in patches.items():
+        src_file = os.path.join(patches_dir, patch_name)
+        dest_file = os.path.join(gs_path, relative_dest)
+        if os.path.exists(src_file):
+            try:
+                os.makedirs(os.path.dirname(dest_file), exist_ok=True)
+                shutil.copy2(src_file, dest_file)
+            except Exception as e:
+                print(f"Failed to pre-patch {patch_name}: {e}")
+
+apply_pre_imports_patches()
 
 from src.vtrace.data_utils import list_scenes, analyze_scene
 from src.vtrace.trainer import train_scene
