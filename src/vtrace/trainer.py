@@ -6,7 +6,7 @@ from .quality_filter import QualityFilter
 
 logger = logging.getLogger(__name__)
 
-def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_device="cpu", sh_degree=2, gs_path="src/vtrace/gaussian-splatting", early_stopping_start_iter=7000, early_stopping_window_iters=5000, early_stopping_rel_change=0.00001, lambda_opacity=0.0, lambda_scale=0.0, lambda_dssim=0.2, lambda_edge=0.0):
+def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_device="cpu", sh_degree=2, gs_path="src/vtrace/gaussian-splatting", early_stopping_start_iter=7000, early_stopping_window_iters=5000, early_stopping_rel_change=0.00001, lambda_opacity=0.0, lambda_scale=0.0, lambda_dssim=0.2, lambda_edge=0.0, densify_until_iter=15000, antialiasing=False):
     """
     Trains the 3DGS model for a given scene.
     scene_dir: path to the scene directory (e.g. VAI_NVS_DATA/phase1/public_set/HCM0181)
@@ -70,9 +70,12 @@ def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_devi
         "--lambda_scale", str(lambda_scale),
         "--lambda_dssim", str(lambda_dssim),
         "--lambda_edge", str(lambda_edge),
+        "--densify_until_iter", str(densify_until_iter),
         "--depths", "depth",
         "--disable_viewer"
     ]
+    if antialiasing:
+        cmd.append("--antialiasing")
     
     image_dir = os.path.join(source_path, "images")
     q_filter = QualityFilter(image_dir)

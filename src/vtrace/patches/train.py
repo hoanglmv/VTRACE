@@ -377,6 +377,10 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                     "f_rest": gaussians._features_rest
                 }
 
+                # Decaying SGLD noise to allow fine-grained geometric convergence (Simulated Annealing)
+                init_noise_lr = 500000.0 / (gaussians.spatial_lr_scale ** 2)
+                strategy.noise_lr = init_noise_lr * (1.0 - iteration / opt.densify_until_iter)
+
                 # Step the strategy
                 strategy.step_post_backward(
                     params_dict, 

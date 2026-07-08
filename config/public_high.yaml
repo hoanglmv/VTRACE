@@ -13,6 +13,7 @@ training:
   lambda_scale: 0.0001
   lambda_edge: 1.0
   densify_until_iter: 20000
+  antialiasing: true
 
 render:
   skip_training: false

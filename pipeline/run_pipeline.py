@@ -75,6 +75,8 @@ def main():
     lambda_scale = config_data["training"].get("lambda_scale", 0.0)
     lambda_dssim = config_data["training"].get("lambda_dssim", 0.2)
     lambda_edge = config_data["training"].get("lambda_edge", 0.0)
+    densify_until_iter = config_data["training"].get("densify_until_iter", 15000)
+    antialiasing = config_data["training"].get("antialiasing", False)
 
     models_dir = os.path.join(out_dir, "models")
     submission_dir = os.path.join(out_dir, "submission")
@@ -122,7 +124,9 @@ def main():
                 lambda_opacity=lambda_opacity,
                 lambda_scale=lambda_scale,
                 lambda_dssim=lambda_dssim,
-                lambda_edge=lambda_edge
+                lambda_edge=lambda_edge,
+                densify_until_iter=densify_until_iter,
+                antialiasing=antialiasing
             )
         
         logger.info(f"--- Rendering {scene} ---")
