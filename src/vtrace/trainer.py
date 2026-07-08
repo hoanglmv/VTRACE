@@ -32,7 +32,8 @@ def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_devi
         "arguments_init.py": "arguments/__init__.py",
         "cameras.py": "scene/cameras.py",
         "gaussian_model.py": "scene/gaussian_model.py",
-        "camera_utils.py": "utils/camera_utils.py"
+        "camera_utils.py": "utils/camera_utils.py",
+        "gaussian_renderer.py": "gaussian_renderer/__init__.py"
     }
     patches_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "patches"))
     for patch_name, relative_dest in patches.items():

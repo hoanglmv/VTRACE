@@ -20,7 +20,8 @@ class Camera(nn.Module):
     def __init__(self, resolution, colmap_id, R, T, FoVx, FoVy, depth_params, image, invdepthmap,
                  image_name, uid,
                  trans=np.array([0.0, 0.0, 0.0]), scale=1.0, data_device = "cuda",
-                 train_test_exp = False, is_test_dataset = False, is_test_view = False
+                 train_test_exp = False, is_test_dataset = False, is_test_view = False,
+                 radial_coeffs = None
                  ):
         super(Camera, self).__init__()
 
@@ -38,6 +39,8 @@ class Camera(nn.Module):
             print(e)
             print(f"[Warning] Custom device {data_device} failed, fallback to default cuda device" )
             self.data_device = torch.device("cuda")
+
+        self.radial_coeffs = torch.tensor(radial_coeffs, dtype=torch.float32, device=self.data_device) if radial_coeffs is not None else None
 
         resized_image_rgb = PILtoTorch(image, resolution)
         gt_image = resized_image_rgb[:3, ...]
