@@ -16,6 +16,7 @@ try:
     from gaussian_renderer import render
     from utils.graphics_utils import fov2focal, focal2fov
     from scene.cameras import Camera
+    from scene.colmap_loader import read_intrinsics_binary, read_intrinsics_text
 except ImportError:
     logger.warning("3DGS modules not found. Ensure setup.py has been run and gaussian-splatting is cloned.")
 
@@ -110,6 +111,32 @@ def render_scene(scene_name, scene_dir, model_path, output_dir, render_format="p
     background = torch.tensor([0, 0, 0], dtype=torch.float32, device="cuda")
     pipeline = PipelineParams()
     
+    # Load radial distortion parameters from training sparse reconstruction
+    radial_coeffs = np.zeros(6, dtype=np.float32)
+    sparse_dir = os.path.join(scene_dir, "train", "sparse", "0")
+    cameras_bin = os.path.join(sparse_dir, "cameras.bin")
+    cameras_txt = os.path.join(sparse_dir, "cameras.txt")
+    try:
+        if os.path.exists(cameras_bin):
+            cameras_data = read_intrinsics_binary(cameras_bin)
+        elif os.path.exists(cameras_txt):
+            cameras_data = read_intrinsics_text(cameras_txt)
+        else:
+            cameras_data = {}
+            
+        if cameras_data:
+            cam_colmap = list(cameras_data.values())[0]
+            if cam_colmap.model in ["SIMPLE_RADIAL", "RADIAL"]:
+                k1 = cam_colmap.params[3] if len(cam_colmap.params) > 3 else 0.0
+                k2 = cam_colmap.params[4] if len(cam_colmap.params) > 4 else 0.0
+                radial_coeffs = np.array([k1, k2, 0.0, 0.0, 0.0, 0.0], dtype=np.float32)
+            elif cam_colmap.model in ["OPENCV", "OPENCV_FISHEYE"]:
+                k1 = cam_colmap.params[4] if len(cam_colmap.params) > 4 else 0.0
+                k2 = cam_colmap.params[5] if len(cam_colmap.params) > 5 else 0.0
+                radial_coeffs = np.array([k1, k2, 0.0, 0.0, 0.0, 0.0], dtype=np.float32)
+    except Exception as e:
+        logger.warning(f"Could not load radial distortion from training folder: {e}. Defaulting to zero distortion.")
+    
     out_scene_dir = os.path.join(output_dir, scene_name)
     os.makedirs(out_scene_dir, exist_ok=True)
     
@@ -155,7 +182,8 @@ def render_scene(scene_name, scene_dir, model_path, output_dir, render_format="p
                          invdepthmap=None,
                          image_name=img_name.split(".")[0], 
                          uid=idx,
-                         data_device="cuda")
+                         data_device="cuda",
+                         radial_coeffs=radial_coeffs)
             
             # Render
             render_pkg = render(cam, gaussians, pipeline, background)
