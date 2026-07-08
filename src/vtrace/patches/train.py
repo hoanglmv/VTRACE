@@ -398,7 +398,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                         gaussians.max_radii2D = gaussians.max_radii2D[:num_points]
                 
                 # Apply depth-guided floater pruning every 500 iterations during the densification phase
-                if iteration > 1000 and iteration < opt.densify_until_iter and iteration % 500 == 0:
+                if iteration > 1000 and iteration < 10000 and iteration % 500 == 0:
                     prune_depth_floaters(gaussians, scene, num_cameras_to_check=5, thresh=0.1)
                 
             if (iteration in checkpoint_iterations):
