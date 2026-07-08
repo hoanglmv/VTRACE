@@ -254,7 +254,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             p_loss = pearson_correlation_loss(invDepth, mono_invdepth, depth_mask.bool())
             
             # Use only Pearson correlation loss to regularize geometry alignment
-            Ll1depth = depth_l1_weight(iteration) * p_loss
+            Ll1depth = depth_l1_weight(iteration) * 0.1 * p_loss
             loss += Ll1depth
             Ll1depth = Ll1depth.item()
         else:

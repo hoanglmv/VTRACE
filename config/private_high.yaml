@@ -9,8 +9,8 @@ training:
   data_device: "cuda"
   sh_degree: 3
   lambda_dssim: 0.4
-  lambda_opacity: 0.001
-  lambda_scale: 0.01
+  lambda_opacity: 0.0
+  lambda_scale: 0.0001
   lambda_edge: 1.0
 
 render:

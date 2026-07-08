@@ -70,6 +70,7 @@ def getNerfppNorm(cam_info):
 
 def readColmapCameras(cam_extrinsics, cam_intrinsics, depths_params, images_folder, depths_folder, test_cam_names_list):
     cam_infos = []
+    skipped_images = []
     for idx, key in enumerate(cam_extrinsics):
         sys.stdout.write('\r')
         # the exact output you're looking for:
@@ -77,6 +78,13 @@ def readColmapCameras(cam_extrinsics, cam_intrinsics, depths_params, images_fold
         sys.stdout.flush()
 
         extr = cam_extrinsics[key]
+        
+        # Check image existence first to avoid redundant checks and log spam
+        image_path = os.path.join(images_folder, extr.name)
+        if not os.path.exists(image_path):
+            skipped_images.append(extr.name)
+            continue
+
         intr = cam_intrinsics[extr.camera_id]
         height = intr.height
         width = intr.width
@@ -119,11 +127,6 @@ def readColmapCameras(cam_extrinsics, cam_intrinsics, depths_params, images_fold
             except:
                 print("\n", key, "not found in depths_params")
 
-        image_path = os.path.join(images_folder, extr.name)
-        if not os.path.exists(image_path):
-            print(f"\nWarning: Image {image_path} not found on disk. Skipping.")
-            continue
-            
         image_name = extr.name
         depth_path = os.path.join(depths_folder, f"{extr.name[:-n_remove]}.png") if depths_folder != "" else ""
 
@@ -133,6 +136,8 @@ def readColmapCameras(cam_extrinsics, cam_intrinsics, depths_params, images_fold
         cam_infos.append(cam_info)
 
     sys.stdout.write('\n')
+    if len(skipped_images) > 0:
+        print(f"Warning: {len(skipped_images)} images in COLMAP model were not found on disk (skipped).")
     return cam_infos
 
 def fetchPly(path):
