@@ -171,7 +171,9 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
     loss_history = []
 
     from gsplat.strategy import MCMCStrategy
-    strategy = MCMCStrategy(verbose=False)
+    # Scale down noise_lr by spatial_lr_scale^2 to correct the coordinate scaling bug in gsplat's noise injection
+    # Set cap_max to 2,000,000 to utilize RTX 3090's 24GB VRAM for capturing finer details
+    strategy = MCMCStrategy(verbose=False, cap_max=2000000, noise_lr=500000.0 / (gaussians.spatial_lr_scale ** 2))
     strategy_state = strategy.initialize_state()
 
     progress_bar = tqdm(range(first_iter, opt.iterations), desc="Training progress")
