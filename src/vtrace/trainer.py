@@ -88,7 +88,7 @@ def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_devi
     try:
         q_filter.apply()
         with open(train_log_path, "w", encoding="utf-8") as log_file:
-            process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=False, bufsize=1)
+            process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=False, bufsize=0)
             while True:
                 char_bytes = process.stdout.read(1)
                 if not char_bytes:
