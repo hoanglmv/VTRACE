@@ -6,7 +6,6 @@ import logging
 import numpy as np
 from PIL import Image
 from plyfile import PlyData, PlyElement
-from scipy.ndimage import uniform_filter
 
 logger = logging.getLogger(__name__)
 
@@ -249,8 +248,12 @@ def densify_scene_point_cloud(scene_dir, subsample=6, max_depth_factor=3.0, min_
         depth_metric = (scale * depth_rel + shift).astype(np.float32)
         
         # Filter out depth edges/boundaries (which have unreliable depth predictions)
-        depth_smooth = uniform_filter(depth_metric, size=5).astype(np.float32)
-        grad = np.abs(depth_metric - depth_smooth)
+        # Compute simple Sobel/central difference gradient on the metric depth map
+        grad_x = np.zeros_like(depth_metric)
+        grad_y = np.zeros_like(depth_metric)
+        grad_x[:, 1:-1] = np.abs(depth_metric[:, 2:] - depth_metric[:, :-2])
+        grad_y[1:-1, :] = np.abs(depth_metric[2:, :] - depth_metric[:-2, :])
+        grad = grad_x + grad_y
         grad_thresh = float(np.percentile(grad, 85))
         
         # Subsample pixels for 3D back-projection

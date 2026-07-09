@@ -206,7 +206,7 @@ def render_scene(scene_name, scene_dir, model_path, output_dir, render_format="p
             
             out_path = os.path.join(out_scene_dir, out_img_name)
             if save_fmt == "JPEG":
-                img.save(out_path, "JPEG", quality=100)
+                img.save(out_path, "JPEG", quality=97, subsampling=0)
             else:
                 img.save(out_path, "PNG")
 
