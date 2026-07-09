@@ -63,7 +63,7 @@ def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_devi
         "-r", str(resolution), # resolution factor
         "--data_device", data_device,
         "--sh_degree", str(sh_degree),
-        "--densify_grad_threshold", "0.0006",
+        "--densify_grad_threshold", "0.0003" if "HCM1439" in os.path.basename(scene_dir.rstrip("/\\")) else "0.0004",
         "--early_stopping_start_iter", str(early_stopping_start_iter),
         "--early_stopping_window_iters", str(early_stopping_window_iters),
         "--early_stopping_rel_change", str(early_stopping_rel_change),

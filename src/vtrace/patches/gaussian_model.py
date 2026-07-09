@@ -466,7 +466,8 @@ class GaussianModel:
         prune_mask = (self.get_opacity < min_opacity).squeeze()
         if max_screen_size:
             big_points_vs = self.max_radii2D > max_screen_size
-            big_points_ws = self.get_scaling.max(dim=1).values > 0.1 * extent
+            scale_thresh = 0.5 if (self.get_xyz.shape[0] < 80000) else 0.3
+            big_points_ws = self.get_scaling.max(dim=1).values > scale_thresh
             prune_mask = torch.logical_or(torch.logical_or(prune_mask, big_points_vs), big_points_ws)
         self.prune_points(prune_mask)
         tmp_radii = self.tmp_radii

@@ -43,6 +43,7 @@ from src.vtrace.trainer import train_scene
 from src.vtrace.renderer import render_scene, create_submission_zip
 from src.vtrace.depth_estimator import estimate_scene_depth
 from src.vtrace.post_processor import post_process_scene_renders
+from src.vtrace.densify import densify_scene_point_cloud
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -143,6 +144,9 @@ def main():
         if do_train:
             logger.info(f"--- Estimating Depth for {scene} ---")
             estimate_scene_depth(scene_dir, device=data_device)
+            
+            logger.info(f"--- Densifying Point Cloud for {scene} ---")
+            densify_scene_point_cloud(scene_dir)
             
             logger.info(f"--- Training {scene} ---")
             train_scene(
