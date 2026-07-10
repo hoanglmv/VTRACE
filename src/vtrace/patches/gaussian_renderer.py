@@ -25,11 +25,11 @@ def render(viewpoint_camera, pc : GaussianModel, pipe, bg_color : torch.Tensor, 
     width = int(viewpoint_camera.image_width)
     height = int(viewpoint_camera.image_height)
     
-    # Calculate camera intrinsics (K) from FoV
-    fx = width / (2 * math.tan(viewpoint_camera.FoVx * 0.5))
-    fy = height / (2 * math.tan(viewpoint_camera.FoVy * 0.5))
-    cx = width / 2.0
-    cy = height / 2.0
+    # Calculate camera intrinsics (K) from FoV or use custom values if provided
+    fx = viewpoint_camera.fx if hasattr(viewpoint_camera, 'fx') else (width / (2 * math.tan(viewpoint_camera.FoVx * 0.5)))
+    fy = viewpoint_camera.fy if hasattr(viewpoint_camera, 'fy') else (height / (2 * math.tan(viewpoint_camera.FoVy * 0.5)))
+    cx = viewpoint_camera.cx if hasattr(viewpoint_camera, 'cx') else (width / 2.0)
+    cy = viewpoint_camera.cy if hasattr(viewpoint_camera, 'cy') else (height / 2.0)
 
     K = torch.tensor([
         [fx, 0, cx],

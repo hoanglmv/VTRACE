@@ -14,8 +14,7 @@ gs_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "gaussian-spla
 if gs_path not in sys.path:
     sys.path.append(gs_path)
 
-from scene.colmap_loader import read_extrinsics_binary, read_intrinsics_binary, CameraModel
-from utils.general_utils import qvec2rotmat
+from scene.colmap_loader import read_extrinsics_binary, read_intrinsics_binary, CameraModel, qvec2rotmat
 
 def read_next_bytes(fid, num_bytes, format_char_sequence, endian_character="<"):
     data = fid.read(num_bytes)

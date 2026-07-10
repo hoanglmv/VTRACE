@@ -6,6 +6,7 @@ import numpy as np
 from PIL import Image
 from tqdm import tqdm
 import logging
+import cv2
 
 logger = logging.getLogger(__name__)
 
@@ -158,6 +159,8 @@ def render_scene(scene_name, scene_dir, model_path, output_dir, render_format="p
             tx, ty, tz = float(row["tx"]), float(row["ty"]), float(row["tz"])
             fx, fy = float(row["fx"]), float(row["fy"])
             width, height = int(row["width"]), int(row["height"])
+            cx = float(row["cx"]) if "cx" in row else width / 2.0
+            cy = float(row["cy"]) if "cy" in row else height / 2.0
             
             # Convert COLMAP pose to R, T
             qvec = np.array([qw, qx, qy, qz])
@@ -167,32 +170,138 @@ def render_scene(scene_name, scene_dir, model_path, output_dir, render_format="p
             # The rotation matrix needs to be transposed for 3DGS Camera object
             R = np.transpose(R)
             
-            FovY = focal2fov(fy, height)
-            FovX = focal2fov(fx, width)
-            
-            # Dummy PIL Image since Camera constructor converts it to Torch
-            dummy_image = Image.new("RGB", (width, height))
-            
-            cam = Camera(resolution=(width, height),
-                         colmap_id=idx, 
-                         R=R, T=T, 
-                         FoVx=FovX, FoVy=FovY, 
-                         depth_params=None,
-                         image=dummy_image, 
-                         invdepthmap=None,
-                         image_name=img_name.split(".")[0], 
-                         uid=idx,
-                         data_device="cuda",
-                         radial_coeffs=radial_coeffs)
-            
-            # Render
-            render_pkg = render(cam, gaussians, pipeline, background)
-            image_tensor = render_pkg["render"]
-            
-            # Save
-            img_np = image_tensor.permute(1, 2, 0).detach().cpu().numpy()
-            img_np = np.clip(img_np * 255, 0, 255).astype(np.uint8)
-            img = Image.fromarray(img_np)
+            # Use "Distort-Back" rendering if we have radial distortion parameters
+            opencv_dist = np.array([
+                radial_coeffs[0],  # k1
+                radial_coeffs[1],  # k2
+                0.0,  # p1
+                0.0,  # p2
+                0.0,  # k3
+                0.0,  # k4
+                0.0, 0.0
+            ], dtype=np.float32)
+
+            if np.any(opencv_dist):
+                # Build K in OpenCV convention
+                K = np.array([
+                    [fx, 0.0, cx],
+                    [0.0, fy, cy],
+                    [0.0, 0.0, 1.0]
+                ], dtype=np.float32)
+
+                # Replicate undistortion pipeline exactly from vtairace_3D_BTS
+                newK, roi = cv2.getOptimalNewCameraMatrix(K, opencv_dist, (width, height), 0)
+                rx, ry, rw_roi, rh_roi = roi
+
+                # Crop to ROI and adjust principal point
+                newK_cropped = newK.copy()
+                newK_cropped[0, 2] -= rx
+                newK_cropped[1, 2] -= ry
+
+                fx_u = float(newK_cropped[0, 0])
+                fy_u = float(newK_cropped[1, 1])
+                cx_u = float(newK_cropped[0, 2])
+                cy_u = float(newK_cropped[1, 2])
+
+                # Map every distorted pixel to its location in the cropped undistorted space
+                y_grid, x_grid = np.mgrid[0:height, 0:width]
+                pts_dist = np.stack([x_grid, y_grid], axis=-1).astype(np.float32).reshape(-1, 1, 2)
+                pts_undist_norm = cv2.undistortPoints(pts_dist, K, opencv_dist, None, None)
+
+                # Convert normalized coords to pixel coords in newK space, then shift for ROI crop
+                pts_undist_pixel = pts_undist_norm.copy()
+                pts_undist_pixel[:, 0, 0] = pts_undist_norm[:, 0, 0] * newK[0, 0] + newK[0, 2] - rx
+                pts_undist_pixel[:, 0, 1] = pts_undist_norm[:, 0, 1] * newK[1, 1] + newK[1, 2] - ry
+
+                map_x_raw = pts_undist_pixel[:, 0, 0].reshape(height, width)
+                map_y_raw = pts_undist_pixel[:, 0, 1].reshape(height, width)
+
+                # Dynamic padding to ensure no pixels map outside the rendered frame
+                min_x = np.min(map_x_raw)
+                max_x = np.max(map_x_raw)
+                min_y = np.min(map_y_raw)
+                max_y = np.max(map_y_raw)
+
+                pad_left = max(0, int(np.ceil(-min_x)) + 2)
+                pad_right = max(0, int(np.ceil(max_x - rw_roi)) + 2)
+                pad_top = max(0, int(np.ceil(-min_y)) + 2)
+                pad_bottom = max(0, int(np.ceil(max_y - rh_roi)) + 2)
+
+                render_w = rw_roi + pad_left + pad_right
+                render_h = rh_roi + pad_top + pad_bottom
+
+                # Padded camera intrinsics for rendering
+                fx_model = fx_u
+                fy_model = fy_u
+                cx_model = cx_u + pad_left
+                cy_model = cy_u + pad_top
+
+                FovY_u = focal2fov(fy_model, render_h)
+                FovX_u = focal2fov(fx_model, render_w)
+
+                dummy_image = Image.new("RGB", (render_w, render_h))
+
+                cam = Camera(resolution=(render_w, render_h),
+                             colmap_id=idx, 
+                             R=R, T=T, 
+                             FoVx=FovX_u, FoVy=FovY_u, 
+                             depth_params=None,
+                             image=dummy_image, 
+                             invdepthmap=None,
+                             image_name=img_name.split(".")[0], 
+                             uid=idx,
+                             data_device="cuda",
+                             radial_coeffs=None)
+
+                # Pass custom attributes to bypass FoV conversion in gaussian_renderer
+                cam.fx = fx_model
+                cam.fy = fy_model
+                cam.cx = cx_model
+                cam.cy = cy_model
+
+                render_pkg = render(cam, gaussians, pipeline, background)
+                image_tensor = render_pkg["render"]
+
+                # Post-process: convert to numpy and remap back using Lanczos4 interpolation
+                img_np = image_tensor.permute(1, 2, 0).detach().cpu().numpy()
+                img_np = np.clip(img_np * 255, 0, 255).astype(np.uint8)
+
+                map_x = (map_x_raw + pad_left).astype(np.float32)
+                map_y = (map_y_raw + pad_top).astype(np.float32)
+                
+                rgb = cv2.remap(img_np, map_x, map_y, cv2.INTER_LANCZOS4)
+                img = Image.fromarray(rgb)
+
+            else:
+                # Standard perspective rendering
+                FovY = focal2fov(fy, height)
+                FovX = focal2fov(fx, width)
+                
+                dummy_image = Image.new("RGB", (width, height))
+                
+                cam = Camera(resolution=(width, height),
+                             colmap_id=idx, 
+                             R=R, T=T, 
+                             FoVx=FovX, FoVy=FovY, 
+                             depth_params=None,
+                             image=dummy_image, 
+                             invdepthmap=None,
+                             image_name=img_name.split(".")[0], 
+                             uid=idx,
+                             data_device="cuda",
+                             radial_coeffs=None)
+                
+                cam.fx = fx
+                cam.fy = fy
+                cam.cx = cx
+                cam.cy = cy
+
+                render_pkg = render(cam, gaussians, pipeline, background)
+                image_tensor = render_pkg["render"]
+                
+                img_np = image_tensor.permute(1, 2, 0).detach().cpu().numpy()
+                img_np = np.clip(img_np * 255, 0, 255).astype(np.uint8)
+                img = Image.fromarray(img_np)
             
             # Use original extension from test_poses.csv if it exists
             # Otherwise use the requested format/extension
