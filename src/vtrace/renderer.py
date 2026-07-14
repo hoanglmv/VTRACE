@@ -22,11 +22,13 @@ except ImportError:
     logger.warning("3DGS modules not found. Ensure setup.py has been run and gaussian-splatting is cloned.")
 
 class PipelineParams:
-    def __init__(self):
+    def __init__(self, antialiasing=False, with_ut=True, with_eval3d=False):
         self.compute_cov3D_python = False
         self.convert_SHs_python = False
         self.debug = False
-        self.antialiasing = False
+        self.antialiasing = antialiasing
+        self.with_ut = with_ut
+        self.with_eval3d = with_eval3d
 
 def qvec2rotmat(qvec):
     return np.array([
@@ -71,7 +73,22 @@ def generate_dummy_renders(test_csv, out_scene_dir, render_format):
             else:
                 dummy.save(out_path, "PNG")
 
-def render_scene(scene_name, scene_dir, model_path, output_dir, render_format="png"):
+def render_scene(
+    scene_name,
+    scene_dir,
+    model_path,
+    output_dir,
+    render_format="png",
+    *,
+    antialiasing=False,
+    distortion_mode="native",
+    with_ut=True,
+    with_eval3d=False,
+    supersample=1.0,
+    downsample_filter="area",
+    jpeg_quality=100,
+    checkpoint_iteration=None,
+):
     test_csv = os.path.join(scene_dir, "test", "test_poses.csv")
     if not os.path.exists(test_csv):
         logger.warning(f"No test_poses.csv found for {scene_name}")
@@ -94,7 +111,15 @@ def render_scene(scene_name, scene_dir, model_path, output_dir, render_format="p
         generate_dummy_renders(test_csv, out_scene_dir, render_format)
         return
         
-    latest_iter = iterations[-1]
+    if checkpoint_iteration is None or str(checkpoint_iteration).lower() == "latest":
+        latest_iter = iterations[-1]
+    else:
+        latest_iter = int(checkpoint_iteration)
+        if latest_iter not in iterations:
+            raise ValueError(
+                f"Requested checkpoint iteration {latest_iter} is unavailable for {scene_name}; "
+                f"available iterations: {iterations}"
+            )
     ply_path = os.path.join(iter_dir, f"iteration_{latest_iter}", "point_cloud.ply")
     
     try:
@@ -110,7 +135,17 @@ def render_scene(scene_name, scene_dir, model_path, output_dir, render_format="p
     gaussians.load_ply(ply_path)
     
     background = torch.tensor([0, 0, 0], dtype=torch.float32, device="cuda")
-    pipeline = PipelineParams()
+    pipeline = PipelineParams(
+        antialiasing=antialiasing,
+        with_ut=with_ut,
+        with_eval3d=with_eval3d,
+    )
+    if distortion_mode not in {"native", "legacy_remap", "none"}:
+        raise ValueError(
+            f"Unknown distortion_mode={distortion_mode!r}; expected native, legacy_remap, or none"
+        )
+    if supersample < 1.0:
+        raise ValueError("supersample must be >= 1.0")
     
     # Load radial distortion parameters from training sparse reconstruction
     radial_coeffs = np.zeros(6, dtype=np.float32)
@@ -181,7 +216,7 @@ def render_scene(scene_name, scene_dir, model_path, output_dir, render_format="p
                 0.0, 0.0
             ], dtype=np.float32)
 
-            if np.any(opencv_dist):
+            if np.any(opencv_dist) and distortion_mode == "legacy_remap":
                 # Build K in OpenCV convention
                 K = np.array([
                     [fx, 0.0, cx],
@@ -273,13 +308,21 @@ def render_scene(scene_name, scene_dir, model_path, output_dir, render_format="p
                 img = Image.fromarray(rgb)
 
             else:
-                # Standard perspective rendering
-                FovY = focal2fov(fy, height)
-                FovX = focal2fov(fx, width)
+                # Native gsplat projection.  Scaling K together with the output
+                # resolution implements true supersampling without changing FoV.
+                render_width = max(width, int(round(width * supersample)))
+                render_height = max(height, int(round(height * supersample)))
+                sx = render_width / width
+                sy = render_height / height
+                fx_render, fy_render = fx * sx, fy * sy
+                cx_render, cy_render = cx * sx, cy * sy
+                FovY = focal2fov(fy_render, render_height)
+                FovX = focal2fov(fx_render, render_width)
                 
-                dummy_image = Image.new("RGB", (width, height))
+                dummy_image = Image.new("RGB", (render_width, render_height))
                 
-                cam = Camera(resolution=(width, height),
+                native_radial = radial_coeffs if distortion_mode == "native" and np.any(radial_coeffs) else None
+                cam = Camera(resolution=(render_width, render_height),
                              colmap_id=idx, 
                              R=R, T=T, 
                              FoVx=FovX, FoVy=FovY, 
@@ -289,18 +332,30 @@ def render_scene(scene_name, scene_dir, model_path, output_dir, render_format="p
                              image_name=img_name.split(".")[0], 
                              uid=idx,
                              data_device="cuda",
-                             radial_coeffs=None)
+                             radial_coeffs=native_radial)
                 
-                cam.fx = fx
-                cam.fy = fy
-                cam.cx = cx
-                cam.cy = cy
+                cam.fx = fx_render
+                cam.fy = fy_render
+                cam.cx = cx_render
+                cam.cy = cy_render
 
                 render_pkg = render(cam, gaussians, pipeline, background)
                 image_tensor = render_pkg["render"]
                 
                 img_np = image_tensor.permute(1, 2, 0).detach().cpu().numpy()
-                img_np = np.clip(img_np * 255, 0, 255).astype(np.uint8)
+                img_np = np.clip(np.rint(img_np * 255), 0, 255).astype(np.uint8)
+                if (render_width, render_height) != (width, height):
+                    interpolation = {
+                        "area": cv2.INTER_AREA,
+                        "lanczos": cv2.INTER_LANCZOS4,
+                        "linear": cv2.INTER_LINEAR,
+                    }.get(downsample_filter)
+                    if interpolation is None:
+                        raise ValueError(
+                            f"Unknown downsample_filter={downsample_filter!r}; "
+                            "expected area, lanczos, or linear"
+                        )
+                    img_np = cv2.resize(img_np, (width, height), interpolation=interpolation)
                 img = Image.fromarray(img_np)
             
             # Use original extension from test_poses.csv if it exists
@@ -315,7 +370,7 @@ def render_scene(scene_name, scene_dir, model_path, output_dir, render_format="p
             
             out_path = os.path.join(out_scene_dir, out_img_name)
             if save_fmt == "JPEG":
-                img.save(out_path, "JPEG", quality=97, subsampling=0)
+                img.save(out_path, "JPEG", quality=int(jpeg_quality), subsampling=0)
             else:
                 img.save(out_path, "PNG")
 

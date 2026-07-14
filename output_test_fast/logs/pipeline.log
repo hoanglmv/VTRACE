@@ -1,0 +1,70 @@
+2026-07-14 22:10:34,165 - __main__ - INFO - Pipeline log will be saved to /home/myvh07/VTRACE/output_test_fast/logs/pipeline.log
+2026-07-14 22:10:34,166 - __main__ - INFO - Found 5 scenes in /home/myvh07/VTRACE/VAI_NVS_DATA/phase1/public_set
+2026-07-14 22:10:34,169 - __main__ - INFO - Scene HCM0181 stats: {'num_train_images': 240, 'num_test_images': 60, 'has_sparse_reconstruction': True, 'num_sparse_points': 224928, 'num_test_poses': 60}
+2026-07-14 22:10:34,169 - __main__ - INFO - --- Estimating Depth for HCM0181 ---
+2026-07-14 22:10:34,172 - src.vtrace.depth_estimator - INFO - Loading DepthAnythingV2 model on cuda...
+2026-07-14 22:10:56,061 - src.vtrace.depth_estimator - INFO - Estimating depth for 240 remaining images in batches of 8...
+2026-07-14 22:11:26,666 - src.vtrace.depth_estimator - INFO - Saved /home/myvh07/VTRACE/VAI_NVS_DATA/phase1/public_set/HCM0181/train/sparse/0/depth_params.json
+2026-07-14 22:11:26,666 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-14 22:11:26,667 - __main__ - INFO - --- Densifying Point Cloud for HCM0181 ---
+2026-07-14 22:11:27,208 - src.vtrace.densify - INFO - Backed up sparse point cloud to /home/myvh07/VTRACE/VAI_NVS_DATA/phase1/public_set/HCM0181/train/sparse/0/points3D_sparse.ply
+2026-07-14 22:11:28,202 - src.vtrace.densify - INFO - Scene center: [0.40397602 3.5793498  8.0121565 ], radius: 93.55m, max allowed distance: 280.64m
+2026-07-14 22:11:29,497 - src.vtrace.densify - WARNING - Image DJI_20241229103513_0105_V.JPG only has 4 anchors (< 6), skipping.
+2026-07-14 22:11:29,647 - src.vtrace.densify - WARNING - Image DJI_20241229103508_0100_V.JPG has high depth RMSE 7.41m (> 50% median 6.94m), skipping.
+2026-07-14 22:11:37,824 - src.vtrace.densify - WARNING - Image DJI_20241229104237_0356_V.JPG only has 1 anchors (< 6), skipping.
+2026-07-14 22:11:38,523 - src.vtrace.densify - WARNING - Image DJI_20241229103356_0038_V.JPG has high depth RMSE 9.06m (> 50% median 13.80m), skipping.
+2026-07-14 22:11:38,587 - src.vtrace.densify - WARNING - Image DJI_20241229103429_0071_V.JPG only has 0 anchors (< 6), skipping.
+2026-07-14 22:11:39,036 - src.vtrace.densify - INFO - Generated 7088978 dense points from 232 images
+2026-07-14 22:11:39,101 - src.vtrace.densify - INFO - Total points before voxel grid downsampling: 7313906
+2026-07-14 22:11:41,330 - src.vtrace.densify - INFO - Total points after voxel grid downsampling (voxel_size=0.05m): 7123670
+2026-07-14 22:11:52,144 - src.vtrace.densify - INFO - Successfully saved densified point cloud to /home/myvh07/VTRACE/VAI_NVS_DATA/phase1/public_set/HCM0181/train/sparse/0/points3D.ply
+2026-07-14 22:11:52,186 - __main__ - INFO - --- Training HCM0181 ---
+2026-07-14 22:11:52,187 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-14 22:11:52,187 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-14 22:11:52,188 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-14 22:11:52,188 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-14 22:11:52,189 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-14 22:11:52,189 - src.vtrace.trainer - INFO - Auto-patched: camera_utils.py -> utils/camera_utils.py
+2026-07-14 22:11:52,189 - src.vtrace.trainer - INFO - Auto-patched: gaussian_renderer.py -> gaussian_renderer/__init__.py
+2026-07-14 22:11:52,189 - src.vtrace.trainer - INFO - Running training command for HCM0181...
+2026-07-14 22:11:52,190 - src.vtrace.trainer - INFO - Training output will be saved to: /home/myvh07/VTRACE/output_test_fast/logs/HCM0181_train.log
+2026-07-14 22:11:52,190 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /home/myvh07/VTRACE/VAI_NVS_DATA/phase1/public_set/HCM0181/train/images...
+2026-07-14 22:14:29,270 - src.vtrace.trainer - INFO - Training completed for scene /home/myvh07/VTRACE/VAI_NVS_DATA/phase1/public_set/HCM0181. Model saved to /home/myvh07/VTRACE/output_test_fast/models/HCM0181
+2026-07-14 22:14:29,271 - __main__ - INFO - --- Rendering HCM0181 ---
+2026-07-14 22:14:29,275 - src.vtrace.renderer - INFO - Detected SH degree 2 from PLY file /home/myvh07/VTRACE/output_test_fast/models/HCM0181/point_cloud/iteration_50/point_cloud.ply
+2026-07-14 22:14:46,421 - __main__ - INFO - --- Post-processing HCM0181 ---
+2026-07-14 22:14:46,422 - src.vtrace.post_processor - INFO - Post-processing 60 rendered images for HCM0181...
+2026-07-14 22:14:47,140 - __main__ - INFO - Scene HCM0193 stats: {'num_train_images': 240, 'num_test_images': 60, 'has_sparse_reconstruction': True, 'num_sparse_points': 214593, 'num_test_poses': 60}
+2026-07-14 22:14:47,141 - __main__ - INFO - --- Estimating Depth for HCM0193 ---
+2026-07-14 22:14:47,143 - src.vtrace.depth_estimator - INFO - Loading DepthAnythingV2 model on cuda...
+2026-07-14 22:14:47,861 - src.vtrace.depth_estimator - INFO - Estimating depth for 240 remaining images in batches of 8...
+2026-07-14 22:15:18,828 - src.vtrace.depth_estimator - INFO - Saved /home/myvh07/VTRACE/VAI_NVS_DATA/phase1/public_set/HCM0193/train/sparse/0/depth_params.json
+2026-07-14 22:15:18,829 - src.vtrace.depth_estimator - INFO - Depth estimation complete.
+2026-07-14 22:15:18,829 - __main__ - INFO - --- Densifying Point Cloud for HCM0193 ---
+2026-07-14 22:15:19,408 - src.vtrace.densify - INFO - Backed up sparse point cloud to /home/myvh07/VTRACE/VAI_NVS_DATA/phase1/public_set/HCM0193/train/sparse/0/points3D_sparse.ply
+2026-07-14 22:15:20,412 - src.vtrace.densify - INFO - Scene center: [-0.8229323  5.141299   7.48402  ], radius: 104.53m, max allowed distance: 313.60m
+2026-07-14 22:15:31,817 - src.vtrace.densify - WARNING - Image DJI_20241229173600_0002_V.JPG only has 0 anchors (< 6), skipping.
+2026-07-14 22:15:31,891 - src.vtrace.densify - INFO - Generated 7180533 dense points from 238 images
+2026-07-14 22:15:31,954 - src.vtrace.densify - INFO - Total points before voxel grid downsampling: 7395126
+2026-07-14 22:15:34,172 - src.vtrace.densify - INFO - Total points after voxel grid downsampling (voxel_size=0.05m): 7126371
+2026-07-14 22:15:43,501 - src.vtrace.densify - INFO - Successfully saved densified point cloud to /home/myvh07/VTRACE/VAI_NVS_DATA/phase1/public_set/HCM0193/train/sparse/0/points3D.ply
+2026-07-14 22:15:43,541 - __main__ - INFO - --- Training HCM0193 ---
+2026-07-14 22:15:43,541 - src.vtrace.trainer - INFO - Auto-patched: dataset_readers.py -> scene/dataset_readers.py
+2026-07-14 22:15:43,542 - src.vtrace.trainer - INFO - Auto-patched: train.py -> train.py
+2026-07-14 22:15:43,542 - src.vtrace.trainer - INFO - Auto-patched: arguments_init.py -> arguments/__init__.py
+2026-07-14 22:15:43,542 - src.vtrace.trainer - INFO - Auto-patched: cameras.py -> scene/cameras.py
+2026-07-14 22:15:43,543 - src.vtrace.trainer - INFO - Auto-patched: gaussian_model.py -> scene/gaussian_model.py
+2026-07-14 22:15:43,543 - src.vtrace.trainer - INFO - Auto-patched: camera_utils.py -> utils/camera_utils.py
+2026-07-14 22:15:43,543 - src.vtrace.trainer - INFO - Auto-patched: gaussian_renderer.py -> gaussian_renderer/__init__.py
+2026-07-14 22:15:43,543 - src.vtrace.trainer - INFO - Running training command for HCM0193...
+2026-07-14 22:15:43,543 - src.vtrace.trainer - INFO - Training output will be saved to: /home/myvh07/VTRACE/output_test_fast/logs/HCM0193_train.log
+2026-07-14 22:15:43,544 - src.vtrace.quality_filter - INFO - Scanning 240 images for quality in /home/myvh07/VTRACE/VAI_NVS_DATA/phase1/public_set/HCM0193/train/images...
+2026-07-14 22:16:45,369 - src.vtrace.trainer - INFO - Training completed for scene /home/myvh07/VTRACE/VAI_NVS_DATA/phase1/public_set/HCM0193. Model saved to /home/myvh07/VTRACE/output_test_fast/models/HCM0193
+2026-07-14 22:16:45,369 - __main__ - INFO - --- Rendering HCM0193 ---
+2026-07-14 22:16:45,371 - src.vtrace.renderer - INFO - Detected SH degree 2 from PLY file /home/myvh07/VTRACE/output_test_fast/models/HCM0193/point_cloud/iteration_50/point_cloud.ply
+2026-07-14 22:17:02,630 - __main__ - INFO - --- Post-processing HCM0193 ---
+2026-07-14 22:17:02,630 - src.vtrace.post_processor - INFO - Post-processing 60 rendered images for HCM0193...
+2026-07-14 22:17:03,366 - __main__ - INFO - Scene HCM0204 stats: {'num_train_images': 240, 'num_test_images': 60, 'has_sparse_reconstruction': True, 'num_sparse_points': 251715, 'num_test_poses': 60}
+2026-07-14 22:17:03,367 - __main__ - INFO - --- Estimating Depth for HCM0204 ---
+2026-07-14 22:17:03,370 - src.vtrace.depth_estimator - INFO - Loading DepthAnythingV2 model on cuda...
+2026-07-14 22:17:04,075 - src.vtrace.depth_estimator - INFO - Estimating depth for 240 remaining images in batches of 8...

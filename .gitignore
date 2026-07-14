@@ -24,6 +24,7 @@ submission*.zip
 
 # Sub-repositories
 gaussian-splatting/
+external/
 
 # IDEs
 .vscode/

@@ -1,17 +1,28 @@
-# High-quality training configuration for Private Set
 pipeline:
   data_dir: "./VAI_NVS_DATA/phase1/private_set1"
-  output_dir: "./output_private_high"
+  output_dir: "./output_private_absgs_fregs"
 
 training:
   iterations: 30000
   resolution: 1
   data_device: "cuda"
   sh_degree: 3
-  lambda_dssim: 0.4
+  estimate_depth: false
+  densify_point_cloud: false
+  densification_strategy: "absgs"
+  absgrad: true
+  revised_opacity: true
+  grow_grad2d: 0.0002
+  lambda_dssim: 0.2
+  lambda_edge: 0.25
   lambda_opacity: 0.0
   lambda_scale: 0.0001
-  lambda_edge: 1.0
+  lambda_frequency: 0.01
+  frequency_start_iter: 3000
+  frequency_ramp_iters: 10000
+  frequency_max_resolution: 512
+  depth_l1_weight_init: 0.0
+  depth_l1_weight_final: 0.0
   densify_until_iter: 20000
   antialiasing: true
 
@@ -22,7 +33,6 @@ render:
   distortion_mode: "native"
   with_ut: true
   supersample: 1.0
-  downsample_filter: "area"
   jpeg_quality: 100
-  checkpoint_iteration: "latest"
   post_process: false
+

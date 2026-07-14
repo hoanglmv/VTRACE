@@ -1,0 +1,41 @@
+# Max-quality profile: NVIDIA 3DGRUT + 3DGUT-MCMC + Neural Harmonic Textures.
+# This profile intentionally requires a 48GB+ GPU and never silently reduces quality.
+framework:
+  directory: ./external/3dgrut
+  python: .venv/bin/python
+  repository: https://github.com/nv-tlabs/3dgrut.git
+  commit: a37ef721012dea0f29c0fcfff2d525023b4e854a
+  minimum_gpu_memory_gib: 45
+
+pipeline:
+  data_dir: ./VAI_NVS_DATA/phase1/private_set1
+  output_dir: ./output_nht_max_private
+  minimum_free_disk_gib: 600
+  max_retries: 1
+  archive_name: submission_nht_max.zip
+
+training:
+  config_name: apps/colmap_3dgut_mcmc_nht.yaml
+  iterations: 30000
+  max_gaussians: 4000000
+  num_workers: 16
+  # A preempted run loses at most ~3000 iterations. Every checkpoint contains
+  # geometry, MCMC state, NHT decoder, optimizer and scheduler state.
+  checkpoint_iterations: [1000, 5000, 10000, 15000, 20000, 25000, 28000, 30000]
+  overrides:
+    - model.nht_features.dim=48
+    - model.nht_decoder.hidden_dim=128
+    - model.nht_decoder.num_layers=3
+    - model.nht_decoder.dir_encoding_degree=3
+    - model.nht_decoder.color_refine_steps=3000
+    - render.particle_feature_half=true
+    - render.feature_output_half=true
+    - strategy.relocate.end_iteration=25000
+    - strategy.add.end_iteration=25000
+    - strategy.perturb.end_iteration=27500
+    - loss.lambda_opacity=0.02
+    - loss.lambda_scale=0.005
+    - post_processing.method=null
+
+render:
+  jpeg_quality: 100

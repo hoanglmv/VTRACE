@@ -103,6 +103,18 @@ class OptimizationParams(ParamGroup):
         self.early_stopping_start_iter = 7000
         self.early_stopping_window_iters = 2000
         self.early_stopping_rel_change = 0.005
+        self.densification_strategy = "mcmc"
+        self.absgrad = False
+        self.revised_opacity = False
+        self.grow_grad2d = 0.0002
+        self.mcmc_cap_max = 3_000_000
+        self.mcmc_noise_lr = 500_000.0
+        self.lambda_frequency = 0.0
+        self.frequency_start_iter = 3_000
+        self.frequency_ramp_iters = 10_000
+        self.frequency_max_resolution = 512
+        self.optimize_exposure = False
+        self.lambda_exposure = 0.001
         super().__init__(parser, "Optimization Parameters")
 
 def get_combined_args(parser : ArgumentParser):

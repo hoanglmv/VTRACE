@@ -58,6 +58,8 @@ def render(viewpoint_camera, pc : GaussianModel, pipe, bg_color : torch.Tensor, 
 
     # Extract radial distortion parameters if available (e.g. SIMPLE_RADIAL from COLMAP)
     radial_coeffs = viewpoint_camera.radial_coeffs.unsqueeze(0) if hasattr(viewpoint_camera, 'radial_coeffs') and viewpoint_camera.radial_coeffs is not None else None
+    use_ut = bool(getattr(pipe, "with_ut", True) and radial_coeffs is not None)
+    use_eval3d = bool(getattr(pipe, "with_eval3d", False))
 
     # gsplat's rasterization function
     render_colors, render_alphas, meta = rasterization(
@@ -78,7 +80,9 @@ def render(viewpoint_camera, pc : GaussianModel, pipe, bg_color : torch.Tensor, 
         render_mode="RGB+ED",
         rasterize_mode="antialiased" if pipe.antialiasing else "classic",
         radial_coeffs=radial_coeffs,
-        with_ut=True if radial_coeffs is not None else False
+        with_ut=use_ut,
+        with_eval3d=use_eval3d,
+        absgrad=bool(getattr(pipe, "absgrad", False)),
     )
 
     # Convert back from [1, H, W, 4] to [3, H, W] and [1, H, W] to match INRIA's output format
@@ -93,10 +97,16 @@ def render(viewpoint_camera, pc : GaussianModel, pipe, bg_color : torch.Tensor, 
     # We set them to meta["means2d"] so we can get gradients.
     screenspace_points = meta["means2d"].squeeze(0)
 
-    # Apply exposure if necessary (kept for VTRACE specific features)
-    if use_trained_exp:
+    # Per-image appearance is represented as a 3x4 affine RGB transform.
+    # Test cameras may carry an interpolated matrix because they have no learned
+    # exposure entry of their own.
+    exposure = getattr(viewpoint_camera, "exposure_matrix", None)
+    if exposure is None and use_trained_exp:
         exposure = pc.get_exposure_from_name(viewpoint_camera.image_name)
-        rendered_image = torch.exp(exposure.unsqueeze(1).unsqueeze(2)) * rendered_image
+    if exposure is not None:
+        exposure = exposure.to(device=rendered_image.device, dtype=rendered_image.dtype)
+        flat = rendered_image.reshape(3, -1)
+        rendered_image = (exposure[:, :3] @ flat + exposure[:, 3:4]).reshape_as(rendered_image)
 
     return {"render": rendered_image,
             "viewspace_points": screenspace_points,

@@ -37,6 +37,10 @@ class CameraInfo(NamedTuple):
     height: int
     is_test: bool
     radial_coeffs: np.array = None
+    fx: float = None
+    fy: float = None
+    cx: float = None
+    cy: float = None
 
 class SceneInfo(NamedTuple):
     point_cloud: BasicPointCloud
@@ -96,18 +100,22 @@ def readColmapCameras(cam_extrinsics, cam_intrinsics, depths_params, images_fold
 
         if intr.model=="SIMPLE_PINHOLE":
             focal_length_x = intr.params[0]
+            focal_length_y = intr.params[0]
+            principal_x, principal_y = intr.params[1], intr.params[2]
             FovY = focal2fov(focal_length_x, height)
             FovX = focal2fov(focal_length_x, width)
             radial_coeffs = np.zeros(6, dtype=np.float32)
         elif intr.model=="PINHOLE":
             focal_length_x = intr.params[0]
             focal_length_y = intr.params[1]
+            principal_x, principal_y = intr.params[2], intr.params[3]
             FovY = focal2fov(focal_length_y, height)
             FovX = focal2fov(focal_length_x, width)
             radial_coeffs = np.zeros(6, dtype=np.float32)
         elif intr.model in ["OPENCV", "OPENCV_FISHEYE"]:
             focal_length_x = intr.params[0]
             focal_length_y = intr.params[1]
+            principal_x, principal_y = intr.params[2], intr.params[3]
             FovY = focal2fov(focal_length_y, height)
             FovX = focal2fov(focal_length_x, width)
             k1 = intr.params[4] if len(intr.params) > 4 else 0.0
@@ -116,6 +124,7 @@ def readColmapCameras(cam_extrinsics, cam_intrinsics, depths_params, images_fold
         elif intr.model in ["SIMPLE_RADIAL", "RADIAL"]:
             focal_length_x = intr.params[0]
             focal_length_y = intr.params[0]
+            principal_x, principal_y = intr.params[1], intr.params[2]
             FovY = focal2fov(focal_length_x, height)
             FovX = focal2fov(focal_length_x, width)
             k1 = intr.params[3] if len(intr.params) > 3 else 0.0
@@ -125,6 +134,8 @@ def readColmapCameras(cam_extrinsics, cam_intrinsics, depths_params, images_fold
             # Fallback for any other camera model
             focal_length_x = intr.params[0]
             focal_length_y = intr.params[1] if len(intr.params) > 1 else intr.params[0]
+            principal_x = intr.params[2] if len(intr.params) > 2 else width / 2.0
+            principal_y = intr.params[3] if len(intr.params) > 3 else height / 2.0
             FovY = focal2fov(focal_length_y, height)
             FovX = focal2fov(focal_length_x, width)
             radial_coeffs = np.zeros(6, dtype=np.float32)
@@ -143,7 +154,9 @@ def readColmapCameras(cam_extrinsics, cam_intrinsics, depths_params, images_fold
         cam_info = CameraInfo(uid=uid, R=R, T=T, FovY=FovY, FovX=FovX, depth_params=depth_params,
                               image_path=image_path, image_name=image_name, depth_path=depth_path,
                               width=width, height=height, is_test=image_name in test_cam_names_list,
-                              radial_coeffs=radial_coeffs)
+                              radial_coeffs=radial_coeffs,
+                              fx=float(focal_length_x), fy=float(focal_length_y),
+                              cx=float(principal_x), cy=float(principal_y))
         cam_infos.append(cam_info)
 
     sys.stdout.write('\n')

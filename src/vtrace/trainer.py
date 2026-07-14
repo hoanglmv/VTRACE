@@ -6,7 +6,7 @@ from .quality_filter import QualityFilter
 
 logger = logging.getLogger(__name__)
 
-def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_device="cpu", sh_degree=2, gs_path="src/vtrace/gaussian-splatting", early_stopping_start_iter=7000, early_stopping_window_iters=5000, early_stopping_rel_change=0.00001, lambda_opacity=0.0, lambda_scale=0.0, lambda_dssim=0.2, lambda_edge=0.0, densify_until_iter=15000, antialiasing=False):
+def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_device="cpu", sh_degree=2, gs_path="src/vtrace/gaussian-splatting", early_stopping_start_iter=7000, early_stopping_window_iters=5000, early_stopping_rel_change=0.00001, lambda_opacity=0.0, lambda_scale=0.0, lambda_dssim=0.2, lambda_edge=0.0, densify_until_iter=15000, antialiasing=False, densification_strategy="mcmc", absgrad=False, revised_opacity=False, grow_grad2d=0.0002, mcmc_cap_max=3000000, mcmc_noise_lr=500000.0, lambda_frequency=0.0, frequency_start_iter=3000, frequency_ramp_iters=10000, frequency_max_resolution=512, depth_l1_weight_init=1.0, depth_l1_weight_final=0.01, optimize_exposure=False, lambda_exposure=0.001):
     """
     Trains the 3DGS model for a given scene.
     scene_dir: path to the scene directory (e.g. VAI_NVS_DATA/phase1/public_set/HCM0181)
@@ -72,11 +72,28 @@ def train_scene(scene_dir, output_dir, iterations=30000, resolution=1, data_devi
         "--lambda_dssim", str(lambda_dssim),
         "--lambda_edge", str(lambda_edge),
         "--densify_until_iter", str(densify_until_iter),
+        "--densification_strategy", str(densification_strategy),
+        "--grow_grad2d", str(grow_grad2d),
+        "--mcmc_cap_max", str(mcmc_cap_max),
+        "--mcmc_noise_lr", str(mcmc_noise_lr),
+        "--lambda_frequency", str(lambda_frequency),
+        "--frequency_start_iter", str(frequency_start_iter),
+        "--frequency_ramp_iters", str(frequency_ramp_iters),
+        "--frequency_max_resolution", str(frequency_max_resolution),
+        "--depth_l1_weight_init", str(depth_l1_weight_init),
+        "--depth_l1_weight_final", str(depth_l1_weight_final),
+        "--lambda_exposure", str(lambda_exposure),
         "--depths", "depth",
         "--disable_viewer"
     ]
     if antialiasing:
         cmd.append("--antialiasing")
+    if absgrad:
+        cmd.append("--absgrad")
+    if revised_opacity:
+        cmd.append("--revised_opacity")
+    if optimize_exposure:
+        cmd.append("--optimize_exposure")
     
     image_dir = os.path.join(source_path, "images")
     q_filter = QualityFilter(image_dir)

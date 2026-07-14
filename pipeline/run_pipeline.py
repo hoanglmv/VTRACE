@@ -75,7 +75,16 @@ def main():
         },
         "render": {
             "skip_training": False,
-            "format": "png"
+            "format": "png",
+            "antialiasing": False,
+            "distortion_mode": "native",
+            "with_ut": True,
+            "with_eval3d": False,
+            "supersample": 1.0,
+            "downsample_filter": "area",
+            "jpeg_quality": 100,
+            "checkpoint_iteration": "latest",
+            "post_process": False,
         }
     }
 
@@ -101,6 +110,20 @@ def main():
     sh_degree = args.sh_degree if args.sh_degree is not None else config_data["training"].get("sh_degree", 2)
     skip_training = args.skip_training if args.skip_training is not None else config_data["render"]["skip_training"]
     render_format = args.render_format if args.render_format is not None else config_data["render"].get("format", "png")
+    render_antialiasing = config_data["render"].get(
+        "antialiasing", config_data["training"].get("antialiasing", False)
+    )
+    distortion_mode = config_data["render"].get("distortion_mode", "native")
+    render_with_ut = config_data["render"].get("with_ut", True)
+    render_with_eval3d = config_data["render"].get("with_eval3d", False)
+    supersample = float(config_data["render"].get("supersample", 1.0))
+    downsample_filter = config_data["render"].get("downsample_filter", "area")
+    jpeg_quality = int(config_data["render"].get("jpeg_quality", 100))
+    checkpoint_iteration = config_data["render"].get("checkpoint_iteration", "latest")
+    post_process = bool(config_data["render"].get("post_process", False))
+    appearance_mode = config_data["render"].get("appearance_mode", "none")
+    appearance_neighbors = int(config_data["render"].get("appearance_neighbors", 8))
+    appearance_temperature = float(config_data["render"].get("appearance_temperature", 0.35))
     
     # New regularization parameters
     lambda_opacity = config_data["training"].get("lambda_opacity", 0.0)
@@ -109,6 +132,22 @@ def main():
     lambda_edge = config_data["training"].get("lambda_edge", 0.0)
     densify_until_iter = config_data["training"].get("densify_until_iter", 15000)
     antialiasing = config_data["training"].get("antialiasing", False)
+    estimate_depth = config_data["training"].get("estimate_depth", True)
+    densify_point_cloud = config_data["training"].get("densify_point_cloud", True)
+    densification_strategy = config_data["training"].get("densification_strategy", "mcmc")
+    absgrad = config_data["training"].get("absgrad", False)
+    revised_opacity = config_data["training"].get("revised_opacity", False)
+    grow_grad2d = config_data["training"].get("grow_grad2d", 0.0002)
+    mcmc_cap_max = config_data["training"].get("mcmc_cap_max", 3_000_000)
+    mcmc_noise_lr = config_data["training"].get("mcmc_noise_lr", 500_000.0)
+    lambda_frequency = config_data["training"].get("lambda_frequency", 0.0)
+    frequency_start_iter = config_data["training"].get("frequency_start_iter", 3000)
+    frequency_ramp_iters = config_data["training"].get("frequency_ramp_iters", 10000)
+    frequency_max_resolution = config_data["training"].get("frequency_max_resolution", 512)
+    depth_l1_weight_init = config_data["training"].get("depth_l1_weight_init", 1.0)
+    depth_l1_weight_final = config_data["training"].get("depth_l1_weight_final", 0.01)
+    optimize_exposure = config_data["training"].get("optimize_exposure", False)
+    lambda_exposure = config_data["training"].get("lambda_exposure", 0.001)
 
     models_dir = os.path.join(out_dir, "models")
     submission_dir = os.path.join(out_dir, "submission")
@@ -142,11 +181,13 @@ def main():
             do_train = False
             
         if do_train:
-            logger.info(f"--- Estimating Depth for {scene} ---")
-            estimate_scene_depth(scene_dir, device=data_device)
+            if estimate_depth:
+                logger.info(f"--- Estimating Depth for {scene} ---")
+                estimate_scene_depth(scene_dir, device=data_device)
             
-            logger.info(f"--- Densifying Point Cloud for {scene} ---")
-            densify_scene_point_cloud(scene_dir)
+            if densify_point_cloud:
+                logger.info(f"--- Densifying Point Cloud for {scene} ---")
+                densify_scene_point_cloud(scene_dir)
             
             logger.info(f"--- Training {scene} ---")
             train_scene(
@@ -161,14 +202,46 @@ def main():
                 lambda_dssim=lambda_dssim,
                 lambda_edge=lambda_edge,
                 densify_until_iter=densify_until_iter,
-                antialiasing=antialiasing
+                antialiasing=antialiasing,
+                densification_strategy=densification_strategy,
+                absgrad=absgrad,
+                revised_opacity=revised_opacity,
+                grow_grad2d=grow_grad2d,
+                mcmc_cap_max=mcmc_cap_max,
+                mcmc_noise_lr=mcmc_noise_lr,
+                lambda_frequency=lambda_frequency,
+                frequency_start_iter=frequency_start_iter,
+                frequency_ramp_iters=frequency_ramp_iters,
+                frequency_max_resolution=frequency_max_resolution,
+                depth_l1_weight_init=depth_l1_weight_init,
+                depth_l1_weight_final=depth_l1_weight_final,
+                optimize_exposure=optimize_exposure,
+                lambda_exposure=lambda_exposure,
             )
         
         logger.info(f"--- Rendering {scene} ---")
-        render_scene(scene, scene_dir, scene_model_dir, submission_dir, render_format=render_format)
+        render_scene(
+            scene,
+            scene_dir,
+            scene_model_dir,
+            submission_dir,
+            render_format=render_format,
+            antialiasing=render_antialiasing,
+            distortion_mode=distortion_mode,
+            with_ut=render_with_ut,
+            with_eval3d=render_with_eval3d,
+            supersample=supersample,
+            downsample_filter=downsample_filter,
+            jpeg_quality=jpeg_quality,
+            checkpoint_iteration=checkpoint_iteration,
+            appearance_mode=appearance_mode,
+            appearance_neighbors=appearance_neighbors,
+            appearance_temperature=appearance_temperature,
+        )
         
-        logger.info(f"--- Post-processing {scene} ---")
-        post_process_scene_renders(submission_dir, scene)
+        if post_process:
+            logger.info(f"--- Post-processing {scene} ---")
+            post_process_scene_renders(submission_dir, scene)
         
     logger.info("--- Creating Submission Archive ---")
     create_submission_zip(submission_dir, os.path.join(out_dir, "submission_round1.zip"))

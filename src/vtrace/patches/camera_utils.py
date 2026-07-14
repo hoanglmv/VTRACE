@@ -70,12 +70,22 @@ def loadCam(args, id, cam_info, resolution_scale, is_nerf_synthetic, is_test_dat
         resolution = (int(orig_w / scale), int(orig_h / scale))
 
     radial_coeffs = cam_info.radial_coeffs if hasattr(cam_info, 'radial_coeffs') else None
-    return Camera(resolution, colmap_id=cam_info.uid, R=cam_info.R, T=cam_info.T, 
-                  FoVx=cam_info.FovX, FoVy=cam_info.FovY, depth_params=cam_info.depth_params,
-                  image=image, invdepthmap=invdepthmap,
-                  image_name=cam_info.image_name, uid=id, data_device=args.data_device,
-                  train_test_exp=args.train_test_exp, is_test_dataset=is_test_dataset, is_test_view=cam_info.is_test,
-                  radial_coeffs=radial_coeffs)
+    camera = Camera(resolution, colmap_id=cam_info.uid, R=cam_info.R, T=cam_info.T,
+                    FoVx=cam_info.FovX, FoVy=cam_info.FovY, depth_params=cam_info.depth_params,
+                    image=image, invdepthmap=invdepthmap,
+                    image_name=cam_info.image_name, uid=id, data_device=args.data_device,
+                    train_test_exp=args.train_test_exp, is_test_dataset=is_test_dataset, is_test_view=cam_info.is_test,
+                    radial_coeffs=radial_coeffs)
+    # Preserve the exact COLMAP principal point and focal lengths.  FoV alone
+    # silently assumes cx=W/2 and cy=H/2 and is insufficient for general data.
+    if getattr(cam_info, "fx", None) is not None:
+        scale_x = resolution[0] / orig_w
+        scale_y = resolution[1] / orig_h
+        camera.fx = float(cam_info.fx) * scale_x
+        camera.fy = float(cam_info.fy) * scale_y
+        camera.cx = float(cam_info.cx) * scale_x
+        camera.cy = float(cam_info.cy) * scale_y
+    return camera
 
 def cameraList_from_camInfos(cam_infos, resolution_scale, args, is_nerf_synthetic, is_test_dataset):
     camera_list = []

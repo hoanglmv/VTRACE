@@ -2,6 +2,8 @@
 
 Dự án này là mã nguồn tự động hoá việc huấn luyện (training) và sinh ảnh góc nhìn mới (inference) sử dụng phương pháp **3D Gaussian Splatting (MCMC Optimization với lõi gsplat)** dành riêng cho tập dữ liệu của cuộc thi Viettel AI Race (Digital Twin).
 
+> **Profile chất lượng cao nhất:** pipeline chính cho lượt thuê GPU hiện là NVIDIA **3DGRUT + 3DGUT-MCMC + Neural Harmonic Textures**, được pin commit và tự resume theo scene/checkpoint. Xem [`NHT_MAX_RUNBOOK.md`](NHT_MAX_RUNBOOK.md) và [`config/nht_max.yaml`](config/nht_max.yaml). Pipeline gsplat cũ vẫn được giữ để đối chiếu, không còn là lựa chọn max-quality.
+
 ## 🗂️ Cấu trúc dự án (Src-layout)
 
 - `src/vtrace/`: Package chứa mã nguồn cốt lõi.
@@ -21,34 +23,39 @@ Dự án này là mã nguồn tự động hoá việc huấn luyện (training)
 
 ### A. Quy trình chạy trên Vast.ai (Rút gọn & Tự động hoá)
 
-Vì việc huấn luyện yêu cầu GPU NVIDIA mạnh (khuyên dùng RTX 3090 / 4090), quy trình chạy tối ưu nhất trên **Vast.ai** như sau:
+Profile NHT 4M yêu cầu GPU NVIDIA nhiều VRAM; quy trình chạy trên **Vast.ai** như sau:
 
 #### 1. Thuê máy chủ GPU
-- Lên trang web Vast.ai, chọn thuê một instance **RTX 3090 hoặc RTX 4090** (24GB VRAM).
-- Chọn Docker Image có sẵn PyTorch và CUDA (ví dụ: `pytorch/pytorch:2.3.1-cuda12.1-cudnn8-devel` hoặc sử dụng mặc định có Jupyter Lab).
+- Khuyên dùng **A100/H100 80GB**; mức tối thiểu mà preflight chấp nhận là L40/L40S/A6000/RTX 6000 Ada 48GB.
+- Chọn image Ubuntu có **CUDA 12.8 devel**, ít nhất 64GB RAM và 600GB persistent disk trống.
 
 #### 2. Kết nối và Setup tự động
 - Mở Terminal của máy chủ vừa thuê (hoặc thông qua Jupyter Lab Terminal).
 - Kéo mã nguồn (git pull) và di chuyển vào thư mục VTRACE.
-- Chạy script cài đặt tất cả trong một (DUY NHẤT 1 LỆNH CHẠY):
+- Chạy script cài đặt tất cả trong một (DUY NHẤT 1 LỆNH CHẠY). Script này cài cả môi trường 3DGRUT/NHT max-quality đã pin commit:
   ```bash
   ./scripts/setup_all.sh
   ```
-  *Lệnh này sẽ tự động: Cài đặt trình quản lý `uv`, đồng bộ thư viện lõi `gsplat`, tự động kiểm tra và triệt tiêu lỗi CUDA mismatch (nếu có), đồng thời kéo tập dữ liệu VAI_NVS_DATA từ Google Drive.*
+  *Lệnh này tự cài `uv`, môi trường repository, 3DGS legacy, môi trường tách biệt 3DGRUT/NHT đúng commit, kiểm tra CUDA và tải VAI_NVS_DATA khi dữ liệu chưa tồn tại.*
 
 #### 3. Chạy Huấn luyện và Render Pipeline
-Sau khi cài đặt xong, hãy chạy toàn bộ pipeline (tự động ước lượng Depth, huấn luyện mô hình MCMC, render ảnh và đóng gói kết quả):
-- Chạy trên toàn bộ tập **Private Set**:
+Trước tiên chạy smoke test 10 iterations trên một public scene để buộc compile CUDA và xác nhận train/checkpoint/render:
+
+```bash
+./scripts/launch_nht_max.sh --smoke-test \
+  --data-dir VAI_NVS_DATA/phase1/public_set --scene HCM0181
+```
+
+Khi `output_nht_smoke/DONE.json` xuất hiện, chạy toàn bộ **Private Set** bằng profile max-quality:
+
   ```bash
-  uv run python pipeline/run_pipeline.py --config config/private_high.yaml
-  ```
-- Chạy riêng biệt cho 1 Scene cụ thể:
-  ```bash
-  uv run python pipeline/run_pipeline.py --scene VAI_NVS_DATA/phase1/private_set1/HCM0249 --config config/private_high.yaml --mode train
+  ./scripts/launch_nht_max.sh
   ```
 
+Launcher tách khỏi SSH bằng `setsid`/`nohup`; chạy lại đúng lệnh sẽ tự bỏ qua scene đã xong và resume scene bị ngắt từ checkpoint hợp lệ mới nhất.
+
 #### 4. Tải kết quả nộp bài
-- Khi pipeline chạy xong, file nén `submission_round1.zip` sẽ nằm trong thư mục `output_private_high/` hoặc `output_public_high/`.
+- Khi pipeline chạy xong, file nén nằm tại `output_nht_max_private/submission_nht_max.zip`; chỉ sử dụng khi `DONE.json` cũng tồn tại.
 - Chỉ cần click chuột phải vào file này trong cột thư mục bên trái của Jupyter Lab và chọn **Download** để tải về máy cá nhân của bạn.
 
 ---
@@ -64,5 +71,5 @@ Nếu bạn chỉ chỉnh sửa code trên laptop cá nhân (không có GPU):
 ## 🛠️ Xử lý sự cố thường gặp (Troubleshooting)
 
 - **Lỗi `Found no NVIDIA driver on your system`**: Lỗi này xảy ra khi bạn cố tình chạy huấn luyện/render trực tiếp trên laptop cá nhân không có GPU NVIDIA. Hãy đảm bảo bạn chỉ chạy lệnh chạy huấn luyện trên server Vast.ai.
-- **Lỗi vRAM (OOM) khi sinh Depth**: Model depth đã được cấu hình chạy theo cơ chế **Batched Inference (Batch size = 8)** rất tối ưu cho RTX 3090/4090. Nếu thuê máy vRAM thấp hơn (ví dụ RTX 3060 12GB), hãy giảm batch size trong `src/vtrace/depth_estimator.py` xuống `4` hoặc `2`.
+- **Preflight báo thiếu VRAM/disk**: Không hạ ngầm profile 4M. Hãy đổi sang GPU 48/80GB hoặc tăng persistent disk theo thông báo.
 - **Lỗi không nhận diện được PyTorch**: Hãy đảm bảo bạn đã chạy lệnh `source .venv/bin/activate` hoặc luôn chạy lệnh kèm tiền tố `uv run`.

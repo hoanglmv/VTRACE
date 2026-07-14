@@ -11,6 +11,7 @@
 
 import os
 import torch
+import torch.nn.functional as F
 from random import randint
 from utils.loss_utils import l1_loss, ssim
 from gaussian_renderer import render, network_gui
@@ -62,6 +63,70 @@ def pearson_correlation_loss(x, y, mask=None):
     
     r = num / den
     return 1.0 - r
+
+
+def progressive_frequency_loss(prediction, target, iteration, start_iter, ramp_iters, max_resolution):
+    """Coarse-to-fine log-spectrum loss inspired by FreGS.
+
+    Full-resolution FFTs are unnecessarily expensive for this regularizer, so
+    both images are area-downsampled to a bounded working resolution.  Radial
+    frequency weights progressively expose high frequencies during training.
+    """
+    height, width = prediction.shape[-2:]
+    scale = min(1.0, float(max_resolution) / max(height, width))
+    if scale < 1.0:
+        size = (max(16, int(round(height * scale))), max(16, int(round(width * scale))))
+        prediction = F.interpolate(prediction.unsqueeze(0), size=size, mode="area").squeeze(0)
+        target = F.interpolate(target.unsqueeze(0), size=size, mode="area").squeeze(0)
+    pred_spectrum = torch.log1p(torch.abs(torch.fft.rfft2(prediction, norm="ortho")))
+    target_spectrum = torch.log1p(torch.abs(torch.fft.rfft2(target, norm="ortho")))
+    freq_h, freq_w = pred_spectrum.shape[-2:]
+    fy = torch.fft.fftfreq(freq_h, device=prediction.device).abs().view(freq_h, 1)
+    fx = torch.fft.rfftfreq((freq_w - 1) * 2, device=prediction.device).view(1, freq_w)
+    radius = torch.sqrt(fx * fx + fy * fy)
+    radius = radius / radius.max().clamp_min(1e-6)
+    progress = min(1.0, max(0.0, (iteration - start_iter) / max(1, ramp_iters)))
+    weights = 1.0 + progress * radius
+    return (torch.abs(pred_spectrum - target_spectrum) * weights.unsqueeze(0)).mean()
+
+
+def gaussian_parameter_dict(gaussians):
+    return {
+        "means": gaussians._xyz,
+        "scales": gaussians._scaling,
+        "quats": gaussians._rotation,
+        "opacities": gaussians._opacity,
+        "f_dc": gaussians._features_dc,
+        "f_rest": gaussians._features_rest,
+    }
+
+
+def sync_gaussian_parameters(gaussians, params_dict):
+    gaussians._xyz = params_dict["means"]
+    gaussians._scaling = params_dict["scales"]
+    gaussians._rotation = params_dict["quats"]
+    gaussians._opacity = params_dict["opacities"]
+    gaussians._features_dc = params_dict["f_dc"]
+    gaussians._features_rest = params_dict["f_rest"]
+
+    num_points = gaussians.get_xyz.shape[0]
+    device = gaussians.get_xyz.device
+    old_size = gaussians.xyz_gradient_accum.shape[0]
+    if num_points > old_size:
+        count = num_points - old_size
+        gaussians.xyz_gradient_accum = torch.cat(
+            [gaussians.xyz_gradient_accum, torch.zeros((count, 1), device=device)], dim=0
+        )
+        gaussians.denom = torch.cat(
+            [gaussians.denom, torch.zeros((count, 1), device=device)], dim=0
+        )
+        gaussians.max_radii2D = torch.cat(
+            [gaussians.max_radii2D, torch.zeros(count, device=device)], dim=0
+        )
+    elif num_points < old_size:
+        gaussians.xyz_gradient_accum = gaussians.xyz_gradient_accum[:num_points]
+        gaussians.denom = gaussians.denom[:num_points]
+        gaussians.max_radii2D = gaussians.max_radii2D[:num_points]
 
 @torch.no_grad()
 def prune_depth_floaters(gaussians, scene, num_cameras_to_check=5, thresh=0.1):
@@ -184,11 +249,30 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
     ema_loss_long = None
     loss_history = []
 
-    from gsplat.strategy import MCMCStrategy
-    # Scale down noise_lr by spatial_lr_scale^2 to correct the coordinate scaling bug in gsplat's noise injection
-    # Set cap_max to 3,000,000 to utilize RTX 3090's 24GB VRAM for capturing finer details
-    strategy = MCMCStrategy(verbose=False, cap_max=3000000, noise_lr=500000.0 / (gaussians.spatial_lr_scale ** 2))
-    strategy_state = strategy.initialize_state()
+    from gsplat.strategy import DefaultStrategy, MCMCStrategy
+    strategy_name = opt.densification_strategy.lower()
+    if strategy_name == "mcmc":
+        base_noise_lr = opt.mcmc_noise_lr / max(gaussians.spatial_lr_scale ** 2, 1e-12)
+        strategy = MCMCStrategy(
+            verbose=False,
+            cap_max=opt.mcmc_cap_max,
+            noise_lr=base_noise_lr,
+            refine_stop_iter=opt.densify_until_iter,
+        )
+        strategy_state = strategy.initialize_state()
+    elif strategy_name in {"default", "absgs"}:
+        use_absgrad = opt.absgrad or strategy_name == "absgs"
+        pipe.absgrad = use_absgrad
+        strategy = DefaultStrategy(
+            verbose=False,
+            grow_grad2d=opt.grow_grad2d,
+            absgrad=use_absgrad,
+            revised_opacity=opt.revised_opacity,
+            refine_stop_iter=opt.densify_until_iter,
+        )
+        strategy_state = strategy.initialize_state(scene_scale=gaussians.spatial_lr_scale)
+    else:
+        raise ValueError(f"Unknown densification_strategy={opt.densification_strategy!r}")
 
     progress_bar = tqdm(range(first_iter, opt.iterations), desc="Training progress")
     first_iter += 1
@@ -200,7 +284,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 net_image_bytes = None
                 custom_cam, do_training, pipe.convert_SHs_python, pipe.compute_cov3D_python, keep_alive, scaling_modifer = network_gui.receive()
                 if custom_cam != None:
-                    net_image = render(custom_cam, gaussians, pipe, background, scaling_modifier=scaling_modifer, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE)["render"]
+                    net_image = render(custom_cam, gaussians, pipe, background, scaling_modifier=scaling_modifer, use_trained_exp=opt.optimize_exposure, separate_sh=SPARSE_ADAM_AVAILABLE)["render"]
                     net_image_bytes = memoryview((torch.clamp(net_image, min=0, max=1.0) * 255).byte().permute(1, 2, 0).contiguous().cpu().numpy())
                 network_gui.send(net_image_bytes, dataset.source_path)
                 if do_training and ((iteration < int(opt.iterations)) or not keep_alive):
@@ -230,8 +314,13 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
 
         bg = torch.rand((3), device="cuda") if opt.random_background else background
 
-        render_pkg = render(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=dataset.train_test_exp, separate_sh=SPARSE_ADAM_AVAILABLE)
+        render_pkg = render(viewpoint_cam, gaussians, pipe, bg, use_trained_exp=opt.optimize_exposure, separate_sh=SPARSE_ADAM_AVAILABLE)
         image, viewspace_point_tensor, visibility_filter, radii = render_pkg["render"], render_pkg["viewspace_points"], render_pkg["visibility_filter"], render_pkg["radii"]
+        params_dict = gaussian_parameter_dict(gaussians)
+        if strategy_name in {"default", "absgs"} and iteration < opt.densify_until_iter:
+            strategy.step_pre_backward(
+                params_dict, gaussians.optimizers, strategy_state, iteration, render_pkg["meta"]
+            )
 
         if viewpoint_cam.alpha_mask is not None:
             alpha_mask = viewpoint_cam.alpha_mask.cuda()
@@ -290,6 +379,25 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             scale_loss = opt.lambda_scale * torch.clamp(gaussians.get_scaling - 0.05, min=0.0).mean()
             loss += scale_loss
 
+        exposure_loss = torch.tensor(0.0, device=image.device)
+        if opt.optimize_exposure and opt.lambda_exposure > 0:
+            exposure = gaussians.get_exposure_from_name(viewpoint_cam.image_name)
+            identity = torch.eye(3, 4, device=exposure.device, dtype=exposure.dtype)
+            exposure_loss = torch.mean((exposure - identity) ** 2)
+            loss += opt.lambda_exposure * exposure_loss
+
+        frequency_loss = torch.tensor(0.0, device=image.device)
+        if opt.lambda_frequency > 0 and iteration >= opt.frequency_start_iter:
+            frequency_loss = progressive_frequency_loss(
+                image,
+                gt_image,
+                iteration,
+                opt.frequency_start_iter,
+                opt.frequency_ramp_iters,
+                opt.frequency_max_resolution,
+            )
+            loss += opt.lambda_frequency * frequency_loss
+
         loss.backward()
 
         iter_end.record()
@@ -322,6 +430,8 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                     "depth_pearson": p_loss.item() if 'p_loss' in locals() and isinstance(p_loss, torch.Tensor) else 0.0,
                     "opacity_entropy": opacity_loss.item() / opt.lambda_opacity if 'opacity_loss' in locals() and isinstance(opacity_loss, torch.Tensor) and opt.lambda_opacity > 0 else 0.0,
                     "scale_loss": scale_loss.item() if 'scale_loss' in locals() and isinstance(scale_loss, torch.Tensor) else 0.0,
+                    "frequency_loss": frequency_loss.item(),
+                    "exposure_loss": exposure_loss.item(),
                     "num_points": gaussians.get_xyz.shape[0]
                 })
                 
@@ -354,7 +464,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 progress_bar.close()
 
             # Log and save
-            training_report(tb_writer, iteration, Ll1, loss, l1_loss, iter_start.elapsed_time(iter_end), testing_iterations, scene, render, (pipe, background, 1., SPARSE_ADAM_AVAILABLE, None, dataset.train_test_exp), dataset.train_test_exp)
+            training_report(tb_writer, iteration, Ll1, loss, l1_loss, iter_start.elapsed_time(iter_end), testing_iterations, scene, render, (pipe, background, 1., SPARSE_ADAM_AVAILABLE, None, opt.optimize_exposure), dataset.train_test_exp)
             if (iteration in saving_iterations):
                 print("\n[ITER {}] Saving Gaussians".format(iteration))
                 scene.save(iteration)
@@ -366,57 +476,27 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 gaussians.optimizer.step()
                 gaussians.optimizer.zero_grad(set_to_none = True)
 
-            # MCMC Densification Strategy
+            # Configurable gsplat densification strategy (MCMC or Default/AbsGS).
             if iteration < opt.densify_until_iter:
-                params_dict = {
-                    "means": gaussians._xyz,
-                    "scales": gaussians._scaling,
-                    "quats": gaussians._rotation,
-                    "opacities": gaussians._opacity,
-                    "f_dc": gaussians._features_dc,
-                    "f_rest": gaussians._features_rest
-                }
-
-                # Decaying SGLD noise to allow fine-grained geometric convergence (Simulated Annealing)
-                init_noise_lr = 500000.0 / (gaussians.spatial_lr_scale ** 2)
-                strategy.noise_lr = init_noise_lr * (1.0 - iteration / opt.densify_until_iter)
-
-                # Step the strategy
-                strategy.step_post_backward(
-                    params_dict, 
-                    gaussians.optimizers, 
-                    strategy_state, 
-                    iteration, 
-                    {}, 
-                    xyz_lr
-                )
-
-                # Reassign the tensors back to the model because MCMCStrategy might have recreated them
-                gaussians._xyz = params_dict["means"]
-                gaussians._scaling = params_dict["scales"]
-                gaussians._rotation = params_dict["quats"]
-                gaussians._opacity = params_dict["opacities"]
-                gaussians._features_dc = params_dict["f_dc"]
-                gaussians._features_rest = params_dict["f_rest"]
-                
-                # Resize helper tensors to match the new number of Gaussians
-                num_points = gaussians.get_xyz.shape[0]
-                device = gaussians.get_xyz.device
-                old_size = gaussians.xyz_gradient_accum.shape[0]
-                if num_points != old_size:
-                    if num_points > old_size:
-                        padding_accum = torch.zeros((num_points - old_size, 1), device=device)
-                        gaussians.xyz_gradient_accum = torch.cat([gaussians.xyz_gradient_accum, padding_accum], dim=0)
-                        
-                        padding_denom = torch.zeros((num_points - old_size, 1), device=device)
-                        gaussians.denom = torch.cat([gaussians.denom, padding_denom], dim=0)
-                        
-                        padding_radii = torch.zeros((num_points - old_size), device=device)
-                        gaussians.max_radii2D = torch.cat([gaussians.max_radii2D, padding_radii], dim=0)
-                    else:
-                        gaussians.xyz_gradient_accum = gaussians.xyz_gradient_accum[:num_points]
-                        gaussians.denom = gaussians.denom[:num_points]
-                        gaussians.max_radii2D = gaussians.max_radii2D[:num_points]
+                if strategy_name == "mcmc":
+                    strategy.noise_lr = base_noise_lr * (1.0 - iteration / opt.densify_until_iter)
+                    strategy.step_post_backward(
+                        params_dict,
+                        gaussians.optimizers,
+                        strategy_state,
+                        iteration,
+                        render_pkg["meta"],
+                        xyz_lr,
+                    )
+                else:
+                    strategy.step_post_backward(
+                        params_dict,
+                        gaussians.optimizers,
+                        strategy_state,
+                        iteration,
+                        render_pkg["meta"],
+                    )
+                sync_gaussian_parameters(gaussians, params_dict)
                 
                 # Apply depth-guided floater pruning every 500 iterations during the densification phase
                 if iteration > 1000 and iteration < 10000 and iteration % 500 == 0:
