@@ -304,14 +304,24 @@ def verify_framework(framework_dir: Path, expected_commit: str = PINNED_3DGRUT_C
     return actual
 
 
-def gpu_memory_mib() -> list[int]:
+def gpu_memory_info_mib() -> list[dict[str, int]]:
     result = subprocess.run(
-        ["nvidia-smi", "--query-gpu=memory.total", "--format=csv,noheader,nounits"],
+        [
+            "nvidia-smi",
+            "--query-gpu=index,memory.total,memory.free",
+            "--format=csv,noheader,nounits",
+        ],
         text=True,
         capture_output=True,
         check=True,
     )
-    return [int(line.strip()) for line in result.stdout.splitlines() if line.strip()]
+    memories: list[dict[str, int]] = []
+    for line in result.stdout.splitlines():
+        if not line.strip():
+            continue
+        index, total, free = (int(value.strip()) for value in line.split(",", maxsplit=2))
+        memories.append({"index": index, "total": total, "free": free})
+    return memories
 
 
 def preflight(
@@ -320,17 +330,26 @@ def preflight(
     *,
     expected_commit: str,
     minimum_gpu_memory_gib: float,
+    minimum_gpu_free_gib: float,
     minimum_free_disk_gib: float,
 ) -> dict[str, Any]:
     commit = verify_framework(framework_dir, expected_commit)
-    memories = gpu_memory_mib()
+    memories = gpu_memory_info_mib()
     if not memories:
         raise RuntimeError("nvidia-smi did not report any GPU")
-    best_gib = max(memories) / 1024.0
-    if best_gib < minimum_gpu_memory_gib:
+    eligible = [
+        memory
+        for memory in memories
+        if memory["total"] / 1024.0 >= minimum_gpu_memory_gib
+        and memory["free"] / 1024.0 >= minimum_gpu_free_gib
+    ]
+    if not eligible:
+        best = max(memories, key=lambda memory: (memory["total"], memory["free"]))
         raise RuntimeError(
-            f"Max-quality NHT requires at least {minimum_gpu_memory_gib:.0f} GiB VRAM; "
-            f"largest visible GPU has {best_gib:.1f} GiB. Rent an L40/L40S/A6000 48GB or A100/H100 80GB."
+            f"NHT 1M requires at least {minimum_gpu_memory_gib:.0f} GiB total and "
+            f"{minimum_gpu_free_gib:.0f} GiB free VRAM; best visible GPU has "
+            f"{best['total'] / 1024.0:.1f} GiB total/{best['free'] / 1024.0:.1f} GiB free. "
+            "Use an idle RTX 3090 24GB or a larger GPU."
         )
     output_dir.mkdir(parents=True, exist_ok=True)
     free_gib = shutil.disk_usage(output_dir).free / (1024**3)
@@ -339,7 +358,13 @@ def preflight(
             f"Only {free_gib:.1f} GiB free at {output_dir}; max-quality run requires "
             f"at least {minimum_free_disk_gib:.0f} GiB for checkpoints and renders."
         )
-    return {"framework_commit": commit, "gpu_memory_mib": memories, "free_disk_gib": free_gib}
+    selected = max(eligible, key=lambda memory: (memory["free"], memory["total"]))
+    return {
+        "framework_commit": commit,
+        "gpu_memory_mib": memories,
+        "selected_gpu_index": selected["index"],
+        "free_disk_gib": free_gib,
+    }
 
 
 @dataclass
@@ -467,6 +492,151 @@ def render_command(
         "--jpeg-quality",
         str(jpeg_quality),
     ]
+
+
+def materialize_submission_from_raw(
+    raw_renders_dir: Path,
+    adapters_dir: Path,
+    submission_dir: Path,
+    scene_names: Sequence[str],
+    *,
+    jpeg_quality: int,
+    jpeg_subsampling: int,
+) -> int:
+    """Encode submission images from lossless raw renders, never from prior JPEGs."""
+    encoded = 0
+    for scene_name in scene_names:
+        manifest_path = adapters_dir / scene_name / "manifest.json"
+        if not manifest_path.is_file():
+            raise FileNotFoundError(f"Missing render manifest: {manifest_path}")
+        image_names = json.loads(manifest_path.read_text(encoding="utf-8"))["images"]
+        raw_dir = raw_renders_dir / scene_name / "predictions"
+        scene_output = submission_dir / scene_name
+        scene_output.mkdir(parents=True, exist_ok=True)
+        for index, image_name in enumerate(image_names):
+            source = raw_dir / f"{index:05d}.png"
+            target = scene_output / image_name
+            if not source.is_file():
+                raise FileNotFoundError(f"Missing lossless render: {source}")
+            temporary = target.with_name(target.name + ".tmp")
+            with Image.open(source) as image:
+                image = image.convert("RGB")
+                if target.suffix.lower() in {".jpg", ".jpeg"}:
+                    image.save(
+                        temporary,
+                        "JPEG",
+                        quality=int(jpeg_quality),
+                        subsampling=int(jpeg_subsampling),
+                        optimize=True,
+                    )
+                else:
+                    image.save(temporary, "PNG", optimize=True)
+            os.replace(temporary, target)
+            encoded += 1
+    return encoded
+
+
+def raw_render_set_is_complete(raw_scene_dir: Path, adapter_dir: Path) -> bool:
+    manifest_path = adapter_dir / "manifest.json"
+    if not manifest_path.is_file():
+        return False
+    try:
+        image_names = json.loads(manifest_path.read_text(encoding="utf-8"))["images"]
+        for index, image_name in enumerate(image_names):
+            raw_path = raw_scene_dir / "predictions" / f"{index:05d}.png"
+            expected_path = adapter_dir / "images" / image_name
+            with Image.open(raw_path) as raw, Image.open(expected_path) as expected:
+                if raw.size != expected.size:
+                    return False
+                raw.verify()
+        return True
+    except (FileNotFoundError, KeyError, json.JSONDecodeError, OSError, ValueError):
+        return False
+
+
+def create_size_limited_archive(
+    raw_renders_dir: Path,
+    adapters_dir: Path,
+    submission_dir: Path,
+    archive_path: Path,
+    scene_names: Sequence[str],
+    *,
+    max_bytes: int,
+    target_bytes: int,
+    maximum_quality: int = 100,
+) -> dict[str, Any]:
+    """Choose the highest JPEG quality whose real ZIP stays under target_bytes."""
+    if not 0 < target_bytes <= max_bytes:
+        raise ValueError("Archive target must be positive and no larger than the hard limit")
+    archive_path.parent.mkdir(parents=True, exist_ok=True)
+
+    attempts: list[dict[str, int]] = []
+
+    def attempt(quality: int, subsampling: int) -> int:
+        materialize_submission_from_raw(
+            raw_renders_dir,
+            adapters_dir,
+            submission_dir,
+            scene_names,
+            jpeg_quality=quality,
+            jpeg_subsampling=subsampling,
+        )
+        temporary_archive = archive_path.with_name(archive_path.name + ".tmp")
+        with zipfile.ZipFile(
+            temporary_archive,
+            "w",
+            compression=zipfile.ZIP_DEFLATED,
+            compresslevel=6,
+        ) as archive:
+            for scene_name in scene_names:
+                manifest = json.loads(
+                    (adapters_dir / scene_name / "manifest.json").read_text(encoding="utf-8")
+                )
+                for image_name in manifest["images"]:
+                    source = submission_dir / scene_name / image_name
+                    archive.write(source, arcname=str(Path(scene_name) / image_name))
+        os.replace(temporary_archive, archive_path)
+        size = archive_path.stat().st_size
+        attempts.append({"quality": quality, "subsampling": subsampling, "bytes": size})
+        return size
+
+    best: tuple[int, int, int] | None = None
+    # Preserve 4:4:4 chroma whenever possible. If even quality 40 cannot fit,
+    # fall back to 4:2:0 and repeat the search.
+    for subsampling, minimum_quality in ((0, 40), (2, 30)):
+        low, high = minimum_quality, int(maximum_quality)
+        while low <= high:
+            quality = (low + high) // 2
+            size = attempt(quality, subsampling)
+            if size <= target_bytes:
+                best = (quality, subsampling, size)
+                low = quality + 1
+            else:
+                high = quality - 1
+        if best is not None:
+            break
+
+    if best is None:
+        smallest = min(attempts, key=lambda item: item["bytes"])
+        raise RuntimeError(
+            f"Could not fit submission below {max_bytes} bytes; smallest attempt was "
+            f"{smallest['bytes']} bytes at JPEG quality {smallest['quality']}."
+        )
+
+    quality, subsampling, _ = best
+    final_size = attempt(quality, subsampling)
+    if final_size > max_bytes:
+        raise RuntimeError(f"Final archive is {final_size} bytes, over hard limit {max_bytes}")
+    return {
+        "archive": str(archive_path),
+        "bytes": final_size,
+        "sha256": sha256_file(archive_path),
+        "max_bytes": max_bytes,
+        "target_bytes": target_bytes,
+        "jpeg_quality": quality,
+        "jpeg_subsampling": subsampling,
+        "attempts": attempts,
+    }
 
 
 def write_run_manifest(

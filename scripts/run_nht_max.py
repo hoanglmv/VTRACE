@@ -6,8 +6,6 @@ from __future__ import annotations
 import argparse
 import copy
 import logging
-import os
-import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -22,6 +20,7 @@ from src.vtrace.nht_adapter import (
     atomic_write_json,
     atomic_write_text,
     build_train_command,
+    create_size_limited_archive,
     discover_scenes,
     find_latest_checkpoint,
     framework_environment,
@@ -29,6 +28,7 @@ from src.vtrace.nht_adapter import (
     load_config,
     preflight,
     prepare_test_colmap,
+    raw_render_set_is_complete,
     render_command,
     run_logged_process,
     utc_now,
@@ -131,11 +131,14 @@ def main() -> int:
             framework_dir,
             output_dir,
             expected_commit=expected_commit,
-            minimum_gpu_memory_gib=float(framework_cfg.get("minimum_gpu_memory_gib", 45)),
+            minimum_gpu_memory_gib=float(framework_cfg.get("minimum_gpu_memory_gib", 22)),
+            minimum_gpu_free_gib=float(framework_cfg.get("minimum_gpu_free_gib", 20)),
             minimum_free_disk_gib=float(pipeline_cfg.get("minimum_free_disk_gib", 100)),
         )
     python = framework_python(framework_dir, framework_cfg.get("python"))
     process_environment = framework_environment(framework_dir)
+    if preflight_info is not None:
+        process_environment["CUDA_VISIBLE_DEVICES"] = str(preflight_info["selected_gpu_index"])
     write_run_manifest(output_dir, config_path, config, scenes, preflight_info)
 
     retries = int(args.max_retries if args.max_retries is not None else pipeline_cfg.get("max_retries", 1))
@@ -157,7 +160,7 @@ def main() -> int:
         if render_done.exists():
             render_marker_valid = bool(
                 validate_submission(data_dir, submission_dir, strict_names=True, scenes=[name])["valid"]
-            )
+            ) and raw_render_set_is_complete(raw_renders_dir / name, adapters_dir / name)
 
         if args.from_stage == "train" and not (args.skip_completed and train_marker_valid):
             resume = existing_checkpoint
@@ -265,15 +268,41 @@ def main() -> int:
     if not validation["valid"]:
         raise RuntimeError("Strict submission validation failed; see submission_validation.json")
 
-    archive_name = str(pipeline_cfg.get("archive_name", "submission_nht_max"))
-    archive_base = output_dir / (archive_name[:-4] if archive_name.lower().endswith(".zip") else archive_name)
-    archive_path = Path(shutil.make_archive(str(archive_base), "zip", submission_dir))
+    archive_name = str(pipeline_cfg.get("archive_name", "submission.zip"))
+    archive_path = output_dir / (archive_name if archive_name.lower().endswith(".zip") else archive_name + ".zip")
+    max_archive_bytes = int(float(pipeline_cfg.get("max_archive_mb", 350)) * 1_000_000)
+    target_archive_bytes = int(float(pipeline_cfg.get("archive_target_mb", 345)) * 1_000_000)
+    packaging = create_size_limited_archive(
+        raw_renders_dir,
+        adapters_dir,
+        submission_dir,
+        archive_path,
+        [scene.name for scene in scenes],
+        max_bytes=max_archive_bytes,
+        target_bytes=target_archive_bytes,
+        maximum_quality=int(render_cfg.get("jpeg_quality", 100)),
+    )
+    atomic_write_json(output_dir / "packaging.json", packaging)
+
+    # Encoding changes bytes but must never change names or dimensions.
+    validation = validate_submission(
+        data_dir,
+        submission_dir,
+        strict_names=True,
+        scenes=[scene.name for scene in scenes] if args.scenes else None,
+    )
+    if not validation["valid"]:
+        raise RuntimeError("Submission became invalid during adaptive JPEG packaging")
     atomic_write_json(
         output_dir / "DONE.json",
         {
             "completed_at": utc_now(),
             "scenes": completed_scenes,
             "submission": str(archive_path),
+            "submission_bytes": packaging["bytes"],
+            "submission_sha256": packaging["sha256"],
+            "jpeg_quality": packaging["jpeg_quality"],
+            "jpeg_subsampling": packaging["jpeg_subsampling"],
             "images": validation["resolved_images"],
         },
     )

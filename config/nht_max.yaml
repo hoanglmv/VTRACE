@@ -1,23 +1,27 @@
-# Max-quality profile: NVIDIA 3DGRUT + 3DGUT-MCMC + Neural Harmonic Textures.
-# This profile intentionally requires a 48GB+ GPU and never silently reduces quality.
+# RTX 3090 max-quality profile: NVIDIA 3DGRUT + 3DGUT-MCMC + Neural Harmonic Textures.
+# It follows the official 1M/30k/48-feature NHT validation budget and never
+# silently reduces quality below this configuration.
 framework:
   directory: ./external/3dgrut
   python: .venv/bin/python
   repository: https://github.com/nv-tlabs/3dgrut.git
   commit: a37ef721012dea0f29c0fcfff2d525023b4e854a
-  minimum_gpu_memory_gib: 45
+  minimum_gpu_memory_gib: 22
+  minimum_gpu_free_gib: 20
 
 pipeline:
   data_dir: ./VAI_NVS_DATA/phase1/private_set1
   output_dir: ./output_nht_max_private
-  minimum_free_disk_gib: 600
+  minimum_free_disk_gib: 200
   max_retries: 1
-  archive_name: submission_nht_max.zip
+  archive_name: submission.zip
+  max_archive_mb: 350
+  archive_target_mb: 345
 
 training:
   config_name: apps/colmap_3dgut_mcmc_nht.yaml
   iterations: 30000
-  max_gaussians: 4000000
+  max_gaussians: 1000000
   num_workers: 16
   # A preempted run loses at most ~3000 iterations. Every checkpoint contains
   # geometry, MCMC state, NHT decoder, optimizer and scheduler state.

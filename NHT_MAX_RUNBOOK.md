@@ -1,13 +1,14 @@
 # VTRACE max-quality runbook
 
-The production profile is [`config/nht_max.yaml`](config/nht_max.yaml): NVIDIA 3DGRUT, distorted-camera 3DGUT, MCMC densification, and 48-feature Neural Harmonic Textures (NHT), full resolution, 30k iterations, and a 4M primitive cap.
+The production profile is [`config/nht_max.yaml`](config/nht_max.yaml): NVIDIA 3DGRUT, distorted-camera 3DGUT, MCMC densification, and 48-feature Neural Harmonic Textures (NHT), full resolution, 30k iterations, and a 1M primitive cap suitable for an RTX 3090.
 
-This is the highest-quality official implementation selected for this repository. It is not a promise of a particular VTRACE PSNR: the public scene smoke/full runs must measure that. NVIDIA's current official NHT validation uses 1M primitives; this profile spends a larger 4M budget to favor quality and therefore requires substantially more memory and storage.
+This is the highest-quality official implementation selected for this repository. It is not a promise of a particular VTRACE PSNR: the public scene smoke/full runs must measure that. The profile now follows NVIDIA's current official NHT validation budget of 1M primitives, 30k iterations and 48 NHT features.
 
 ## Server
 
-- Recommended: one A100/H100 80GB. Minimum accepted by the preflight: L40/L40S/RTX A6000/RTX 6000 Ada 48GB.
-- At least 64GB system RAM and 600GB free persistent disk. NHT optimizer checkpoints at 4M primitives are very large.
+- Recommended price/performance option: one idle RTX 3090 24GB. A 48/80GB GPU provides additional safety but is not required by this profile.
+- Preflight requires at least 22GB total and 20GB currently free VRAM, so a 12GB RTX 3060 is rejected.
+- At least 64GB system RAM and 200GB free persistent disk for all private scenes and resumable optimizer checkpoints.
 - Keep persistent storage mounted. A stopped ephemeral instance cannot be recovered by application code.
 - CUDA 12.8 is the safest choice for current 3DGRUT, especially on Blackwell GPUs.
 
@@ -69,5 +70,7 @@ find output_nht_max_private/scenes -name status.json -print
 ```
 
 If SSH disconnects, `setsid`/`nohup` keeps the job alive. If the provider reboots or preempts the instance, run the same launch command again: completed scenes are skipped and interrupted scenes resume from the newest official checkpoint. The runner never treats a failed subprocess as success, never renders a dummy model, and only creates `DONE.json` after strict submission validation.
+
+The final archive is always `submission.zip`. Packaging starts from lossless PNG renders and automatically selects the highest JPEG quality that keeps the measured ZIP below the 350 MB hard limit (target 345 MB for safety). The selected quality, chroma subsampling, attempts, and exact byte count are recorded in `packaging.json` and `DONE.json`.
 
 No program can guarantee survival if the provider deletes the instance or its disk. Persistent storage plus the checkpoint/resume mechanism is the protection for that case.

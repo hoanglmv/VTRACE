@@ -23,11 +23,11 @@ Dự án này là mã nguồn tự động hoá việc huấn luyện (training)
 
 ### A. Quy trình chạy trên Vast.ai (Rút gọn & Tự động hoá)
 
-Profile NHT 4M yêu cầu GPU NVIDIA nhiều VRAM; quy trình chạy trên **Vast.ai** như sau:
+Profile NHT 1M được tối ưu để chạy trên RTX 3090 24GB; quy trình chạy trên **Vast.ai** như sau:
 
 #### 1. Thuê máy chủ GPU
-- Khuyên dùng **A100/H100 80GB**; mức tối thiểu mà preflight chấp nhận là L40/L40S/A6000/RTX 6000 Ada 48GB.
-- Chọn image Ubuntu có **CUDA 12.8 devel**, ít nhất 64GB RAM và 600GB persistent disk trống.
+- Lựa chọn giá/hiệu năng khuyên dùng: **RTX 3090 24GB** đang rảnh; GPU 48/80GB vẫn an toàn hơn nếu giá thuê hợp lý.
+- Chọn image Ubuntu có **CUDA 12.8 devel**, ít nhất 64GB RAM và 200GB persistent disk trống.
 
 #### 2. Kết nối và Setup tự động
 - Mở Terminal của máy chủ vừa thuê (hoặc thông qua Jupyter Lab Terminal).
@@ -55,7 +55,7 @@ Khi `output_nht_smoke/DONE.json` xuất hiện, chạy toàn bộ **Private Set*
 Launcher tách khỏi SSH bằng `setsid`/`nohup`; chạy lại đúng lệnh sẽ tự bỏ qua scene đã xong và resume scene bị ngắt từ checkpoint hợp lệ mới nhất.
 
 #### 4. Tải kết quả nộp bài
-- Khi pipeline chạy xong, file nén nằm tại `output_nht_max_private/submission_nht_max.zip`; chỉ sử dụng khi `DONE.json` cũng tồn tại.
+- Khi pipeline chạy xong, file nén nằm tại `output_nht_max_private/submission.zip`; chỉ sử dụng khi `DONE.json` cũng tồn tại. Pipeline tự chọn JPEG quality cao nhất để ZIP thực tế nằm dưới 350MB, với target an toàn 345MB.
 - Chỉ cần click chuột phải vào file này trong cột thư mục bên trái của Jupyter Lab và chọn **Download** để tải về máy cá nhân của bạn.
 
 ---
@@ -71,5 +71,5 @@ Nếu bạn chỉ chỉnh sửa code trên laptop cá nhân (không có GPU):
 ## 🛠️ Xử lý sự cố thường gặp (Troubleshooting)
 
 - **Lỗi `Found no NVIDIA driver on your system`**: Lỗi này xảy ra khi bạn cố tình chạy huấn luyện/render trực tiếp trên laptop cá nhân không có GPU NVIDIA. Hãy đảm bảo bạn chỉ chạy lệnh chạy huấn luyện trên server Vast.ai.
-- **Preflight báo thiếu VRAM/disk**: Không hạ ngầm profile 4M. Hãy đổi sang GPU 48/80GB hoặc tăng persistent disk theo thông báo.
+- **Preflight báo thiếu VRAM/disk**: Bảo đảm RTX 3090 còn ít nhất 20GB VRAM trống và persistent disk còn 200GB. RTX 3060 12GB không đạt yêu cầu.
 - **Lỗi không nhận diện được PyTorch**: Hãy đảm bảo bạn đã chạy lệnh `source .venv/bin/activate` hoặc luôn chạy lệnh kèm tiền tố `uv run`.

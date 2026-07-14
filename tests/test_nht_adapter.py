@@ -10,6 +10,7 @@ from PIL import Image
 
 from src.vtrace.nht_adapter import (
     checkpoint_override,
+    create_size_limited_archive,
     find_latest_checkpoint,
     framework_environment,
     prepare_test_colmap,
@@ -24,6 +25,37 @@ PUBLIC_SCENE = ROOT / "VAI_NVS_DATA" / "phase1" / "public_set" / "HCM0181"
 
 @unittest.skipUnless(PUBLIC_SCENE.exists(), "VTRACE public data is not present")
 class NHTAdapterTests(unittest.TestCase):
+    def test_size_limited_archive_uses_exact_layout(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            raw = root / "raw" / "scene" / "predictions"
+            adapter = root / "adapters" / "scene"
+            submission = root / "submission"
+            raw.mkdir(parents=True)
+            adapter.mkdir(parents=True)
+            names = [f"frame_{index}.JPG" for index in range(4)]
+            (adapter / "manifest.json").write_text(json.dumps({"images": names}))
+            for index in range(len(names)):
+                noise = Image.effect_noise((256, 256), 100 + index).convert("RGB")
+                noise.save(raw / f"{index:05d}.png", "PNG")
+            archive_path = root / "submission.zip"
+            result = create_size_limited_archive(
+                root / "raw",
+                root / "adapters",
+                submission,
+                archive_path,
+                ["scene"],
+                max_bytes=200_000,
+                target_bytes=190_000,
+                maximum_quality=100,
+            )
+            self.assertLessEqual(result["bytes"], 200_000)
+            with zipfile.ZipFile(archive_path) as archive:
+                self.assertEqual(
+                    sorted(archive.namelist()),
+                    sorted(f"scene/{name}" for name in names),
+                )
+
     def test_framework_environment_restores_cuda_toolkit(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             framework = Path(directory) / "3dgrut"
