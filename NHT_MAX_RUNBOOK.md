@@ -2,13 +2,13 @@
 
 The production profile is [`config/nht_max.yaml`](config/nht_max.yaml): NVIDIA 3DGRUT, distorted-camera 3DGUT, MCMC densification, and 48-feature Neural Harmonic Textures (NHT), full resolution, 30k iterations, and a 1M primitive cap suitable for an RTX 3090.
 
-This is the highest-quality official implementation selected for this repository. It is not a promise of a particular VTRACE PSNR: the public scene smoke/full runs must measure that. The profile now follows NVIDIA's current official NHT validation budget of 1M primitives, 30k iterations and 48 NHT features.
+This is the highest-quality official implementation selected for this repository. It is not a promise of a particular VTRACE PSNR: an appropriate held-out set must measure that. The profile follows NVIDIA's current official NHT validation budget of 1M primitives, 30k iterations and 48 NHT features.
 
 ## Server
 
 - Recommended price/performance option: one idle RTX 3090 24GB. A 48/80GB GPU provides additional safety but is not required by this profile.
 - Preflight requires at least 22GB total and 20GB currently free VRAM, so a 12GB RTX 3060 is rejected.
-- At least 64GB system RAM and 200GB free persistent disk for all private scenes and resumable optimizer checkpoints.
+- At least 64GB system RAM and 200GB free persistent disk for all Round 2 scenes and resumable optimizer checkpoints.
 - Keep persistent storage mounted. A stopped ephemeral instance cannot be recovered by application code.
 - CUDA 12.8 is the safest choice for current 3DGRUT, especially on Blackwell GPUs.
 
@@ -23,49 +23,29 @@ chmod +x scripts/setup_all.sh scripts/launch_nht_max.sh
 
 ## Mandatory paid-server smoke test
 
-Use one public scene. This compiles the CUDA extensions and verifies train, checkpoint, exact test-pose normalization, render, image names, dimensions, and ZIP creation with only ten iterations:
+Use one Round 2 scene. The downloaded Round 2 archive stores scenes directly under `VAI_NVS_DATA_ROUND2/`; it does not contain the older `phase1/public_set` and `phase1/private_set1` wrappers. This compiles the CUDA extensions and verifies train, checkpoint, exact test-pose normalization, render, image names, dimensions, and ZIP creation with only ten iterations:
 
 ```bash
 ./scripts/launch_nht_max.sh \
   --smoke-test \
-  --data-dir VAI_NVS_DATA_ROUND2/phase1/public_set \
-  --scene HCM0181
+  --data-dir VAI_NVS_DATA_ROUND2 \
+  --scene HCM0421
 tail -f output_nht_smoke/launcher.log
 ```
 
 Do not start the expensive run until `output_nht_smoke/DONE.json` exists.
 
-## Full public validation
-
-```bash
-VTRACE_NHT_RUN_DIR="$PWD/output_nht_max_public" \
-./scripts/launch_nht_max.sh \
-  --data-dir VAI_NVS_DATA_ROUND2/phase1/public_set \
-  --output-dir output_nht_max_public
-```
-
-After completion, evaluate public ground truth:
-
-```bash
-uv run python scripts/evaluate_public.py \
-  --data-dir VAI_NVS_DATA_ROUND2/phase1/public_set \
-  --prediction-dir output_nht_max_public/submission \
-  --output-dir output_nht_max_public/evaluation
-```
-
-## Full private run
-
-The default config already targets the private set:
+## Full Round 2 run
 
 ```bash
 ./scripts/launch_nht_max.sh
 ```
 
-Safe monitoring commands:
+The default profile consumes every valid scene directly below `VAI_NVS_DATA_ROUND2/`. Monitor it with:
 
 ```bash
 tail -f output_nht_max_private/launcher.log
-tail -f output_nht_max_private/logs/HCM0249.train.log
+tail -F output_nht_max_private/logs/HCM0421.train.log
 find output_nht_max_private/scenes -name status.json -print
 ```
 

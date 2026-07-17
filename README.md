@@ -60,20 +60,20 @@ Hệ thống VTRACE đã thiết lập thành công!
 
 ### 3. Chạy smoke test bắt buộc
 
-Smoke test chạy 10 iterations trên một public scene để kiểm tra CUDA compilation, train, checkpoint, camera adapter, render và đóng gói ZIP:
+Smoke test chạy 10 iterations trên một scene Round 2 để kiểm tra CUDA compilation, train, checkpoint, camera adapter, render và đóng gói ZIP. Gói Round 2 đặt các scene trực tiếp dưới `VAI_NVS_DATA_ROUND2/`, không có các thư mục `phase1/public_set` hoặc `phase1/private_set1` của bộ dữ liệu cũ:
 
 ```bash
 ./scripts/launch_nht_max.sh \
   --smoke-test \
-  --data-dir VAI_NVS_DATA_ROUND2/phase1/public_set \
-  --scene HCM0181
+  --data-dir VAI_NVS_DATA_ROUND2 \
+  --scene HCM0421
 ```
 
 Theo dõi launcher và log train:
 
 ```bash
 tail -f output_nht_smoke/launcher.log
-tail -f output_nht_smoke/logs/HCM0181.train.log
+tail -F output_nht_smoke/logs/HCM0421.train.log
 ```
 
 Nhấn `Ctrl+C` chỉ thoát lệnh `tail`, không dừng quá trình train. Smoke test chỉ thành công khi tồn tại `DONE.json`:
@@ -83,37 +83,9 @@ cat output_nht_smoke/DONE.json
 ls -lh output_nht_smoke/submission.zip
 ```
 
-### 4. Chạy public set và đo PSNR
+### 4. Chạy toàn bộ Round 2
 
-Nên hoàn thành bước này trước private để xác nhận chất lượng thực tế:
-
-```bash
-./scripts/launch_nht_max.sh \
-  --data-dir VAI_NVS_DATA_ROUND2/phase1/public_set \
-  --output-dir output_nht_max_public
-```
-
-Theo dõi:
-
-```bash
-tail -f output_nht_max_public/launcher.log
-```
-
-Khi public run hoàn tất, đo PSNR/SSIM:
-
-```bash
-uv run python scripts/evaluate_public.py \
-  --data-dir VAI_NVS_DATA_ROUND2/phase1/public_set \
-  --prediction-dir output_nht_max_public/submission \
-  --output-dir output_nht_max_public/evaluation \
-  --no-lpips
-
-cat output_nht_max_public/evaluation/summary.json
-```
-
-### 5. Chạy private set
-
-Config mặc định đã trỏ tới toàn bộ private set:
+Chỉ bắt đầu lượt chạy tốn phí sau khi smoke test tạo `DONE.json`. Profile mặc định xử lý mọi scene hợp lệ trực tiếp dưới `VAI_NVS_DATA_ROUND2/`:
 
 ```bash
 ./scripts/launch_nht_max.sh
@@ -129,10 +101,10 @@ find output_nht_max_private/scenes -name status.json -print
 Có thể xem log của một scene cụ thể, ví dụ:
 
 ```bash
-tail -f output_nht_max_private/logs/HCM0249.train.log
+tail -F output_nht_max_private/logs/HCM0421.train.log
 ```
 
-### 6. Kiểm tra kết quả cuối
+### 5. Kiểm tra kết quả cuối
 
 Chỉ sử dụng submission khi cả `DONE.json` và `submission.zip` đều tồn tại:
 
@@ -145,7 +117,7 @@ unzip -t output_nht_max_private/submission.zip
 
 Pipeline bắt đầu từ ảnh PNG lossless và tự chọn JPEG quality cao nhất sao cho ZIP đo thực tế nằm dưới giới hạn 350MB, với target an toàn 345MB. `DONE.json` lưu dung lượng byte, JPEG quality, subsampling và SHA-256 của file cuối.
 
-### 7. Resume sau khi server bị ngắt
+### 6. Resume sau khi server bị ngắt
 
 Launcher chạy qua `setsid`/`nohup`, vì vậy mất kết nối SSH không làm dừng train. Nếu server reboot hoặc bị preempt, chạy lại đúng lệnh:
 

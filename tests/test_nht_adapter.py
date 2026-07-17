@@ -20,10 +20,10 @@ from src.vtrace.nht_adapter import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PUBLIC_SCENE = ROOT / "VAI_NVS_DATA_ROUND2" / "phase1" / "public_set" / "HCM0181"
+ROUND2_SCENE = ROOT / "VAI_NVS_DATA_ROUND2" / "HCM0421"
 
 
-@unittest.skipUnless(PUBLIC_SCENE.exists(), "VTRACE public data is not present")
+@unittest.skipUnless(ROUND2_SCENE.exists(), "VTRACE Round 2 data is not present")
 class NHTAdapterTests(unittest.TestCase):
     def test_size_limited_archive_uses_exact_layout(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -66,19 +66,19 @@ class NHTAdapterTests(unittest.TestCase):
             self.assertTrue(environment["PATH"].startswith("/opt/cuda-12.8/bin:"))
 
     def test_camera_binary_and_scene_validation(self) -> None:
-        stats = validate_scene(PUBLIC_SCENE)
+        stats = validate_scene(ROUND2_SCENE)
         self.assertGreater(stats["train_images"], 0)
         self.assertGreater(stats["test_poses"], 0)
-        camera = read_first_colmap_camera(PUBLIC_SCENE / "train" / "sparse" / "0" / "cameras.bin")
-        self.assertEqual(camera["model"], "SIMPLE_RADIAL")
-        self.assertEqual((camera["width"], camera["height"]), (1320, 989))
+        camera = read_first_colmap_camera(ROUND2_SCENE / "train" / "sparse" / "0" / "cameras.bin")
+        self.assertGreater(camera["width"], 0)
+        self.assertGreater(camera["height"], 0)
 
     def test_prepare_test_colmap(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            adapter, names = prepare_test_colmap(PUBLIC_SCENE, Path(directory) / "adapter")
+            adapter, names = prepare_test_colmap(ROUND2_SCENE, Path(directory) / "adapter")
             manifest = json.loads((adapter / "manifest.json").read_text())
             self.assertEqual(manifest["images"], names)
-            self.assertEqual(len(names), validate_scene(PUBLIC_SCENE)["test_poses"])
+            self.assertEqual(len(names), validate_scene(ROUND2_SCENE)["test_poses"])
             self.assertTrue((adapter / "sparse" / "0" / "points3D.bin").is_symlink())
             camera_rows = [
                 line
@@ -86,8 +86,9 @@ class NHTAdapterTests(unittest.TestCase):
                 if line and not line.startswith("#")
             ]
             self.assertEqual(len(camera_rows), 1, "identical test intrinsics must share one ray cache")
+            camera = read_first_colmap_camera(ROUND2_SCENE / "train" / "sparse" / "0" / "cameras.bin")
             with Image.open(adapter / "images" / names[0]) as image:
-                self.assertEqual(image.size, (1320, 989))
+                self.assertEqual(image.size, (camera["width"], camera["height"]))
 
     def test_nested_checkpoint_discovery(self) -> None:
         def checkpoint(path: Path) -> None:

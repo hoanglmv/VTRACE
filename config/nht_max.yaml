@@ -10,7 +10,7 @@ framework:
   minimum_gpu_free_gib: 20
 
 pipeline:
-  data_dir: ./VAI_NVS_DATA_ROUND2/phase1/private_set1
+  data_dir: ./VAI_NVS_DATA_ROUND2
   output_dir: ./output_nht_max_private
   minimum_free_disk_gib: 200
   max_retries: 1

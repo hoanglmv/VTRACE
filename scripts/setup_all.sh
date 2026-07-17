@@ -259,9 +259,33 @@ else
     download_and_extract
 fi
 
+# Round 2 is distributed as a flat directory of scenes (there is no
+# phase1/public_set/private_set1 wrapper).  Validate that extraction produced
+# at least one scene the runners can consume, and prefer HCM0421 for the smoke
+# test when it is present.
+ROUND2_SMOKE_SCENE=""
+for scene_dir in VAI_NVS_DATA_ROUND2/*; do
+    if [ ! -d "${scene_dir}/train/images" ] || [ ! -f "${scene_dir}/test/test_poses.csv" ]; then
+        continue
+    fi
+    scene_name="$(basename "${scene_dir}")"
+    if [ -z "${ROUND2_SMOKE_SCENE}" ] || [ "${scene_name}" = "HCM0421" ]; then
+        ROUND2_SMOKE_SCENE="${scene_name}"
+    fi
+    if [ "${ROUND2_SMOKE_SCENE}" = "HCM0421" ]; then
+        break
+    fi
+done
+
+if [ -z "${ROUND2_SMOKE_SCENE}" ]; then
+    echo "ERROR: Không tìm thấy scene Round 2 hợp lệ trực tiếp dưới VAI_NVS_DATA_ROUND2/." >&2
+    echo "Mỗi scene cần có train/images và test/test_poses.csv." >&2
+    exit 24
+fi
+
 echo ""
 echo "========================================================"
 echo "   Hệ thống VTRACE đã thiết lập thành công!"
 echo "   Max-quality framework: 3DGRUT/NHT ${THREEDGRUT_COMMIT}"
-echo "   Bước kế tiếp: ./scripts/launch_nht_max.sh --smoke-test --data-dir VAI_NVS_DATA_ROUND2/phase1/public_set --scene HCM0181"
+echo "   Bước kế tiếp: ./scripts/launch_nht_max.sh --smoke-test --data-dir VAI_NVS_DATA_ROUND2 --scene ${ROUND2_SMOKE_SCENE}"
 echo "========================================================"
