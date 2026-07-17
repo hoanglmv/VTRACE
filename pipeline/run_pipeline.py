@@ -51,7 +51,7 @@ logger = logging.getLogger(__name__)
 def main():
     parser = argparse.ArgumentParser(description="VTRACE 3DGS Pipeline")
     parser.add_argument("--config", type=str, default=None, help="Path to YAML configuration file")
-    parser.add_argument("--data-dir", type=str, default=None, help="Path to VAI_NVS_DATA directory")
+    parser.add_argument("--data-dir", type=str, default=None, help="Path to VAI_NVS_DATA_ROUND2 directory")
     parser.add_argument("--output-dir", type=str, default=None, help="Output directory")
     parser.add_argument("--iterations", type=int, default=None, help="Number of training iterations")
     parser.add_argument("--resolution", type=int, default=None, help="Resolution scaling factor")
@@ -64,7 +64,7 @@ def main():
     # Default configuration values
     config_data = {
         "pipeline": {
-            "data_dir": "./VAI_NVS_DATA/phase1/public_set",
+            "data_dir": "./VAI_NVS_DATA_ROUND2/phase1/public_set",
             "output_dir": "./output",
         },
         "training": {

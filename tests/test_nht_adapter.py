@@ -20,7 +20,7 @@ from src.vtrace.nht_adapter import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PUBLIC_SCENE = ROOT / "VAI_NVS_DATA" / "phase1" / "public_set" / "HCM0181"
+PUBLIC_SCENE = ROOT / "VAI_NVS_DATA_ROUND2" / "phase1" / "public_set" / "HCM0181"
 
 
 @unittest.skipUnless(PUBLIC_SCENE.exists(), "VTRACE public data is not present")

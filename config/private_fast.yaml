@@ -1,6 +1,6 @@
 # Fast training configuration for Private Set
 pipeline:
-  data_dir: "./VAI_NVS_DATA/phase1/private_set1"
+  data_dir: "./VAI_NVS_DATA_ROUND2/phase1/private_set1"
   output_dir: "./output_private_fast"
 
 training:

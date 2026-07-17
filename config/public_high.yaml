@@ -1,6 +1,6 @@
 # High-quality training configuration for Public Set
 pipeline:
-  data_dir: "./VAI_NVS_DATA/phase1/public_set"
+  data_dir: "./VAI_NVS_DATA_ROUND2/phase1/public_set"
   output_dir: "./output_public_high"
 
 training:

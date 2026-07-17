@@ -15,7 +15,7 @@ from src.vtrace.evaluator import evaluate, validate_submission, write_evaluation
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data-dir", default="VAI_NVS_DATA/phase1/public_set")
+    parser.add_argument("--data-dir", default="VAI_NVS_DATA_ROUND2/phase1/public_set")
     parser.add_argument("--prediction-dir", required=True)
     parser.add_argument("--output-dir", default="evaluation")
     parser.add_argument("--psnr-max", type=float, default=40.0)

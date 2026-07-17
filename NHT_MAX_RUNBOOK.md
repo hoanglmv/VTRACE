@@ -28,7 +28,7 @@ Use one public scene. This compiles the CUDA extensions and verifies train, chec
 ```bash
 ./scripts/launch_nht_max.sh \
   --smoke-test \
-  --data-dir VAI_NVS_DATA/phase1/public_set \
+  --data-dir VAI_NVS_DATA_ROUND2/phase1/public_set \
   --scene HCM0181
 tail -f output_nht_smoke/launcher.log
 ```
@@ -40,7 +40,7 @@ Do not start the expensive run until `output_nht_smoke/DONE.json` exists.
 ```bash
 VTRACE_NHT_RUN_DIR="$PWD/output_nht_max_public" \
 ./scripts/launch_nht_max.sh \
-  --data-dir VAI_NVS_DATA/phase1/public_set \
+  --data-dir VAI_NVS_DATA_ROUND2/phase1/public_set \
   --output-dir output_nht_max_public
 ```
 
@@ -48,7 +48,7 @@ After completion, evaluate public ground truth:
 
 ```bash
 uv run python scripts/evaluate_public.py \
-  --data-dir VAI_NVS_DATA/phase1/public_set \
+  --data-dir VAI_NVS_DATA_ROUND2/phase1/public_set \
   --prediction-dir output_nht_max_public/submission \
   --output-dir output_nht_max_public/evaluation
 ```

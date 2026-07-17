@@ -2,7 +2,22 @@
 set -Eeuo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-RUN_DIR="${VTRACE_NHT_RUN_DIR:-${PROJECT_ROOT}/output_nht_max_private}"
+DEFAULT_RUN_DIR="${PROJECT_ROOT}/output_nht_max_private"
+previous=""
+for argument in "$@"; do
+  if [[ "${argument}" == "--smoke-test" ]]; then
+    DEFAULT_RUN_DIR="${PROJECT_ROOT}/output_nht_smoke"
+  elif [[ "${previous}" == "--output-dir" ]]; then
+    DEFAULT_RUN_DIR="${argument}"
+  elif [[ "${argument}" == --output-dir=* ]]; then
+    DEFAULT_RUN_DIR="${argument#--output-dir=}"
+  fi
+  previous="${argument}"
+done
+if [[ "${DEFAULT_RUN_DIR}" != /* ]]; then
+  DEFAULT_RUN_DIR="${PROJECT_ROOT}/${DEFAULT_RUN_DIR}"
+fi
+RUN_DIR="${VTRACE_NHT_RUN_DIR:-${DEFAULT_RUN_DIR}}"
 PID_FILE="${RUN_DIR}/orchestrator.pid"
 LAUNCH_LOG="${RUN_DIR}/launcher.log"
 PYTHON="${PROJECT_ROOT}/.venv/bin/python"
@@ -35,4 +50,3 @@ fi
 echo "Started max-quality NHT pipeline (PID ${PID})."
 echo "Monitor: tail -f ${LAUNCH_LOG}"
 echo "A provider shutdown still requires relaunching this same command; checkpoints resume automatically."
-

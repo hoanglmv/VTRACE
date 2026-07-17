@@ -13,8 +13,8 @@ CHOICE=$1
 
 if [ -z "$CHOICE" ]; then
     echo "Chọn tập dữ liệu muốn chạy test:"
-    echo "1) Public Set (VAI_NVS_DATA/phase1/public_set)"
-    echo "2) Private Set (VAI_NVS_DATA/phase1/private_set1)"
+    echo "1) Public Set (VAI_NVS_DATA_ROUND2/phase1/public_set)"
+    echo "2) Private Set (VAI_NVS_DATA_ROUND2/phase1/private_set1)"
     read -p "Nhập lựa chọn của bạn (1 hoặc 2, mặc định là 1): " INPUT_CHOICE
     if [ "$INPUT_CHOICE" = "2" ]; then
         CHOICE="private"

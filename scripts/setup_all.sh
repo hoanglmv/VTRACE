@@ -215,34 +215,39 @@ printf '%s\n' "${THREEDGRUT_COMMIT}" > "${FRAMEWORK_READY}"
 
 # 4. Download data
 echo ""
-echo ">>> [3/3] Tải dữ liệu VAI_NVS_DATA từ Google Drive..."
-FILE_ID="12vOrYdBT_0yrvV48pf--yXaSzXD5QONV"
+echo ">>> [3/3] Tải dữ liệu VAI_NVS_DATA_ROUND2 từ Google Drive..."
+FILE_ID="1heRjG2inCW2kFkr_rhgfLT_7DBMFxC8B"
 
 download_and_extract() {
-    echo "Đang tải VAI_NVS_DATA.zip từ Google Drive..."
-    uvx gdown "${FILE_ID}" -O VAI_NVS_DATA.zip
-    echo "Đang giải nén VAI_NVS_DATA.zip..."
+    echo "Đang tải VAI_NVS_DATA_ROUND2.zip từ Google Drive..."
+    uvx gdown "${FILE_ID}" -O VAI_NVS_DATA_ROUND2.zip
+    echo "Đang giải nén VAI_NVS_DATA_ROUND2.zip..."
+    mkdir -p VAI_NVS_DATA_ROUND2
     if command -v unzip &> /dev/null; then
-        unzip -q VAI_NVS_DATA.zip
+        unzip -q VAI_NVS_DATA_ROUND2.zip -d VAI_NVS_DATA_ROUND2
     else
-        python3 -m zipfile -e VAI_NVS_DATA.zip .
+        python3 -m zipfile -e VAI_NVS_DATA_ROUND2.zip VAI_NVS_DATA_ROUND2
     fi
-    rm -f VAI_NVS_DATA.zip
+    rm -f VAI_NVS_DATA_ROUND2.zip
     
-    # Wrap phase1 in VAI_NVS_DATA if extracted directly
+    # Wrap phase1 in VAI_NVS_DATA_ROUND2 if extracted directly
     if [ -d "phase1" ]; then
-        mkdir -p VAI_NVS_DATA
-        mv phase1 VAI_NVS_DATA/
+        mv phase1 VAI_NVS_DATA_ROUND2/
     fi
-    rm -rf __MACOSX
+    
+    if [ -d "VAI_NVS_DATA_ROUND2/VAI_NVS_DATA_ROUND2/phase1" ]; then
+        mv VAI_NVS_DATA_ROUND2/VAI_NVS_DATA_ROUND2/phase1 VAI_NVS_DATA_ROUND2/
+        rm -rf VAI_NVS_DATA_ROUND2/VAI_NVS_DATA_ROUND2
+    fi
+    rm -rf __MACOSX VAI_NVS_DATA_ROUND2/__MACOSX
 }
 
-if [ -d "VAI_NVS_DATA" ]; then
+if [ -d "VAI_NVS_DATA_ROUND2" ]; then
     RE_DOWNLOAD="${VTRACE_REDOWNLOAD_DATA:-n}"
     if [ "$RE_DOWNLOAD" = "y" ] || [ "$RE_DOWNLOAD" = "Y" ]; then
         download_and_extract
     else
-        echo "VAI_NVS_DATA đã tồn tại; tự động bỏ qua tải lại. Đặt VTRACE_REDOWNLOAD_DATA=y nếu cần tải lại."
+        echo "VAI_NVS_DATA_ROUND2 đã tồn tại; tự động bỏ qua tải lại. Đặt VTRACE_REDOWNLOAD_DATA=y nếu cần tải lại."
     fi
 else
     download_and_extract
@@ -252,5 +257,5 @@ echo ""
 echo "========================================================"
 echo "   Hệ thống VTRACE đã thiết lập thành công!"
 echo "   Max-quality framework: 3DGRUT/NHT ${THREEDGRUT_COMMIT}"
-echo "   Bước kế tiếp: ./scripts/launch_nht_max.sh --smoke-test --data-dir VAI_NVS_DATA/phase1/public_set --scene HCM0181"
+echo "   Bước kế tiếp: ./scripts/launch_nht_max.sh --smoke-test --data-dir VAI_NVS_DATA_ROUND2/phase1/public_set --scene HCM0181"
 echo "========================================================"
