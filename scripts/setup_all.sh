@@ -187,6 +187,12 @@ else
     echo "Installing isolated 3DGRUT/NHT environment (this compiles CUDA extensions)..."
     (
         cd "${FRAMEWORK_DIR}"
+        # Vast.ai images commonly start inside a generic base Conda environment.
+        # 3DGRUT treats any CONDA_PREFIX as one of its own pre-configured Conda
+        # environments and then expects CC, CXX, CUDA_*, and UV_* to already be
+        # present.  Hide the inherited Conda markers so install_env_uv.sh takes
+        # its supported standalone-uv path and creates the isolated .venv below.
+        unset CONDA_PREFIX CONDA_DEFAULT_ENV CONDA_PROMPT_MODIFIER || true
         unset VIRTUAL_ENV || true
         export CUDA_HOME="${NHT_CUDA_HOME}"
         export PATH="${NHT_CUDA_HOME}/bin:${PATH}"
