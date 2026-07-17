@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import sys
 import tempfile
 import unittest
 import zipfile
@@ -13,6 +14,7 @@ from src.vtrace.nht_adapter import (
     create_size_limited_archive,
     find_latest_checkpoint,
     framework_environment,
+    framework_python,
     prepare_test_colmap,
     read_first_colmap_camera,
     validate_scene,
@@ -23,7 +25,6 @@ ROOT = Path(__file__).resolve().parents[1]
 ROUND2_SCENE = ROOT / "VAI_NVS_DATA_ROUND2" / "HCM0421"
 
 
-@unittest.skipUnless(ROUND2_SCENE.exists(), "VTRACE Round 2 data is not present")
 class NHTAdapterTests(unittest.TestCase):
     def test_size_limited_archive_uses_exact_layout(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -65,6 +66,15 @@ class NHTAdapterTests(unittest.TestCase):
             self.assertEqual(environment["CUDA_HOME"], "/opt/cuda-12.8")
             self.assertTrue(environment["PATH"].startswith("/opt/cuda-12.8/bin:"))
 
+    def test_framework_python_preserves_virtualenv_path(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            framework = Path(directory) / "3dgrut"
+            python = framework / ".venv" / "bin" / "python"
+            python.parent.mkdir(parents=True)
+            python.symlink_to(Path(sys.executable))
+            self.assertEqual(framework_python(framework), python.absolute())
+
+    @unittest.skipUnless(ROUND2_SCENE.exists(), "VTRACE Round 2 data is not present")
     def test_camera_binary_and_scene_validation(self) -> None:
         stats = validate_scene(ROUND2_SCENE)
         self.assertGreater(stats["train_images"], 0)
@@ -73,6 +83,7 @@ class NHTAdapterTests(unittest.TestCase):
         self.assertGreater(camera["width"], 0)
         self.assertGreater(camera["height"], 0)
 
+    @unittest.skipUnless(ROUND2_SCENE.exists(), "VTRACE Round 2 data is not present")
     def test_prepare_test_colmap(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             adapter, names = prepare_test_colmap(ROUND2_SCENE, Path(directory) / "adapter")

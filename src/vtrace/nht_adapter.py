@@ -265,7 +265,10 @@ def framework_python(framework_dir: Path, configured: str | None = None) -> Path
         raise FileNotFoundError(
             f"3DGRUT Python not found: {candidate}. Run scripts/setup_3dgrut_nht.sh first."
         )
-    return candidate.resolve()
+    # A venv's python executable is normally a symlink to the base interpreter.
+    # Resolving that symlink bypasses pyvenv.cfg and therefore drops all packages
+    # installed in the 3DGRUT environment (for example hydra and ncore).
+    return candidate.absolute()
 
 
 def framework_environment(framework_dir: Path) -> dict[str, str]:
